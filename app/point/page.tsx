@@ -17,53 +17,61 @@ export default function PointsPage() {
     const [activeTab, setActiveTab] = useState<"all" | "earned" | "used" | "expired">("all")
 
     useEffect(() => {
-        // 포인트 데이터 가져오기 (예제에서는 mock 데이터 사용)
-        const mockPoints: Point[] = [
-            {
-                id: "point-1",
-                type: "earned",
-                amount: 5000,
-                description: "공연 티켓 구매 적립 포인트",
-                date: "2024-01-15",
-            },
-            {
-                id: "point-2",
-                type: "used",
-                amount: 2000,
-                description: "티켓 할인에 사용",
-                date: "2024-02-10",
-            },
-            {
-                id: "point-3",
-                type: "expired",
-                amount: 1500,
-                description: "만료된 포인트",
-                date: "2023-12-31",
-            },
-            {
-                id: "point-4",
-                type: "earned",
-                amount: 3000,
-                description: "리뷰 작성 보상 포인트",
-                date: "2024-02-20",
-            },
-            {
-                id: "point-5",
-                type: "used",
-                amount: 1000,
-                description: "구매 시 사용",
-                date: "2024-03-01",
-            },
-            {
-                id: "point-6",
-                type: "expired",
-                amount: 1200,
-                description: "사용하지 않아 만료됨",
-                date: "2024-03-31",
-            },
-        ]
+        // 세션 스토리지에서 포인트 가져오기
+        const storedPoints = sessionStorage.getItem("points")
+        if (storedPoints) {
+            setPoints(JSON.parse(storedPoints))
+        } else {
+            // 테스트용 포인트 데이터 생성
+            const mockPoints: Point[] = [
+                {
+                    id: "point-1",
+                    type: "earned",
+                    amount: 5000,
+                    description: "공연 티켓 구매 적립 포인트",
+                    date: "2024-01-15",
+                },
+                {
+                    id: "point-2",
+                    type: "used",
+                    amount: 2000,
+                    description: "티켓 할인에 사용",
+                    date: "2024-02-10",
+                },
+                {
+                    id: "point-3",
+                    type: "expired",
+                    amount: 1500,
+                    description: "만료된 포인트",
+                    date: "2023-12-31",
+                },
+                {
+                    id: "point-4",
+                    type: "earned",
+                    amount: 3000,
+                    description: "리뷰 작성 보상 포인트",
+                    date: "2024-02-20",
+                },
+                {
+                    id: "point-5",
+                    type: "used",
+                    amount: 1000,
+                    description: "구매 시 사용",
+                    date: "2024-03-01",
+                },
+                {
+                    id: "point-6",
+                    type: "expired",
+                    amount: 1200,
+                    description: "사용하지 않아 만료됨",
+                    date: "2024-03-31",
+                },
+            ]
 
-        setPoints(mockPoints)
+            // 세션 스토리지에 포인트 데이터 저장
+            sessionStorage.setItem("points", JSON.stringify(mockPoints))
+            setPoints(mockPoints)
+        }
     }, [])
 
     const filterPoints = (type: "all" | "earned" | "used" | "expired") => {
@@ -75,7 +83,7 @@ export default function PointsPage() {
 
     return (
         <div className="min-h-screen flex flex-col bg-gray-50">
-            <Header/>
+            <Header />
 
             <main className="flex-grow container mx-auto px-4 py-8">
                 <div className="max-w-3xl mx-auto">
@@ -142,13 +150,13 @@ export default function PointsPage() {
                                     className="bg-white rounded-lg shadow-sm p-4 mb-4 flex items-start"
                                 >
                                     {point.type === "earned" && (
-                                        <CheckCircle className="w-6 h-6 text-green-500 mt-0.5 mr-4"/>
+                                        <CheckCircle className="w-6 h-6 text-green-500 mt-0.5 mr-4" />
                                     )}
                                     {point.type === "used" && (
-                                        <MinusCircle className="w-6 h-6 text-blue-500 mt-0.5 mr-4"/>
+                                        <MinusCircle className="w-6 h-6 text-blue-500 mt-0.5 mr-4" />
                                     )}
                                     {point.type === "expired" && (
-                                        <XCircle className="w-6 h-6 text-red-500 mt-0.5 mr-4"/>
+                                        <XCircle className="w-6 h-6 text-red-500 mt-0.5 mr-4" />
                                     )}
                                     <div>
                                         <h2 className="text-lg font-semibold">{point.description}</h2>
@@ -160,7 +168,7 @@ export default function PointsPage() {
                         ) : (
                             <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 text-yellow-700">
                                 <div className="flex items-center">
-                                    <AlertCircle className="w-5 h-5 mr-2"/>
+                                    <AlertCircle className="w-5 h-5 mr-2" />
                                     해당 항목에 포인트 내역이 없습니다.
                                 </div>
                             </div>

@@ -19,39 +19,47 @@ export default function CouponPage() {
     const [activeTab, setActiveTab] = useState<"available" | "unavailable">("available")
 
     useEffect(() => {
-        // 쿠폰 정보를 가져오는 로직 (예제에서는 mock 데이터 사용)
-        const mockCoupons: Coupon[] = [
-            {
-                id: "coupon-1",
-                title: "10% 할인 쿠폰",
-                description: "모든 공연에 사용할 수 있는 10% 할인 쿠폰",
-                validUntil: "2024-12-31",
-                isUsed: false,
-            },
-            {
-                id: "coupon-2",
-                title: "무료 음료 쿠폰",
-                description: "1개 공연에 대해 무료로 음료 제공",
-                validUntil: "2024-11-30",
-                isUsed: true,
-            },
-            {
-                id: "coupon-3",
-                title: "15% 할인 쿠폰",
-                description: "특정 공연에 적용 가능한 15% 할인 쿠폰",
-                validUntil: "2024-10-15",
-                isUsed: false,
-            },
-            {
-                id: "coupon-4",
-                title: "무료 티켓 업그레이드",
-                description: "일반석 티켓을 VIP 티켓으로 업그레이드 가능",
-                validUntil: "2024-09-01",
-                isUsed: true,
-            },
-        ]
+        // 세션 스토리지에서 쿠폰 불러오기
+        const storedCoupons = sessionStorage.getItem("coupons")
+        if (storedCoupons) {
+            setCoupons(JSON.parse(storedCoupons))
+        } else {
+            // 테스트용: 쿠폰이 없을 경우 생성
+            const mockCoupons: Coupon[] = [
+                {
+                    id: "coupon-1",
+                    title: "10% 할인 쿠폰",
+                    description: "모든 공연에 사용할 수 있는 10% 할인 쿠폰",
+                    validUntil: "2024-12-31",
+                    isUsed: false,
+                },
+                {
+                    id: "coupon-2",
+                    title: "무료 음료 쿠폰",
+                    description: "1개 공연에 대해 무료로 음료 제공",
+                    validUntil: "2024-11-30",
+                    isUsed: true,
+                },
+                {
+                    id: "coupon-3",
+                    title: "15% 할인 쿠폰",
+                    description: "특정 공연에 적용 가능한 15% 할인 쿠폰",
+                    validUntil: "2024-10-15",
+                    isUsed: false,
+                },
+                {
+                    id: "coupon-4",
+                    title: "무료 티켓 업그레이드",
+                    description: "일반석 티켓을 VIP 티켓으로 업그레이드 가능",
+                    validUntil: "2024-09-01",
+                    isUsed: true,
+                },
+            ]
 
-        setCoupons(mockCoupons)
+            // 세션 스토리지에 쿠폰 저장
+            sessionStorage.setItem("coupons", JSON.stringify(mockCoupons))
+            setCoupons(mockCoupons)
+        }
     }, [])
 
     const availableCoupons = coupons.filter((coupon) => !coupon.isUsed)
@@ -108,7 +116,8 @@ export default function CouponPage() {
                                     ))
                                 ) : (
                                     <div
-                                        className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 text-yellow-700">
+                                        className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 text-yellow-700"
+                                    >
                                         <div className="flex items-center">
                                             <AlertCircle className="w-5 h-5 mr-2"/>
                                             사용 가능한 쿠폰이 없습니다.
@@ -136,7 +145,8 @@ export default function CouponPage() {
                                     ))
                                 ) : (
                                     <div
-                                        className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 text-yellow-700">
+                                        className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 text-yellow-700"
+                                    >
                                         <div className="flex items-center">
                                             <AlertCircle className="w-5 h-5 mr-2"/>
                                             사용 불가 쿠폰이 없습니다.
