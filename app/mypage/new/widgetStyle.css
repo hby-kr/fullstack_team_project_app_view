@@ -1,0 +1,52 @@
+#widget-container{
+    width: 100%;
+    margin: 0 auto;
+}
+#widget-container section{
+    margin: 30px 30px;
+    padding: 20px 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+
+/* 위젯 그리드 스타일 */
+#widget-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3열 그리드 */
+    grid-auto-rows: 150px; /* 각 행 높이는 150px */
+    gap: 10px; /* 그리드 간격 */
+    padding: 20px;
+    position: relative;
+    height: 600px;
+    overflow: hidden;
+}
+
+.widget {
+    background-color: #ccc;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: grab;
+    user-select: none;
+    resize: none; /* 크기 조절 비활성화 */
+    grid-column: span 1; /* 기본 크기는 1x1 */
+    grid-row: span 1;
+}
+
+/* 크기 옵션 1x1, 1x2, 1x3 적용 */
+.widget.size-1x1 {
+    grid-column: span 1;
+    grid-row: span 1;
+}
+
+.widget.size-1x2 {
+    grid-column: span 1;
+    grid-row: span 2;
+}
+
+.widget.size-1x3 {
+    grid-column: span 1;
+    grid-row: span 3;
+}
