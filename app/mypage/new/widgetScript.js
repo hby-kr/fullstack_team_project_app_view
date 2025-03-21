@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
     widgetSection.addEventListener("dragover", (e) => {
         e.preventDefault(); // 기본 동작 방지
         const draggingWidget = document.querySelector(".dragging");
-        const afterElement = getDragAfterElement(widgetSection, e.clientY);
+        const afterElement = getDragAfterElement(widgetSection, e.clientX);
 
         if (afterElement == null) {
             widgetSection.appendChild(draggingWidget);
@@ -33,12 +33,12 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // 드래그 후 추가를 위한 위치 계산 함수
-    function getDragAfterElement(container, y) {
+    function getDragAfterElement(container, x) {
         const draggableElements = [...container.querySelectorAll(".widget:not(.dragging)")];
 
         return draggableElements.reduce((closest, child) => {
             const box = child.getBoundingClientRect();
-            const offset = y - box.top - box.height / 2;
+            const offset = x - box.top - box.height / 2;
 
             if (offset < 0 && offset > closest.offset) {
                 return { offset: offset, element: child };
