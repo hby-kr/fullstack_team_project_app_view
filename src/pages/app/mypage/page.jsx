@@ -1,4 +1,8 @@
 import React, { useState, useEffect } from "react";
+import './mypageStyle.css';
+import './mypageRefined.css';
+import './widgetStyle.css';
+import './reactive.css';
 
 const Mypage = () => {
     const [widgets, setWidgets] = useState([
