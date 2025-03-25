@@ -54,5 +54,57 @@
 }
 
 /* 위젯 별 스타일 */
-
-
+.calander{
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background-color: #fff;
+}
+.calander-container{
+    display: flex;
+    flex-direction: row;
+    padding: 10px;
+    width: 100%;
+    height: 100%;
+}
+.calander-main{
+    margin: 10px;
+}
+.calander-main li:first-child{
+    font-size: x-large;
+    color: #ff5d55;
+    line-height: 0;
+}
+.calander-main li>h5{
+    font-size: xxx-large;
+    font-family: 'Arial', sans-serif;
+}
+.calander-main li:last-child{
+    line-height: 1;
+}
+.calander-sub{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    font-size: small;
+    margin: 0 15px 0 124px;
+    padding: 0;
+}
+.calander-sub::before{
+    content: '';
+    position: absolute;
+    border-left: 2px dotted #ccc;
+    width: 1px;
+    height: 100%;
+    left: 184px;
+}
+.calander-sub-item span:first-child{
+    font-size: large;
+}
+.calander-sub-item span:last-child::after{
+    content: '';
+    width: 70%;
+    left: 194px;
+    position: absolute;
+    border-bottom: 1px solid #ff5d55;
+}
