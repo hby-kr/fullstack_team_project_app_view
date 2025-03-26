@@ -1,39 +1,39 @@
 /* 새로운 스타일 - 필요 부분만 개선 */
 
 /* 공통 */
-body {
+#mypage-body {
     background-color: #f9f9f9;
     color: #333;
     line-height: 1.5;
     font-family: 'SUIT', 'Arial', sans-serif;
 }
 
-h1{
+#mypage-body h1{
     font-family: 'Arial', sans-serif;
 }
 
-a {
+#mypage-body a {
     color: #8400ff;
     transition: color 0.3s;
 }
 
-a:hover {
+#mypage-body a:hover {
     color: #5f00b3;
 }
 
 /* 헤더 */
-header {
+#mypage-body header {
     padding: 10px 20px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-header ul li:last-child span {
+#mypage-body header ul li:last-child span {
     font-size: 16px;
     font-weight: 500;
 }
 
 /* 네비게이션 */
-nav{
+#mypage-body nav{
     background-color: #fff;
     border-bottom: 1px solid #ececec;
 }
@@ -77,20 +77,20 @@ nav{
     background-color: #fff;
 }
 /* 푸터 */
-footer {
+#mypage-body footer {
     border-top: 1px solid #ececec;
     background-color: #fff;
 }
 
-footer p {
+#mypage-body footer p {
     color: #666;
     font-size: 14px;
 }
 
-footer address ul {
+#mypage-body footer address ul {
     gap: 15px;
 }
 
-footer address img {
+#mypage-body footer address img {
     object-fit: cover;
 }

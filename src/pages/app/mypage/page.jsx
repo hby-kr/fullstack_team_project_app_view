@@ -62,7 +62,7 @@ const Mypage = () => {
     };
 
     return (
-        <div>
+        <div id="mypage-body">
             <header>
                 <ul>
                     <li>
@@ -168,10 +168,7 @@ const Mypage = () => {
                                                 {Array(4).fill().map((_, i) => (
                                                     <li key={i} className="calander-sub-item">
                                                         <span>금요일 3월 21일</span>
-                                                        <div></div>
-                                                        <div></div>
-                                                        <div></div>
-                                                        <span><a href="">이벤트</a></span>
+                                                        <span><div></div><a href="">이벤트</a></span>
                                                     </li>
                                                 ))}
                                             </ul>
@@ -181,25 +178,24 @@ const Mypage = () => {
                                 {widget.type === "weather" && (
                                     <>
                                         <div className="weather-sun"></div>
-                                        <ul className="weather-main">
-                                            <li>
-                                                <span>15</span>&deg;<span>C</span>
-                                            </li>
-                                        </ul>
-                                        {widget.size !== "1x1" && (
-                                            <ul className="weather-sub">
-                                                <li>H:<span>20</span>&deg;<span>C</span></li>
-                                                <li>L:<span>15</span>&deg;<span>C</span></li>
-                                            </ul>
-                                        )}
-                                        {widget.size === "3x1" && (
-                                            <ul className="weather-loc">
-                                                <li><span>서울특별시</span></li>
+                                        <div className="weather-main-container">
+                                            <ul className="weather-main">
                                                 <li>
-                                                    <div className="loc-circle"></div>
+                                                    <span>15</span><span>&deg;C</span>
                                                 </li>
                                             </ul>
-                                        )}
+                                            {widget.size !== "1x1" && (
+                                                <ul className="weather-sub">
+                                                    <li>H:<span>20</span>&deg;<span>C</span></li>
+                                                    <li>L:<span>15</span>&deg;<span>C</span></li>
+                                                </ul>
+                                            )}
+                                            {widget.size === "3x1" && (
+                                                <ul className="weather-loc">
+                                                    <li><span>서울특별시</span></li>
+                                                </ul>
+                                            )}
+                                        </div>
                                     </>
                                 )}
                                 {widget.type === "memo" && (
