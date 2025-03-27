@@ -6,8 +6,7 @@ import Header from "/src/components/header";
 export default function SettingsPage() {
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <Header />
+
       <div className="max-w-3xl mx-auto py-8">
         {/* 헤더 */}
         <div className="mb-6 px-4">

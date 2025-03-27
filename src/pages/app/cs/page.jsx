@@ -5,7 +5,7 @@ import Header from "/src/components/header"
 export default function CustomerSupportPage() {
   return (
     <div className="min-h-screen bg-gray-50">
-      <Header />
+
       <div className="max-w-4xl mx-auto py-8">
         {/* 헤더 */}
         <div className="mb-6 text-center">

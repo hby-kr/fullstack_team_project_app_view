@@ -1,6 +1,6 @@
 import './App.css'
 import {BrowserRouter, Route, Routes} from "react-router";
-import HomePage from './pages/page.jsx' //ok
+import HomePage from './pages/app/page.jsx' //ok
 import LoginPage from "./pages/app/login/page.jsx"; //no
 import AdminPage from "./pages/app/admin/page.jsx"; //ok
 import BookingPage from "./pages/app/booking/[id]/page.jsx"; //ok //http://localhost:5173/booking/1
@@ -22,14 +22,22 @@ import ProfilePage from "./pages/app/profile/edit/page.jsx"; //no
 import PurchasePage from "./pages/app/purchase/page.jsx"; //no
 import SettingsPage from "./pages/app/settings/page.jsx"; //no
 import SignupPage from "./pages/app/signup/page.jsx"; //no
-import Mypage from "./pages/app/mypage/page.jsx";
-// import NewMypage from "./pages/app/mypage/Before/page.jsx";
+import MyPage from "./pages/app/mypage/page.jsx";
+import Header from "./components/header.jsx";
+import ContactPage from "./pages/app/contact/page.jsx";
+import FaqPage from "./pages/app/faq/page.jsx";
+import PrivacyPage from "./pages/app/privacy/page.jsx";
+import TermsPage from "./pages/app/terms/page.jsx";
+
+
+
 
 function App() {
 
     return (
         <>
             <BrowserRouter>
+                <Header />
                 <Routes>
                     <Route path="/" element={<HomePage></HomePage>}/>
                     <Route path="/login" element={<LoginPage></LoginPage>}/>
@@ -53,8 +61,11 @@ function App() {
                     <Route path="/purchase" element={<PurchasePage></PurchasePage>}/>
                     <Route path="/settings" element={<SettingsPage></SettingsPage>}/>
                     <Route path="/signup" element={<SignupPage></SignupPage>}/>
-                    <Route path="/mypage" element={<Mypage></Mypage>}/>
-                    {/*<Route path="/mypage/Before" element={<NewMypage></NewMypage>}/>*/}
+                    <Route path="/mypage" element={<MyPage></MyPage>}/>
+                    <Route path="/contact" element={<ContactPage></ContactPage>}/>
+                    <Route path="/faq" element={<FaqPage></FaqPage>}/>
+                    <Route path="/privacy" element={<PrivacyPage></PrivacyPage>}/>
+                    <Route path="/terms" element={<TermsPage></TermsPage>}/>
                 </Routes>
             </BrowserRouter>
         </>

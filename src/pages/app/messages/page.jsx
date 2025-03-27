@@ -1,53 +1,26 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import {Link,useNavigate} from "react-router"
-
-//import Image from "next/image"
+import {Link, useNavigate} from "react-router"
 import { Bell, Settings, Search, X, ChevronRight } from "lucide-react"
 import Header from "/src/components/header"
 import { useAuth } from "/src/lib/auth-context"
 
-// Message type definition
-// type Message = {
-//   id: string
-//   type: "personal" | "event"
-//   senderId: string
-//   senderName: string
-//   senderImage?: string
-//   content: string
-//   timestamp: string
-//   isRead: boolean
-//   eventId?: string
-//   eventTitle?: string
-// }
-
-// Notification type definition
-// type Notification = {
-//   id: string
-//   type: "message" | "event" | "system"
-//   title: string
-//   content: string
-//   timestamp: string
-//   isRead: boolean
-//   linkTo?: string
-// }
 
 export default function MessagesPage() {
+  const navigate = useNavigate()
   const { user, isLoading } = useAuth()
-  const [activeTab, setActiveTab] = useState("personal");
-  const [messages, setMessages] = useState([]);
-  const [notifications, setNotifications] = useState([]);
+  const [activeTab, setActiveTab] = useState("personal")
+  const [messages, setMessages] = useState([])
+  const [notifications, setNotifications] = useState([])
   const [showNotifications, setShowNotifications] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
   const [isSearching, setIsSearching] = useState(false)
-  const navigate = useNavigate()
 
   // Redirect to login page if not logged in
   useEffect(() => {
     if (!isLoading && !user) {
-      //router.push("/login")
-      navigate("/login");
+      navigate("/login")
     }
   }, [user, isLoading, navigate])
 
@@ -183,10 +156,10 @@ export default function MessagesPage() {
   const filteredMessages = messages.filter((message) => {
     if (searchQuery) {
       return (
-        message.type === activeTab &&
-        (message.senderName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          message.content.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          (message.eventTitle && message.eventTitle.toLowerCase().includes(searchQuery.toLowerCase())))
+          message.type === activeTab &&
+          (message.senderName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+              message.content.toLowerCase().includes(searchQuery.toLowerCase()) ||
+              (message.eventTitle && message.eventTitle.toLowerCase().includes(searchQuery.toLowerCase())))
       )
     }
     return message.type === activeTab
@@ -194,27 +167,34 @@ export default function MessagesPage() {
 
   // Format timestamp to readable format
   const formatTimestamp = (timestamp) => {
-    const date = new Date(timestamp)
-    const now = new Date()
-    const diffDays = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60 * 24))
+    const date = new Date(timestamp);
+    const now = new Date();
+    const diffDays = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60 * 24));
+
+    // Helper function to format time
+    const formatTime = (date) => date.toLocaleTimeString("ko-KR", { hour: "2-digit", minute: "2-digit" });
+
+    // Helper function to format date
+    const formatDate = (date) => date.toLocaleDateString("ko-KR", { month: "short", day: "numeric" });
 
     if (diffDays === 0) {
       // Today: show time
-      return date.toLocaleTimeString("ko-KR", { hour: "2-digit", minute: "2-digit" })
+      return formatTime(date);
     } else if (diffDays === 1) {
       // Yesterday
-      return "어제"
+      return "어제";
     } else if (diffDays < 7) {
       // Within a week
-      return `${diffDays}일 전`
+      return `${diffDays}일 전`;
     } else {
       // More than a week
-      return date.toLocaleDateString("ko-KR", { month: "short", day: "numeric" })
+      return formatDate(date);
     }
-  }
+  };
 
   // Count unread messages
-  //const unreadCount = messages.filter((message) => !message.isRead).length
+  const unreadCount = messages.filter((message) => !message.isRead).length;
+  console.log(unreadCount);
 
   // Count unread notifications
   const unreadNotifications = notifications.filter((notification) => !notification.isRead).length
@@ -222,7 +202,7 @@ export default function MessagesPage() {
   // Mark notification as read
   const markNotificationAsRead = (id) => {
     setNotifications(
-      notifications.map((notification) => (notification.id === id ? { ...notification, isRead: true } : notification)),
+        notifications.map((notification) => (notification.id === id ? { ...notification, isRead: true } : notification)),
     )
   }
 
@@ -238,197 +218,196 @@ export default function MessagesPage() {
   // Don't render if loading or not logged in
   if (isLoading || !user) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="text-center">
-          <div className="w-12 h-12 border-t-4 border-primary border-solid rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-gray-600">로딩 중...</p>
+        <div className="min-h-screen flex items-center justify-center bg-gray-50">
+          <div className="text-center">
+            <div className="w-12 h-12 border-t-4 border-primary border-solid rounded-full animate-spin mx-auto mb-4"></div>
+            <p className="text-gray-600">로딩 중...</p>
+          </div>
         </div>
-      </div>
     )
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-50">
-      {/* Header */}
-      <Header />
+      <div className="min-h-screen flex flex-col bg-gray-50">
 
-      {/* Main content */}
-      <main className="flex-grow container mx-auto px-4 py-4">
-        <div className="max-w-3xl mx-auto">
-          {/* Messages header */}
-          <div className="bg-purple-50 rounded-t-lg p-4 flex justify-between items-center">
-            <Link to="/mypage" className="text-gray-700 hover:text-primary">
-              <Settings className="w-6 h-6" />
-            </Link>
-            <h1 className="text-xl font-bold text-center flex-grow">메세지</h1>
-            <div className="relative">
-              <button
-                onClick={() => setShowNotifications(!showNotifications)}
-                className="text-gray-700 hover:text-primary relative"
-              >
-                <Bell className="w-6 h-6" />
-                {unreadNotifications > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+
+        {/* Main content */}
+        <main className="flex-grow container mx-auto px-4 py-4">
+          <div className="max-w-3xl mx-auto">
+            {/* Messages header */}
+            <div className="bg-purple-50 rounded-t-lg p-4 flex justify-between items-center">
+              <Link to="/mypage" className="text-gray-700 hover:text-primary">
+                <Settings className="w-6 h-6" />
+              </Link>
+              <h1 className="text-xl font-bold text-center flex-grow">메세지</h1>
+              <div className="relative">
+                <button
+                    onClick={() => setShowNotifications(!showNotifications)}
+                    className="text-gray-700 hover:text-primary relative"
+                >
+                  <Bell className="w-6 h-6" />
+                  {unreadNotifications > 0 && (
+                      <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
                     {unreadNotifications}
                   </span>
-                )}
-              </button>
+                  )}
+                </button>
 
-              {/* Notifications dropdown */}
-              {showNotifications && (
-                <div className="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-lg z-50 overflow-hidden">
-                  <div className="p-3 border-b border-gray-200 flex justify-between items-center">
-                    <h3 className="font-medium">알림</h3>
-                    <button onClick={() => setShowNotifications(false)} className="text-gray-500 hover:text-gray-700">
-                      <X className="w-4 h-4" />
-                    </button>
-                  </div>
-                  <div className="max-h-96 overflow-y-auto">
-                    {notifications.length > 0 ? (
-                      notifications.map((notification) => (
-                        <Link
-                          key={notification.id}
-                          to={notification.linkTo || "#"}
-                          className={`block p-3 border-b border-gray-100 hover:bg-gray-50 ${
-                            !notification.isRead ? "bg-blue-50" : ""
-                          }`}
-                          onClick={() => markNotificationAsRead(notification.id)}
-                        >
-                          <div className="flex justify-between items-start">
-                            <div>
-                              <p className="font-medium text-sm">{notification.title}</p>
-                              <p className="text-sm text-gray-600 mt-1">{notification.content}</p>
-                            </div>
-                            <span className="text-xs text-gray-500 whitespace-nowrap ml-2">
+                {/* Notifications dropdown */}
+                {showNotifications && (
+                    <div className="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-lg z-50 overflow-hidden">
+                      <div className="p-3 border-b border-gray-200 flex justify-between items-center">
+                        <h3 className="font-medium">알림</h3>
+                        <button onClick={() => setShowNotifications(false)} className="text-gray-500 hover:text-gray-700">
+                          <X className="w-4 h-4" />
+                        </button>
+                      </div>
+                      <div className="max-h-96 overflow-y-auto">
+                        {notifications.length > 0 ? (
+                            notifications.map((notification) => (
+                                <Link
+                                    key={notification.id}
+                                    to={notification.linkTo || "#"}
+                                    className={`block p-3 border-b border-gray-100 hover:bg-gray-50 ${
+                                        !notification.isRead ? "bg-blue-50" : ""
+                                    }`}
+                                    onClick={() => markNotificationAsRead(notification.id)}
+                                >
+                                  <div className="flex justify-between items-start">
+                                    <div>
+                                      <p className="font-medium text-sm">{notification.title}</p>
+                                      <p className="text-sm text-gray-600 mt-1">{notification.content}</p>
+                                    </div>
+                                    <span className="text-xs text-gray-500 whitespace-nowrap ml-2">
                               {formatTimestamp(notification.timestamp)}
                             </span>
-                          </div>
+                                  </div>
+                                </Link>
+                            ))
+                        ) : (
+                            <div className="p-4 text-center text-gray-500">알림이 없습니다</div>
+                        )}
+                      </div>
+                      <div className="p-2 border-t border-gray-200 text-center">
+                        <Link to="/notifications" className="text-sm text-primary hover:underline">
+                          모든 알림 보기
                         </Link>
-                      ))
-                    ) : (
-                      <div className="p-4 text-center text-gray-500">알림이 없습니다</div>
-                    )}
-                  </div>
-                  <div className="p-2 border-t border-gray-200 text-center">
-                    <Link to="/notifications" className="text-sm text-primary hover:underline">
-                      모든 알림 보기
-                    </Link>
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-
-          {/* Message tabs */}
-          <div className="bg-white flex border-b">
-            <button
-              className={`flex-1 py-3 text-center font-medium ${
-                activeTab === "personal" ? "text-primary border-b-2 border-primary" : "text-gray-500"
-              }`}
-              onClick={() => setActiveTab("personal")}
-            >
-              개인메세지
-            </button>
-            <button
-              className={`flex-1 py-3 text-center font-medium ${
-                activeTab === "event" ? "text-primary border-b-2 border-primary" : "text-gray-500"
-              }`}
-              onClick={() => setActiveTab("event")}
-            >
-              이벤트메세지
-            </button>
-          </div>
-
-          {/* Search bar */}
-          <div className="bg-white p-3 border-b">
-            <div className="relative">
-              <input
-                type="text"
-                placeholder="메세지 검색..."
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-                value={searchQuery}
-                onChange={(e) => {
-                  setSearchQuery(e.target.value)
-                  setIsSearching(e.target.value.length > 0)
-                }}
-              />
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-              {isSearching && (
-                <button
-                  onClick={() => {
-                    setSearchQuery("")
-                    setIsSearching(false)
-                  }}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                >
-                  <X className="w-4 h-4" />
-                </button>
-              )}
-            </div>
-          </div>
-
-          {/* Message list */}
-          <div className="bg-white rounded-b-lg shadow-sm overflow-hidden">
-            {filteredMessages.length > 0 ? (
-              <div>
-                {filteredMessages.map((message) => (
-                  <button
-                    key={message.id}
-                    className={`w-full text-left p-4 border-b border-gray-100 hover:bg-gray-50 flex items-start ${
-                      !message.isRead ? "bg-blue-50" : ""
-                    }`}
-                    onClick={() => handleMessageClick(message)}
-                    aria-label={`${message.senderName}과의 대화 보기`}
-                  >
-                    <div className="flex-shrink-0 mr-3">
-                      <div className="w-10 h-10 bg-gray-200 rounded-full overflow-hidden">
-                        <img
-                          src={message.senderImage || "/placeholder.svg?height=40&width=40"}
-                          alt={message.senderName}
-                          width={40}
-                          height={40}
-                          className="w-full h-full object-cover"
-                        />
                       </div>
                     </div>
-                    <div className="flex-grow min-w-0">
-                      <div className="flex justify-between items-center mb-1">
-                        <h3 className="font-medium truncate">
-                          {message.type === "event" ? <span className="text-primary">[{message.eventTitle}]</span> : ""}{" "}
-                          {message.senderName}
-                        </h3>
-                        <span className="text-xs text-gray-500 flex-shrink-0 ml-2">
+                )}
+              </div>
+            </div>
+
+            {/* Message tabs */}
+            <div className="bg-white flex border-b">
+              <button
+                  className={`flex-1 py-3 text-center font-medium ${
+                      activeTab === "personal" ? "text-primary border-b-2 border-primary" : "text-gray-500"
+                  }`}
+                  onClick={() => setActiveTab("personal")}
+              >
+                개인메세지
+              </button>
+              <button
+                  className={`flex-1 py-3 text-center font-medium ${
+                      activeTab === "event" ? "text-primary border-b-2 border-primary" : "text-gray-500"
+                  }`}
+                  onClick={() => setActiveTab("event")}
+              >
+                이벤트메세지
+              </button>
+            </div>
+
+            {/* Search bar */}
+            <div className="bg-white p-3 border-b">
+              <div className="relative">
+                <input
+                    type="text"
+                    placeholder="메세지 검색..."
+                    className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                    value={searchQuery}
+                    onChange={(e) => {
+                      setSearchQuery(e.target.value)
+                      setIsSearching(e.target.value.length > 0)
+                    }}
+                />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                {isSearching && (
+                    <button
+                        onClick={() => {
+                          setSearchQuery("")
+                          setIsSearching(false)
+                        }}
+                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                )}
+              </div>
+            </div>
+
+            {/* Message list */}
+            <div className="bg-white rounded-b-lg shadow-sm overflow-hidden">
+              {filteredMessages.length > 0 ? (
+                  <div>
+                    {filteredMessages.map((message) => (
+                        <button
+                            key={message.id}
+                            className={`w-full text-left p-4 border-b border-gray-100 hover:bg-gray-50 flex items-start ${
+                                !message.isRead ? "bg-blue-50" : ""
+                            }`}
+                            onClick={() => handleMessageClick(message)}
+                            aria-label={`${message.senderName}과의 대화 보기`}
+                        >
+                          <div className="flex-shrink-0 mr-3">
+                            <div className="w-10 h-10 bg-gray-200 rounded-full overflow-hidden">
+                              <img
+                                  src={message.senderImage || "/placeholder.svg?height=40&width=40"}
+                                  alt={message.senderName}
+                                  width={40}
+                                  height={40}
+                                  className="w-full h-full object-cover"
+                              />
+                            </div>
+                          </div>
+                          <div className="flex-grow min-w-0">
+                            <div className="flex justify-between items-center mb-1">
+                              <h3 className="font-medium truncate">
+                                {message.type === "event" ? <span className="text-primary">[{message.eventTitle}]</span> : ""}{" "}
+                                {message.senderName}
+                              </h3>
+                              <span className="text-xs text-gray-500 flex-shrink-0 ml-2">
                           {formatTimestamp(message.timestamp)}
                         </span>
-                      </div>
-                      <p className="text-sm text-gray-600 truncate">{message.content}</p>
-                      <p className="text-xs text-primary mt-1">대화 내용 보기</p>
-                    </div>
-                    <div className="flex-shrink-0 ml-2 self-center">
-                      <ChevronRight className="w-4 h-4 text-gray-400" />
-                    </div>
-                  </button>
-                ))}
-              </div>
-            ) : (
-              <div className="p-8 text-center text-gray-500">
-                {searchQuery ? "검색 결과가 없습니다" : "메세지가 없습니다"}
-              </div>
-            )}
-          </div>
+                            </div>
+                            <p className="text-sm text-gray-600 truncate">{message.content}</p>
+                            <p className="text-xs text-primary mt-1">대화 내용 보기</p>
+                          </div>
+                          <div className="flex-shrink-0 ml-2 self-center">
+                            <ChevronRight className="w-4 h-4 text-gray-400" />
+                          </div>
+                        </button>
+                    ))}
+                  </div>
+              ) : (
+                  <div className="p-8 text-center text-gray-500">
+                    {searchQuery ? "검색 결과가 없습니다" : "메세지가 없습니다"}
+                  </div>
+              )}
+            </div>
 
-          {/* New message button */}
-          <div className="mt-4 flex justify-end">
-            <Link
-              to="/messages/new"
-              className="px-4 py-2 bg-primary text-white rounded-full hover:bg-primary/90 shadow-md"
-            >
-              + 새 메세지
-            </Link>
+            {/* New message button */}
+            <div className="mt-4 flex justify-end">
+              <Link
+                  to="/messages/new"
+                  className="px-4 py-2 bg-primary text-white rounded-full hover:bg-primary/90 shadow-md"
+              >
+                + 새 메세지
+              </Link>
+            </div>
           </div>
-        </div>
-      </main>
-    </div>
+        </main>
+      </div>
   )
 }
 

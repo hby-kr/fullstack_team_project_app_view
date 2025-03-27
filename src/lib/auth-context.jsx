@@ -1,81 +1,58 @@
-"use client";
+"use client"
 
-import { createContext, useContext, useState, useEffect } from "react";
+import React from "react"
+
+import { createContext, useContext, useState, useEffect } from "react"
+
+
 
 const AuthContext = createContext(undefined);
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [user, setUser] = useState(null)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    // Load user info from local storage
-    const storedUser = localStorage.getItem("user");
+    // 로컬 스토리지에서 사용자 정보 가져오기
+    const storedUser = localStorage.getItem("user")
     if (storedUser) {
-      setUser(JSON.parse(storedUser));
+      setUser(JSON.parse(storedUser))
     }
-    setIsLoading(false);
-  }, []);
+    setLoading(false)
+  }, [])
 
-  const login = async (email, password) => {
-    // In a real implementation, this would be replaced with an API call
-    setIsLoading(true);
-
+  const signIn = async (email, password) => {
+    // 실제로는 API 호출을 통해 인증을 처리해야 함
+    // 여기서는 간단한 예시로 구현
     try {
-      // Mock login logic (for demo purposes)
-      const mockUser = {
-        id: "user-1",
-        name: email.split("@")[0],
-        email,
-      };
-
-      // Store user info in local storage
-      localStorage.setItem("user", JSON.stringify(mockUser));
-      setUser(mockUser);
+      // 임시 인증 로직 (실제로는 서버에서 검증해야 함)
+      if (password.length >= 6) {
+        const user = { email }
+        setUser(user)
+        localStorage.setItem("user", JSON.stringify(user))
+        return true
+      }
+      return false
     } catch (error) {
-      console.error("Login failed:", error);
-      throw error;
-    } finally {
-      setIsLoading(false);
+      console.error("로그인 오류:", error)
+      return false
     }
-  };
-
-  const register = async (name, email, password) => {
-    // In a real implementation, this would be replaced with an API call
-    setIsLoading(true);
-
-    try {
-      // Mock registration logic (for demo purposes)
-      const mockUser = {
-        id: `user-${Date.now()}`,
-        name,
-        email,
-      };
-
-      // Store user info in local storage
-      localStorage.setItem("user", JSON.stringify(mockUser));
-      setUser(mockUser);
-    } catch (error) {
-      console.error("Registration failed:", error);
-      throw error;
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  }
 
   const logout = () => {
-    localStorage.removeItem("user");
-    setUser(null);
-  };
+    setUser(null)
+    localStorage.removeItem("user")
+  }
 
-  return <AuthContext.Provider value={{ user, isLoading, login, register, logout }}>{children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={{ user, signIn, logout, loading }}>{children}</AuthContext.Provider>
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function useAuth() {
-  const context = useContext(AuthContext);
+  const context = useContext(AuthContext)
   if (context === undefined) {
-    throw new Error("useAuth must be used within an AuthProvider");
+    throw new Error("useAuth must be used within an AuthProvider")
   }
-  return context;
+  return context
 }
 

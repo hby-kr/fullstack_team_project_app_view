@@ -1,16 +1,15 @@
 "use client"
 
-import  React from "react"
+import React from "react"
 
-import {useState, useEffect} from "react"
+import { useState, useEffect } from "react"
 import {Link} from "react-router"
-//import Image from "next/image"
-import {Save, X, GripVertical, ChevronRight} from "lucide-react"
+import { Save, X, GripVertical, ChevronRight } from "lucide-react"
 import Header from "/src/components/header"
 
 // Generate category images function
 const generateCategoryImages = (category, count) => {
-    return Array.from({length: count}, (_, i) => ({
+    return Array.from({ length: count }, (_, i) => ({
         id: `${category}-${i + 1}`,
         src: `/placeholder.svg?height=300&width=400&text=${category}${i + 1}`,
         alt: `${category} 이미지 ${i + 1}`,
@@ -31,11 +30,11 @@ export default function HomePage() {
     const [isReordering, setIsReordering] = useState(false)
 
     // Temporary order (used during reordering)
-    const [tempCategories, setTempCategories] = useState([]);
+    const [tempCategories, setTempCategories] = useState([])
 
     // Dragged item and drop target item indices
-    const [draggedItemIndex, setDraggedItemIndex] = useState(null);
-    const [dragOverItemIndex, setDragOverItemIndex] = useState(null);
+    const [draggedItemIndex, setDraggedItemIndex] = useState(null)
+    const [dragOverItemIndex, setDragOverItemIndex] = useState(null)
 
     // Category images data
     const categoryImages = {
@@ -104,8 +103,7 @@ export default function HomePage() {
 
     return (
         <div className="min-h-screen flex flex-col bg-gray-50">
-            {/* Header */}
-            <Header/>
+
 
             {/* Main navigation */}
             <div className="bg-white border-b border-gray-200 sticky top-0 z-10">
@@ -120,14 +118,14 @@ export default function HomePage() {
                                         onClick={saveReordering}
                                         className="flex items-center px-3 py-2 text-sm font-medium text-white bg-primary rounded hover:bg-primary/90"
                                     >
-                                        <Save className="w-4 h-4 mr-1"/>
+                                        <Save className="w-4 h-4 mr-1" />
                                         저장
                                     </button>
                                     <button
                                         onClick={toggleReorderMode}
                                         className="flex items-center px-3 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded hover:bg-gray-200"
                                     >
-                                        <X className="w-4 h-4 mr-1"/>
+                                        <X className="w-4 h-4 mr-1" />
                                         취소
                                     </button>
                                 </div>
@@ -148,7 +146,7 @@ export default function HomePage() {
                                         onDragEnd={handleDragEnd}
                                     >
                                         <div className="flex items-center">
-                                            <GripVertical className="w-5 h-5 mr-2 text-gray-400"/>
+                                            <GripVertical className="w-5 h-5 mr-2 text-gray-400" />
                                             <span className="text-base">{category}</span>
                                         </div>
                                     </li>
@@ -157,21 +155,43 @@ export default function HomePage() {
                         </div>
                     ) : (
                         // Normal mode UI (category tabs)
-                        <nav
-                            className="flex items-center overflow-x-auto py-4 -mx-4 px-4 md:px-0 md:mx-0 md:justify-center z-[5]">
-                            {categories.map((category) => (
-                                <button
-                                    key={category}
-                                    className={`px-4 py-2 mx-1 text-base font-medium rounded-full transition-colors ${
-                                        activeCategory === category
-                                            ? "bg-primary text-primary-foreground"
-                                            : "text-gray-700 hover:bg-gray-100"
-                                    }`}
-                                    onClick={() => handleCategoryChange(category)}
-                                >
-                                    {category}
-                                </button>
-                            ))}
+                        <nav className="flex items-center overflow-x-auto py-4 -mx-4 px-4 md:px-0 md:mx-0 md:justify-center z-[5]">
+                            {categories.map((category) => {
+                                const categoryUrl =
+                                    category === "전체"
+                                        ? "/"
+                                        : category === "음악"
+                                            ? "/music"
+                                            : category === "미술"
+                                                ? "/art"
+                                                : category === "춤"
+                                                    ? "/dance"
+                                                    : category === "연기"
+                                                        ? "/acting"
+                                                        : category === "뮤지컬"
+                                                            ? "/musical"
+                                                            : `/explore/${category.toLowerCase()}`
+
+                                return (
+                                    <button
+                                        key={category}
+                                        className={`px-4 py-2 mx-1 text-base font-medium rounded-full transition-colors ${
+                                            activeCategory === category
+                                                ? "bg-primary text-primary-foreground"
+                                                : "text-gray-700 hover:bg-gray-100"
+                                        }`}
+                                        onClick={() => {
+                                            // 상태 변경
+                                            handleCategoryChange(category)
+
+                                            // URL 변경 (페이지 이동 없이)
+                                            window.history.pushState({}, "", categoryUrl)
+                                        }}
+                                    >
+                                        {category}
+                                    </button>
+                                )
+                            })}
                             <button
                                 className="px-4 py-2 mx-1 text-base font-medium text-gray-700 hover:bg-gray-100 rounded-full ml-4"
                                 onClick={toggleReorderMode}
@@ -201,18 +221,16 @@ export default function HomePage() {
                                             className="flex items-center text-sm text-primary hover:underline"
                                             onClick={() => handleCategoryChange(category)}
                                         >
-                                            더보기 <ChevronRight className="w-4 h-4 ml-1"/>
+                                            더보기 <ChevronRight className="w-4 h-4 ml-1" />
                                         </button>
                                     </div>
 
                                     {/* Category representative image grid */}
-                                    <div
-                                        className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                                         {categoryImages[category].slice(0, 4).map((image) => (
                                             <div key={image.id} className="group">
                                         <Link to={`/detail/${image.id}`} className="block cursor-pointer">
-                                            <div
-                                                className="aspect-video overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm transition-all hover:shadow-md">
+                                            <div className="aspect-video overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm transition-all hover:shadow-md">
                                                 <img
                                                     src={image.src || "/placeholder.svg"}
                                                     alt={image.alt}
@@ -224,8 +242,7 @@ export default function HomePage() {
                                         </Link>
                                         <div className="mt-2 flex justify-between items-start">
                                             <h3 className="text-base font-medium">
-                                                <Link to={`/detail/${image.id}`}
-                                                      className="hover:text-primary transition-colors">
+                                                <Link to={`/detail/${image.id}`} className="hover:text-primary transition-colors">
                                                     {image.title}
                                                 </Link>
                                             </h3>
@@ -259,8 +276,7 @@ export default function HomePage() {
                                 {categoryImages[activeCategory].slice(0, 2).map((image) => (
                                     <div key={image.id} className="group">
                                 <Link to={`/detail/${image.id}`} className="block cursor-pointer">
-                                    <div
-                                        className="aspect-video overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm transition-all hover:shadow-md">
+                                    <div className="aspect-video overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm transition-all hover:shadow-md">
                                         <img
                                             src={image.src || "/placeholder.svg"}
                                             alt={image.alt}
@@ -272,8 +288,7 @@ export default function HomePage() {
                                 </Link>
                                 <div className="mt-3 flex justify-between items-start">
                                     <h3 className="text-lg font-medium">
-                                        <Link to={`/detail/${image.id}`}
-                                              className="hover:text-primary transition-colors">
+                                        <Link to={`/detail/${image.id}`} className="hover:text-primary transition-colors">
                                             {image.title}
                                         </Link>
                                     </h3>
@@ -299,8 +314,7 @@ export default function HomePage() {
                         {categoryImages[activeCategory].slice(2).map((image) => (
                             <div key={image.id} className="group">
                         <Link to={`/detail/${image.id}`} className="block cursor-pointer">
-                            <div
-                                className="aspect-video overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm transition-all hover:shadow-md">
+                            <div className="aspect-video overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm transition-all hover:shadow-md">
                                 <img
                                     src={image.src || "/placeholder.svg"}
                                     alt={image.alt}
@@ -312,8 +326,7 @@ export default function HomePage() {
                         </Link>
                         <div className="mt-2 flex justify-between items-start">
                             <h3 className="text-base font-medium">
-                                <Link to={`/detail/${image.id}`}
-                                      className="hover:text-primary transition-colors">
+                                <Link to={`/detail/${image.id}`} className="hover:text-primary transition-colors">
                                     {image.title}
                                 </Link>
                             </h3>
@@ -348,41 +361,56 @@ export default function HomePage() {
                     <ul className="space-y-2">
                         {categories
                             .filter((cat) => cat !== "전체")
-                            .map((category) => (
-                                <li key={category}>
-                                    <button className="text-gray-400 hover:text-white cursor-pointer"
-                                            onClick={() => handleCategoryChange(category)}>
-                                        {category}
-                                    </button>
-                                </li>
-                            ))}
+                            .map((category) => {
+                                const categoryUrl =
+                                    category === "음악"
+                                        ? "/music"
+                                        : category === "미술"
+                                            ? "/art"
+                                            : category === "춤"
+                                                ? "/dance"
+                                                : category === "연기"
+                                                    ? "/acting"
+                                                    : category === "뮤지컬"
+                                                        ? "/musical"
+                                                        : `/${category.toLowerCase()}`
+
+                                return (
+                                    <li key={category}>
+                                        <button
+                                            onClick={() => {
+                                                handleCategoryChange(category)
+                                                window.history.pushState({}, "", categoryUrl)
+                                            }}
+                                            className="text-gray-400 hover:text-white"
+                                        >
+                                            {category}
+                                        </button>
+                                    </li>
+                                )
+                            })}
                     </ul>
                 </div>
                 <div>
-                    <h3 className="text-lg font-semibold mb-4 cursor-pointer"
-                        onClick={() => (window.location.to = '/cs')}>고객센터</h3>
+                    <h3 className="text-lg font-semibold mb-4">고객센터</h3>
                     <ul className="space-y-2">
                         <li>
-                            <Link to="#" className="text-gray-400 hover:text-white cursor-pointer"
-                                  onClick={() => (window.location.to = '/cs')}>
+                            <Link to="/faq" className="text-gray-400 hover:text-white">
                                 자주 묻는 질문
                             </Link>
                         </li>
                         <li>
-                            <Link to="#" className="text-gray-400 hover:text-white cursor-pointer"
-                                  onClick={() => (window.location.to = '/cs')}>
+                            <Link to="/contact" className="text-gray-400 hover:text-white">
                                 문의하기
                             </Link>
                         </li>
                         <li>
-                            <Link to="#" className="text-gray-400 hover:text-white cursor-pointer"
-                                  onClick={() => (window.location.to = '/cs')}>
+                            <Link to="/terms" className="text-gray-400 hover:text-white">
                                 이용약관
                             </Link>
                         </li>
                         <li>
-                            <Link to="#" className="text-gray-400 hover:text-white cursor-pointer"
-                                  onClick={() => (window.location.to = '/cs')}>
+                            <Link to="/privacy" className="text-gray-400 hover:text-white">
                                 개인정보처리방침
                             </Link>
                         </li>
@@ -391,7 +419,7 @@ export default function HomePage() {
                 <div>
                     <h3 className="text-lg font-semibold mb-4">소셜 미디어</h3>
                     <div className="flex space-x-4">
-                        <Link to="#" className="text-gray-400 hover:text-white cursor-pointer">
+                        <Link to="#" className="text-gray-400 hover:text-white">
                             <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                 <path
                                     fillRule="evenodd"
@@ -400,7 +428,7 @@ export default function HomePage() {
                                 ></path>
                             </svg>
                         </Link>
-                        <Link to="#" className="text-gray-400 hover:text-white cursor-pointer">
+                        <Link to="#" className="text-gray-400 hover:text-white">
                             <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                 <path
                                     fillRule="evenodd"
@@ -409,10 +437,9 @@ export default function HomePage() {
                                 ></path>
                             </svg>
                         </Link>
-                        <Link to="#" className="text-gray-400 hover:text-white cursor-pointer">
+                        <Link to="#" className="text-gray-400 hover:text-white">
                             <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                <path
-                                    d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84"></path>
+                                <path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84"></path>
                             </svg>
                         </Link>
                     </div>
