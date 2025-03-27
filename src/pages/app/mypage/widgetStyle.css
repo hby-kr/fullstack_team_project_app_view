@@ -53,36 +53,49 @@
     background-color: #ddd;
 }
 
+/* 변수 */
+:root {
+    --weather-light-sky-start: rgba(138, 206, 255, 1);
+    --weather-light-sky-end: rgba(94, 156, 200, 1);
+    --weather-light-sky: 180deg, rgba(138, 206, 255, 1) 0%, rgba(94, 156, 200, 1) 100%;
+}
+
 /* 위젯 별 스타일 */
-.calander{
+.calander {
     position: relative;
     width: 100%;
     height: 100%;
     background-color: #fff;
 }
-.calander-container{
+
+.calander-container {
     display: flex;
     flex-direction: row;
     padding: 10px;
     width: 100%;
     height: 100%;
 }
-.calander-main{
+
+.calander-main {
     margin: 10px;
 }
-.calander-main li:first-child{
+
+.calander-main li:first-child {
     font-size: x-large;
     color: #ff5d55;
     line-height: 0;
 }
-.calander-main li>h5{
+
+.calander-main li > h5 {
     font-size: xxx-large;
     font-family: 'Arial', sans-serif;
 }
-.calander-main li:last-child{
+
+.calander-main li:last-child {
     line-height: 1;
 }
-.calander-sub{
+
+.calander-sub {
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
@@ -90,7 +103,20 @@
     margin: 0 15px 0 124px;
     padding: 0;
 }
-.calander-sub::before{
+
+.calander-sub-item span:first-child {
+    font-size: medium;
+}
+
+.calander-sub-item span:last-child {
+    line-height: 2;
+}
+
+.calander-sub-item span:last-child > a {
+    color: #333333;
+}
+
+.calander-sub::before {
     content: '';
     position: absolute;
     border-left: 2px dotted #ccc;
@@ -98,13 +124,53 @@
     height: 100%;
     left: 184px;
 }
-.calander-sub-item span:first-child{
-    font-size: large;
-}
-.calander-sub-item span:last-child::after{
+
+.calander-sub-item span:last-child::after {
     content: '';
     width: 70%;
     left: 194px;
+    padding-right: 999999px;
     position: absolute;
     border-bottom: 1px solid #ff5d55;
+}
+
+.weather {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(var(--weather-light-sky));
+}
+
+.weather-container {
+    display: flex;
+    flex-direction: row;
+    padding: 10px;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    color: #fff;
+    margin-left: 10px;
+}
+
+.weather-main {
+    font: xx-large bold;
+}
+
+.weather-main>li span:nth-child(2) {
+    font-size: medium;
+    vertical-align: super;
+}
+
+.weather-sub {
+    display: flex;
+    flex-direction: row;
+}
+
+.weather-loc li>span::after{
+    content: '';
+    width: 1px;
+    height: 100%;
+    border-radius: 100%;
+    border-left: 17px solid #fff;
+    margin-left: 5px;
 }
