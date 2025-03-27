@@ -64,8 +64,7 @@ const Mypage = () => {
     const onDrop = (e, targetIndex) => {
         e.preventDefault();
         const widgetId = draggingWidget;
-        const draggedWidget = widgets.find((widget) => widget.id === widgetId);
-
+        const draggedWidget = widgets.find((widget) => widget.id === widgetId) ?? null;
         // 드래그된 위젯을 이동한 결과로 상태 업데이트
         const updatedWidgets = widgets.filter((widget) => widget.id !== widgetId);
         updatedWidgets.splice(targetIndex, 0, draggedWidget); // 드롭된 위치에 삽입
@@ -187,7 +186,7 @@ const Mypage = () => {
                                         </ul>
                                         {widget.size !== "1x1" && (
                                             <ul className="calander-sub">
-                                                {Array(4).fill().map((_, i) => (
+                                                {Array(4).fill(undefined, undefined, undefined).map((_, i) => (
                                                     <li key={i} className="calander-sub-item">
                                                         <span>금요일 3월 21일</span>
                                                         <span><div></div><a href="">이벤트</a></span>
@@ -242,7 +241,7 @@ const Mypage = () => {
                                 {widget.type === "bookmark" && (
                                     <div className="bookmark-container">
                                         <ul className="bookmark-main">
-                                            {Array(widget.size === "2x1" ? 2 : widget.size === "3x1" ? 3 : 1).fill().map((_, i) => (
+                                            {Array(widget.size === "2x1" ? 2 : widget.size === "3x1" ? 3 : 1).fill(undefined, undefined, undefined).map((_, i) => (
                                                 <li key={i} className="bookmark-item">
                                                     <span>콘서트</span>
                                                     <span>콘서트 설명</span>
@@ -259,7 +258,7 @@ const Mypage = () => {
                                 {widget.type === "display" && (
                                     <div className="display-container">
                                         <ul className="display-main">
-                                            {Array(widget.size === "1x1" ? 1 : widget.size === "2x1" ? 6 : 16).fill().map((_, i) => (
+                                            {Array(widget.size === "1x1" ? 1 : widget.size === "2x1" ? 6 : 16).fill(undefined, undefined, undefined).map((_, i) => (
                                                 <li key={i} className="display-item">
                                                     <img src="/placeholder.svg" alt=""/>
                                                 </li>
