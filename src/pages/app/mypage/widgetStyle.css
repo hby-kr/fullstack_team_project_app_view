@@ -61,14 +61,14 @@
 }
 
 /* 위젯 별 스타일 */
-.calander {
+.calander, .memo, .info, .bookmark {
     position: relative;
     width: 100%;
     height: 100%;
     background-color: #fff;
 }
 
-.calander-container {
+.calander-container, .memo-container, .info-container, .bookmark-container {
     display: flex;
     flex-direction: row;
     padding: 10px;
@@ -76,7 +76,7 @@
     height: 100%;
 }
 
-.calander-main {
+.calander-main, .bookmark-main {
     margin: 10px;
 }
 
@@ -142,37 +142,164 @@
 }
 
 .weather-container {
-    display: flex;
-    flex-direction: row;
     padding: 10px;
     width: 100%;
     height: 100%;
+}
+
+.weather-main-container {
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    width: 100%;
+    height: 100%;
     align-items: center;
-    color: #fff;
     margin-left: 10px;
+    color: #fff;
 }
 
 .weather-main {
-    font: xx-large bold;
+    display: flex;
+    flex-direction: row;
+    font-size: 5em;
+    font-weight: bold;
+    gap: 20px;
+    line-height: 1;
+    margin-bottom: 5px;
 }
 
-.weather-main>li span:nth-child(2) {
-    font-size: medium;
+.weather-main > li span:nth-child(2) {
+    font-size: 0.5em;
+    font-weight: bold;
     vertical-align: super;
+}
+
+.two-one .weather-main {
+    width: 100%;
+    justify-content: space-between;
+}
+
+.two-one .weather-main li:first-child {
+    margin-bottom: 30px;
+}
+
+.two-one .weather-main li:last-child {
+    position: absolute;
+    top: calc(50% - 0.5em);
+    right: 30px;
 }
 
 .weather-sub {
     display: flex;
     flex-direction: row;
+    gap: 10px;
+    position: absolute;
+    bottom: 10px;
 }
 
-.weather-loc li>span::after{
+.weather-sub ul {
+    font-size: medium;
+}
+
+.weather-ex {
+    position: absolute;
+}
+
+.weather-ex > span::after {
     content: '';
     width: 1px;
     height: 100%;
     border-radius: 100%;
     border-left: 17px solid #fff;
     margin-left: 5px;
+}
+
+.two-one .weather-sub {
+    bottom: 30px;
+}
+
+.two-one .weather-ex {
+    bottom: 5px;
+}
+
+.three-one .weather-ex {
+    top: 10px;
+}
+
+.memo-main, .info-main {
+    margin: 10px;
+}
+
+.memo-main h5, .info-main h5 {
+    font-size: xxx-large;
+    font-weight: bold;
+    width: 100%;
+    line-height: 1.5;
+}
+
+.memo-main p, .info-main p {
+    font-size: medium;
+    position: relative;
+}
+
+.memo-main p::before, .info-main p::before {
+    content: '';
+    width: 100%;
+    height: 1px;
+    position: absolute;
+    bottom: 30px;
+    left: 0;
+    overflow: hidden;
+    border-top: 1px solid #ff0000;
+}
+
+.info {
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+}
+
+.bookmark-container {
+    text-align: center;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.bookmark-main {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    flex-direction: row;
+    width: 100%;
+    height: 100%;
+}
+
+.two-one .bookmark-main {
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.three-one .bookmark-main {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.bookmark-main .bookmark-item {
+    margin: 5px;
+    aspect-ratio: 1 / 1;
+    width: calc(100% - 10px);
+    height: calc(100% - 10px);
+    background-color: #9a9a9a;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.one-one .bookmark-container {
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
 }
 
 

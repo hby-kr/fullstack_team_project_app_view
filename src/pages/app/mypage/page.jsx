@@ -4,8 +4,6 @@ import './mypageRefined.css';
 import './widgetStyle.css';
 import './reactive.css';
 
-;
-
 const Mypage = () => {
     const [widgets, setWidgets] = useState([
         {id: "widget1", type: "calander", size: "1x1", label: "캘린더"},
@@ -18,21 +16,23 @@ const Mypage = () => {
         {id: "widget8", type: "memo", size: "2x1", label: "메모"},
         {id: "widget9", type: "memo", size: "3x1", label: "메모"},
         {id: "widget10", type: "info", size: "1x1", label: "소개"},
-        {id: "widget11", type: "bookmark", size: "1x1", label: "북마크"},
-        {id: "widget12", type: "bookmark", size: "2x1", label: "북마크"},
-        {id: "widget13", type: "bookmark", size: "3x1", label: "북마크"},
-        {id: "widget14", type: "display", size: "1x1", label: "전시대"},
-        {id: "widget15", type: "display", size: "2x1", label: "전시대"},
-        {id: "widget16", type: "display", size: "3x1", label: "전시대"},
-        {id: "widget17", type: "image", size: "1x1", label: "이미지"},
-        {id: "widget18", type: "image", size: "2x1", label: "이미지"},
-        {id: "widget19", type: "image", size: "3x1", label: "이미지"},
-        {id: "widget20", type: "countdown", size: "1x1", label: "카운트다운"},
-        {id: "widget21", type: "countdown", size: "2x1", label: "카운트다운"},
-        {id: "widget22", type: "countdown", size: "3x1", label: "카운트다운"},
-        {id: "widget23", type: "graph", size: "1x1", label: "그래프"},
-        {id: "widget24", type: "graph", size: "2x1", label: "그래프"},
-        {id: "widget25", type: "graph", size: "3x1", label: "그래프"},
+        {id: "widget11", type: "info", size: "2x1", label: "소개"},
+        {id: "widget12", type: "info", size: "3x1", label: "소개"},
+        {id: "widget13", type: "bookmark", size: "1x1", label: "북마크"},
+        {id: "widget14", type: "bookmark", size: "2x1", label: "북마크"},
+        {id: "widget15", type: "bookmark", size: "3x1", label: "북마크"},
+        {id: "widget16", type: "display", size: "1x1", label: "전시대"},
+        {id: "widget17", type: "display", size: "2x1", label: "전시대"},
+        {id: "widget18", type: "display", size: "3x1", label: "전시대"},
+        {id: "widget19", type: "image", size: "1x1", label: "이미지"},
+        {id: "widget20", type: "image", size: "2x1", label: "이미지"},
+        {id: "widget21", type: "image", size: "3x1", label: "이미지"},
+        {id: "widget22", type: "countdown", size: "1x1", label: "카운트다운"},
+        {id: "widget23", type: "countdown", size: "2x1", label: "카운트다운"},
+        {id: "widget24", type: "countdown", size: "3x1", label: "카운트다운"},
+        {id: "widget25", type: "graph", size: "1x1", label: "그래프"},
+        {id: "widget26", type: "graph", size: "2x1", label: "그래프"},
+        {id: "widget27", type: "graph", size: "3x1", label: "그래프"},
     ]);
 
     const userName = "사용자님";
@@ -151,7 +151,11 @@ const Mypage = () => {
                         <article
                             key={widget.id}
                             id={widget.id}
-                            className={`widget size-${widget.size} ${widget.type}`}
+                            className={`widget size-${widget.size} ${widget.type} ${
+                                widget.size === "1x1" ? "one-one" :
+                                    widget.size === "2x1" ? "two-one" :
+                                        widget.size === "3x1" ? "three-one" : ""
+                            }`}
                             draggable={true}
                             onDragStart={(e) => onDragStart(e, widget.id)}
                         >
@@ -183,34 +187,38 @@ const Mypage = () => {
                                                 <li>
                                                     <span>15</span><span>&deg;C</span>
                                                 </li>
+                                                {widget.size !== "1x1" && (
+                                                    <li>
+                                                        <span>맑음</span>
+                                                    </li>
+                                                )}
+                                            </ul>
+                                            <ul className="weather-sub">
+                                                <li>H:<span>20</span>&deg;<span>C</span></li>
+                                                <li>L:<span>15</span>&deg;<span>C</span></li>
                                             </ul>
                                             {widget.size !== "1x1" && (
-                                                <ul className="weather-sub">
-                                                    <li>H:<span>20</span>&deg;<span>C</span></li>
-                                                    <li>L:<span>15</span>&deg;<span>C</span></li>
-                                                </ul>
-                                            )}
-                                            {widget.size === "3x1" && (
-                                                <ul className="weather-loc">
-                                                    <li><span>서울특별시</span></li>
-                                                </ul>
+                                                <div className="weather-ex">
+                                                    <span>서울특별시</span>
+                                                </div>
                                             )}
                                         </div>
                                     </>
                                 )}
                                 {widget.type === "memo" && (
                                     <div className="memo-container">
-                                        {widget.size === "1x1" ? (
-                                            <>
-                                                <h5>메모</h5>
-                                                <p>내용</p>
-                                            </>
-                                        ) : (
-                                            <ul>
-                                                <li><h5>메모</h5></li>
-                                                <li><p>내용</p></li>
-                                            </ul>
-                                        )}
+                                        <ul className="memo-main">
+                                            <li><h5>메모</h5></li>
+                                            <li><p>내용</p></li>
+                                        </ul>
+                                    </div>
+                                )}
+                                {widget.type === "info" && (
+                                    <div className="info-container">
+                                        <ul className="info-main">
+                                            <li><h5>소개</h5></li>
+                                            <li><p>내용</p></li>
+                                        </ul>
                                     </div>
                                 )}
                                 {widget.type === "bookmark" && (
