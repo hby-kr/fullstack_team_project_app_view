@@ -48,10 +48,21 @@
     padding-top: 33.33%;
 }
 
-.dragging {
+/* 드래그 중인 위젯 */
+.widget.dragging {
     opacity: 0.5;
-    background-color: #ddd;
+    transform: scale(1.1); /* 확대되며 드래그 효과 시각화 */
+    background-color: #e0e0e0;
+    border-color: #999;
+    cursor: grabbing;
 }
+
+/* 드롭 가능한 영역 스타일 */
+.drag-over {
+    border: 2px dashed #007bff !important;
+    background-color: #f8f9fa; /* 드롭 영역 시각적 강조 */
+}
+
 
 /* 변수 */
 :root {

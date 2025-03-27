@@ -39,26 +39,40 @@ const Mypage = () => {
     const userEmail = "user@example.com";
     const userIntroduction = "자기소개를 작성해보세요.";
     const stats = {posts: 1234, followers: 5678, following: 910};
+    const [draggingWidget, setDraggingWidget] = useState(null);
 
     useEffect(() => {
         document.title = `${userName}의 페이지`;
     }, [userName]);
 
     const onDragStart = (e, widgetId) => {
-        e.dataTransfer.setData("widgetId", widgetId);
+        setDraggingWidget(widgetId); // 현재 드래그 중인 위젯 ID 저장
+        e.dataTransfer.effectAllowed = "move";
+        e.target.classList.add("dragging");
+    };
+
+    const onDragEnd = (e) => {
+        e.target.classList.remove("dragging"); // dragging 스타일 제거
+        setDraggingWidget(null); // 드래그 상태 초기화
     };
 
     const onDragOver = (e) => {
-        e.preventDefault();
+        e.preventDefault(); // 드롭 이벤트 허용
+        e.currentTarget.classList.add("drag-over");
     };
 
-    const onDrop = (e) => {
-        const widgetId = e.dataTransfer.getData("widgetId");
-        setWidgets((prevWidgets) => {
-            const draggedWidget = prevWidgets.find((widget) => widget.id === widgetId);
-            const remainingWidgets = prevWidgets.filter((widget) => widget.id !== widgetId);
-            return [draggedWidget, ...remainingWidgets];
-        });
+    const onDrop = (e, targetIndex) => {
+        e.preventDefault();
+        const widgetId = draggingWidget;
+        const draggedWidget = widgets.find((widget) => widget.id === widgetId);
+
+        // 드래그된 위젯을 이동한 결과로 상태 업데이트
+        const updatedWidgets = widgets.filter((widget) => widget.id !== widgetId);
+        updatedWidgets.splice(targetIndex, 0, draggedWidget); // 드롭된 위치에 삽입
+        setWidgets(updatedWidgets);
+
+        e.currentTarget.classList.remove("drag-over");
+        setDraggingWidget(null);
     };
 
     return (
@@ -146,7 +160,11 @@ const Mypage = () => {
                 </ul>
             </nav>
             <div id="widget-container">
-                <section onDragOver={onDragOver} onDrop={onDrop}>
+                <section
+                    onDragOver={onDragOver}
+                    onDrop={onDrop}
+                    onDragEnd={onDragEnd}
+                >
                     {widgets.map((widget) => (
                         <article
                             key={widget.id}
