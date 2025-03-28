@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 //import { useRouter } from "next/navigation";
 import {Link, useNavigate} from "react-router"
-import { ArrowLeft, Bell, MessageSquare, Calendar, Info } from "lucide-react";
+import { ArrowLeft, Bell, MessageSquare, Calendar, Info, X } from "lucide-react";
 import Header from "/src/components/header";
 import { useAuth } from "/src/lib/auth-context";
 
@@ -133,6 +133,13 @@ const NotificationsPage = () => {
     setNotifications(notifications.map((notification) => ({ ...notification, isRead: true })));
   };
 
+  // Delete notification
+  const deleteNotification = (id, e) => {
+    e.stopPropagation() // Prevent event bubbling
+    e.preventDefault() // Prevent navigation
+    setNotifications(notifications.filter((notification) => notification.id !== id))
+  }
+
   // Get notification icon based on type
   const getNotificationIcon = (type) => {
     switch (type) {
@@ -212,9 +219,18 @@ const NotificationsPage = () => {
                       <div className="flex-grow min-w-0">
                         <div className="flex justify-between items-center mb-1">
                           <h3 className="font-medium">{notification.title}</h3>
-                          <span className="text-xs text-gray-500 flex-shrink-0 ml-2">
-                            {formatTimestamp(notification.timestamp)}
-                          </span>
+                          <div className="flex items-center">
+                            <span className="text-xs text-gray-500 flex-shrink-0 mr-2">
+                              {formatTimestamp(notification.timestamp)}
+                            </span>
+                            <button
+                                onClick={(e) => deleteNotification(notification.id, e)}
+                                className="text-gray-400 hover:text-red-500 transition-colors p-1"
+                                aria-label="알림 삭제"
+                            >
+                              <X className="w-4 h-4" />
+                            </button>
+                          </div>
                         </div>
                         <p className="text-sm text-gray-600">{notification.content}</p>
                       </div>

@@ -1,10 +1,13 @@
-import React, {useState, useEffect} from "react";
+import { useState, useEffect } from "react";
+import { Settings } from "lucide-react"
+import {Link} from "react-router"
+
 import './mypageStyle.css';
 import './mypageRefined.css';
 import './widgetStyle.css';
 import './reactive.css';
 
-;
+
 
 const Mypage = () => {
     const [widgets, setWidgets] = useState([
@@ -63,25 +66,26 @@ const Mypage = () => {
 
     return (
         <div id="mypage-body">
-            <header>
-                <ul>
-                    <li>
-                        <h1>art U</h1>
-                    </li>
-                    <li>
-                        <img src="/placeholder.svg" alt="profile_image"/>
-                    </li>
-                    <li>
-                        <span>{userName}</span>
-                    </li>
-                </ul>
-            </header>
+            {/*<header>*/}
+            {/*    <ul>*/}
+            {/*        <li>*/}
+            {/*            <h1>art U</h1>*/}
+            {/*        </li>*/}
+            {/*        <li>*/}
+            {/*            <img src="/placeholder.svg" alt="profile_image"/>*/}
+            {/*        </li>*/}
+            {/*        <li>*/}
+            {/*            <span>{userName}</span>*/}
+            {/*        </li>*/}
+            {/*    </ul>*/}
+            {/*</header>*/}
             <aside>
                 <div id="nav-container">
                     <section>
                         <h2>{userName}님의 페이지</h2>
                         <article>
-                            <a href="">설정</a>
+                            <Link to="/settings" className="mr-2 text-lg text-blue-500 hover:underline">설정</Link>
+                            <Settings className="inline-block mr-2 h-24 w-5" />
                         </article>
                     </section>
                 </div>
@@ -265,26 +269,27 @@ const Mypage = () => {
                 </section>
             </div>
             <footer>
-                <p>&copy; 2025 Art U</p>
-                <address>
-                    <ul>
-                        <li>
-                            <a href="mailto:user@example.com">
-                                <img src="/placeholder.svg" alt="email"/>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="https://www.youtube.com">
-                                <img src="/placeholder.svg" alt="youtube"/>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="https://www.instagram.com">
-                                <img src="/placeholder.svg" alt="instagram"/>
-                            </a>
-                        </li>
-                    </ul>
-                </address>
+
+                {/*<p>&copy; 2025 Art U</p>*/}
+                {/*<address>*/}
+                {/*    <ul>*/}
+                {/*        <li>*/}
+                {/*            <a href="mailto:user@example.com">*/}
+                {/*                <img src="/placeholder.svg" alt="email"/>*/}
+                {/*            </a>*/}
+                {/*        </li>*/}
+                {/*        <li>*/}
+                {/*            <a href="https://www.youtube.com">*/}
+                {/*                <img src="/placeholder.svg" alt="youtube"/>*/}
+                {/*            </a>*/}
+                {/*        </li>*/}
+                {/*        <li>*/}
+                {/*            <a href="https://www.instagram.com">*/}
+                {/*                <img src="/placeholder.svg" alt="instagram"/>*/}
+                {/*            </a>*/}
+                {/*        </li>*/}
+                {/*    </ul>*/}
+                {/*</address>*/}
             </footer>
         </div>
     );

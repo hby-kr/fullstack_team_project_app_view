@@ -1,33 +1,34 @@
 import './App.css'
 import {BrowserRouter, Route, Routes} from "react-router";
-import HomePage from './pages/app/page.jsx' //ok
-import LoginPage from "./pages/app/login/page.jsx"; //no
-import AdminPage from "./pages/app/admin/page.jsx"; //ok
-import BookingPage from "./pages/app/booking/[id]/page.jsx"; //ok //http://localhost:5173/booking/1
-import ReviewPage from "./pages/app/booking/[id]/review/page.jsx"; //? //http://localhost:5173/booking/review  ?
-import CartPage from "./pages/app/cart/page.jsx"; //no
-import CouponPage from "./pages/app/coupon/page.jsx"; //no
-import CsPage from "./pages/app/cs/page.jsx"; //ok
-import DetailPage from "./pages/app/detail/[id]/page.jsx"; //no
-import MessagesPage from "./pages/app/messages/page.jsx"; //no
-import MessagesNewPage from "./pages/app/messages/new/page.jsx"; //no
-import MessagesIdPage from "./pages/app/messages/[id]/page.jsx"; //no
-import NotificationsPage from "./pages/app/notifications/page.jsx"; //no
-import PointPage from "./pages/app/point/page.jsx"; //no
-import PostsCreatePage from "./pages/app/posts/create/page.jsx"; //no
-import PostsCreateBookingPage from "./pages/app/posts/create-booking/page.jsx"; //no
-import PostsEditPage from "./pages/app/posts/edit/[id]/page.jsx"; //no
-import PostsHistoryPage from "./pages/app/posts/history/page.jsx"; //no
-import ProfilePage from "./pages/app/profile/edit/page.jsx"; //no
-import PurchasePage from "./pages/app/purchase/page.jsx"; //no
-import SettingsPage from "./pages/app/settings/page.jsx"; //no
-import SignupPage from "./pages/app/signup/page.jsx"; //no
+import HomePage from './pages/app/page.jsx'
+import LoginPage from "./pages/app/login/page.jsx";
+import AdminPage from "./pages/app/admin/page.jsx";
+import BookingPage from "./pages/app/booking/[id]/page.jsx";
+import ReviewPage from "./pages/app/booking/[id]/review/page.jsx";
+import CartPage from "./pages/app/cart/page.jsx";
+import CouponPage from "./pages/app/coupon/page.jsx";
+import CsPage from "./pages/app/cs/page.jsx";
+import DetailPage from "./pages/app/detail/[id]/page.jsx";
+import MessagesPage from "./pages/app/messages/page.jsx";
+import MessagesNewPage from "./pages/app/messages/new/page.jsx";
+import MessagesIdPage from "./pages/app/messages/[id]/page.jsx";
+import NotificationsPage from "./pages/app/notifications/page.jsx";
+import PointPage from "./pages/app/point/page.jsx";
+import PostsCreatePage from "./pages/app/posts/create/page.jsx";
+import PostsCreateBookingPage from "./pages/app/posts/create-booking/page.jsx";
+import PostsEditPage from "./pages/app/posts/edit/[id]/page.jsx";
+import PostsHistoryPage from "./pages/app/posts/history/page.jsx";
+import ProfilePage from "./pages/app/profile/edit/page.jsx";
+import PurchasePage from "./pages/app/purchase/page.jsx";
+//import SettingsPage from "./pages/app/settings/before/page.jsx";
+import SignupPage from "./pages/app/signup/page.jsx"; //회원가입 페이지
 import MyPage from "./pages/app/mypage/page.jsx";
 import Header from "./components/header.jsx";
 import ContactPage from "./pages/app/contact/page.jsx";
 import FaqPage from "./pages/app/faq/page.jsx";
 import PrivacyPage from "./pages/app/privacy/page.jsx";
 import TermsPage from "./pages/app/terms/page.jsx";
+import SettingsPage from "./pages/app/settings/page.jsx";
 
 
 
@@ -66,6 +67,7 @@ function App() {
                     <Route path="/faq" element={<FaqPage></FaqPage>}/>
                     <Route path="/privacy" element={<PrivacyPage></PrivacyPage>}/>
                     <Route path="/terms" element={<TermsPage></TermsPage>}/>
+                    <Route path="/settings" element={<SettingsPage></SettingsPage>}/>
                 </Routes>
             </BrowserRouter>
         </>

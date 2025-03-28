@@ -24,7 +24,7 @@ export default function LoginPage() {
 
     const success = await signIn(email, password)
     if (success) {
-      navigate("/mypage")
+      navigate("/")
     } else {
       setError("로그인에 실패했습니다. 이메일과 비밀번호를 확인해주세요.")
     }
