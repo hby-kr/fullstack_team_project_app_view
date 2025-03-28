@@ -104,7 +104,7 @@ const Mypage = () => {
                             </li>
                             <li>
                                 <p>
-                                    <a href="">프로필 편집하기</a>
+                                    <a href="/profile/edit">프로필 편집하기</a>
                                 </p>
                             </li>
                         </ul>

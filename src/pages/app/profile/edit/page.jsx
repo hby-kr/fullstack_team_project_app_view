@@ -30,7 +30,7 @@ export default function ProfileEditPage() {
   // Redirect to login page if not logged in
   useEffect(() => {
     if (!isLoading && !user) {
-      navigate("/login")
+      navigate("/profile/edit")
       return
     }
 
@@ -169,12 +169,6 @@ export default function ProfileEditPage() {
         {/* Header */}
         <header className="bg-white shadow-sm">
           <div className="container mx-auto px-4 py-4">
-            <div className="flex items-center justify-between">
-              <Link to="/" className="flex items-center">
-                <div className="w-8 h-8 rounded-full bg-primary mr-2"></div>
-                <span className="text-xl font-bold">art U</span>
-              </Link>
-            </div>
           </div>
         </header>
 
@@ -296,7 +290,7 @@ export default function ProfileEditPage() {
                           onClick={handleVerifyPhone}
                           className="px-3 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300"
                       >
-                        인��하기
+                        인증하기
                       </button>
                     </div>
                     {isVerifyingPhone && (

@@ -20,7 +20,8 @@ import PostsEditPage from "./pages/app/posts/edit/[id]/page.jsx";
 import PostsHistoryPage from "./pages/app/posts/history/page.jsx";
 import ProfilePage from "./pages/app/profile/edit/page.jsx";
 import PurchasePage from "./pages/app/purchase/page.jsx";
-//import SettingsPage from "./pages/app/settings/before/page.jsx";
+import SettingsPage from "./pages/app/settings/page.jsx";
+import SettingsBeforePage from "./pages/app/settings/before/page.jsx";
 import SignupPage from "./pages/app/signup/page.jsx"; //회원가입 페이지
 import MyPage from "./pages/app/mypage/page.jsx";
 import Header from "./components/header.jsx";
@@ -28,7 +29,6 @@ import ContactPage from "./pages/app/contact/page.jsx";
 import FaqPage from "./pages/app/faq/page.jsx";
 import PrivacyPage from "./pages/app/privacy/page.jsx";
 import TermsPage from "./pages/app/terms/page.jsx";
-import SettingsPage from "./pages/app/settings/page.jsx";
 import All from "./pages/app/(main)/page.jsx";
 import CategoryPage from "./pages/app/(main)/category/page.jsx";
 
@@ -43,7 +43,6 @@ function App() {
                 <Header />
                 <Routes>
                     <Route path="/" element={<HomePage></HomePage>}>
-
                         <Route path={""} element={<All/>}/>
                         <Route path="cate/:category" element={<CategoryPage/>}/>
                     </Route>
@@ -74,6 +73,7 @@ function App() {
                     <Route path="/privacy" element={<PrivacyPage></PrivacyPage>}/>
                     <Route path="/terms" element={<TermsPage></TermsPage>}/>
                     <Route path="/settings" element={<SettingsPage></SettingsPage>}/>
+                    <Route path="/settings/before" element={<SettingsBeforePage></SettingsBeforePage>}/>
                 </Routes>
             </BrowserRouter>
         </>
