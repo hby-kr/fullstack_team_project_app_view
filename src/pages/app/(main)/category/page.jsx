@@ -1,93 +1,110 @@
-import {Link} from "react-router"
+import {Link, useParams} from "react-router"
+import {useState} from "react";
 
-// 샘플 이벤트 데이터
-const events = [
-    {
-        id: "e1",
-        title: "클래식 콘서트: 모차르트 스페셜",
-        category: "음악",
-        date: "2024-05-15",
-        venue: "예술의전당",
-        image: "/placeholder.svg?height=300&width=500&text=Mozart+Concert",
-        description: "모차르트의 대표 작품들을 한자리에서 감상할 수 있는 특별한 콘서트입니다.",
-    },
-    {
-        id: "e2",
-        title: "현대 미술 전시회",
-        category: "미술",
-        date: "2024-04-20",
-        venue: "국립현대미술관",
-        image: "/placeholder.svg?height=300&width=500&text=Modern+Art",
-        description: "현대 미술의 다양한 작품들을 만나볼 수 있는 특별 전시회입니다.",
-    },
-    {
-        id: "e3",
-        title: "뮤지컬 '레미제라블'",
-        category: "뮤지컬",
-        date: "2024-06-10",
-        venue: "블루스퀘어",
-        image: "/placeholder.svg?height=300&width=500&text=Les+Miserables",
-        description: "세계적인 명작 뮤지컬 '레미제라블'의 한국 공연입니다.",
-    },
-    {
-        id: "e4",
-        title: "현대무용 페스티벌",
-        category: "춤",
-        date: "2024-04-10",
-        venue: "국립극장",
-        image: "/placeholder.svg?height=300&width=500&text=Dance+Festival",
-        description: "국내외 유명 무용가들이 참여하는 현대무용 페스티벌입니다.",
-    },
-    {
-        id: "e5",
-        title: "연극 '햄릿'",
-        category: "연기",
-        date: "2024-07-15",
-        venue: "예술의전당",
-        image: "/placeholder.svg?height=300&width=500&text=Hamlet",
-        description: "셰익스피어의 명작 '햄릿'을 현대적으로 재해석한 연극입니다.",
-    },
-    {
-        id: "e6",
-        title: "재즈 나이트",
-        category: "음악",
-        date: "2024-07-05",
-        venue: "롤링홀",
-        image: "/placeholder.svg?height=300&width=500&text=Jazz+Night",
-        description: "다양한 재즈 아티스트들의 공연을 즐길 수 있는 특별한 밤입니다.",
-    },
-]
+export default function CategoryPage() {
+    const{category}=useParams();
+    const categoryObj={
+        "art": "미술",
+        "dance": "춤",
+        "acting": "연기",
+        "musical": "뮤지컬",
+        "music": "음악"
 
-export default function ExplorePage() {
+    }
+    const activeCategory=categoryObj[category];
+    const categoryImages = {
+        [activeCategory]: generateCategoryImages(activeCategory, 12),
+    }
+    function generateCategoryImages(category, count) {
+        return Array.from({ length: count }, (_, i) => ({
+            id: `${category}-${i + 1}`,
+            src: `/placeholder.svg?height=300&width=400&text=${category}${i + 1}`,
+            alt: `${category} 이미지 ${i + 1}`,
+            title: `${category} 콘텐츠 ${i + 1}`,
+            description: `${category} 관련 콘텐츠에 대한 간략한 설명입니다. 여기에는 ${category}에 관한 정보가 표시됩니다.`,
+            bookable: i % 3 === 0, // Every third item will be bookable
+        }))
+    }
+
+    console.log(category);
     return (
-        <div className="container mx-auto py-10 px-4">
-            <h1 className="text-3xl font-bold mb-8">모든 예술 이벤트</h1>
+        <div>
+            <h1 className="text-2xl font-bold mb-6">{activeCategory}</h1>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {events.map((event) => (
-                    <div key={event.id} className="bg-white rounded-lg shadow-md overflow-hidden">
-                        <div className="relative h-48 w-full">
-                            <img src={event.image || "/placeholder.svg"} alt={event.title} fill className="object-cover" />
-                            <div className="absolute top-2 right-2 bg-primary text-white px-2 py-1 rounded text-xs">
-                                {event.category}
-                            </div>
-                        </div>
-                        <div className="p-6">
-                            <h3 className="text-xl font-bold mb-2">{event.title}</h3>
-                            <p className="text-gray-600 mb-2">
-                                {event.date} | {event.venue}
-                            </p>
-                            <p className="text-gray-700 mb-4 line-clamp-2">{event.description}</p>
-                            <Link
-                                to={`/explore/event/${event.id}`}
-                                className="bg-primary text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-primary/90 transition"
-                            >
-                                자세히 보기
+            <section className="mb-10">
+                <h2 className="text-xl font-semibold mb-4">추천 {activeCategory} 콘텐츠</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {categoryImages && categoryImages[activeCategory].slice(0, 2).map((image) => (
+                        <div key={image.id} className="group">
+                            <Link to={`/detail/${image.id}`} className="block cursor-pointer">
+                                <div className="aspect-video overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm transition-all hover:shadow-md">
+                                    <img
+                                        src={image.src || "/placeholder.svg"}
+                                        alt={image.alt}
+                                        width={600}
+                                        height={400}
+                                        className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                                    />
+                                </div>
                             </Link>
+                            <div className="mt-3 flex justify-between items-start">
+                                <h3 className="text-lg font-medium">
+                                    <Link to={`/detail/${image.id}`} className="hover:text-primary transition-colors">
+                                        {image.title}
+                                    </Link>
+                                </h3>
+                                {image.bookable && (
+                                    <Link
+                                        to={`/booking/${encodeURIComponent(image.id)}`}
+                                        className="text-xs px-2 py-1 bg-primary text-white rounded-full hover:bg-primary/90 inline-block"
+                                    >
+                                        예매하기
+                                    </Link>
+                                )}
+                            </div>
+                            <p className="text-sm text-gray-600">{image.description}</p>
                         </div>
-                    </div>
-                ))}
-            </div>
+                    ))}
+                </div>
+            </section>
+
+            {/* Latest content (remaining images grid) */}
+            <section>
+                <h2 className="text-xl font-semibold mb-4">최신 {activeCategory} 콘텐츠</h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                    {categoryImages[activeCategory].slice(2).map((image) => (
+                        <div key={image.id} className="group">
+                            <Link to={`/detail/${image.id}`} className="block cursor-pointer">
+                                <div className="aspect-video overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm transition-all hover:shadow-md">
+                                    <img
+                                        src={image.src || "/placeholder.svg"}
+                                        alt={image.alt}
+                                        width={400}
+                                        height={300}
+                                        className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                                    />
+                                </div>
+                            </Link>
+                            <div className="mt-2 flex justify-between items-start">
+                                <h3 className="text-base font-medium">
+                                    <Link to={`/detail/${image.id}`} className="hover:text-primary transition-colors">
+                                        {image.title}
+                                    </Link>
+                                </h3>
+                                {image.bookable && (
+                                    <Link
+                                        to={`/booking/${encodeURIComponent(image.id)}`}
+                                        className="text-xs px-2 py-1 bg-primary text-white rounded-full hover:bg-primary/90 inline-block"
+                                    >
+                                        예매하기
+                                    </Link>
+                                )}
+                            </div>
+                            <p className="text-sm text-gray-600 line-clamp-2">{image.description}</p>
+                        </div>
+                    ))}
+                </div>
+            </section>
         </div>
     )
 }

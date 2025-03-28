@@ -3,7 +3,7 @@
 import React from "react"
 
 import { useState, useEffect } from "react"
-import {Link} from "react-router"
+import {Link, Outlet, useNavigate, useParams} from "react-router"
 import { Save, X, GripVertical, ChevronRight } from "lucide-react"
 import Header from "/src/components/header"
 
@@ -18,13 +18,23 @@ const generateCategoryImages = (category, count) => {
         bookable: i % 3 === 0, // Every third item will be bookable
     }))
 }
+const categoryObj={
+    "art": "미술",
+    "dance": "춤",
+    "acting": "연기",
+    "musical": "뮤지컬",
+    "music": "음악"
+}
 
 export default function HomePage() {
+    const navigate = useNavigate()
+    const params=useParams();
+    console.log(params);
     // Category list state (including "All" category)
     const [categories, setCategories] = useState(["전체", "음악", "미술", "춤", "연기", "뮤지컬"])
 
     // Currently selected category (default: All)
-    const [activeCategory, setActiveCategory] = useState("전체")
+    const [activeCategory, setActiveCategory] = useState(categoryObj[params.category]);
 
     // Reordering mode state
     const [isReordering, setIsReordering] = useState(false)
@@ -159,24 +169,24 @@ export default function HomePage() {
                             {categories.map((category) => {
                                 const categoryUrl =
                                     category === "전체"
-                                        ? "/all"
+                                        ? "/"
                                         : category === "음악"
-                                            ? "/music"
+                                            ? "/cate/music"
                                             : category === "미술"
-                                                ? "/art"
+                                                ? "/cate/art"
                                                 : category === "춤"
-                                                    ? "/dance"
+                                                    ? "/cate/dance"
                                                     : category === "연기"
-                                                        ? "/acting"
+                                                        ? "/cate/acting"
                                                         : category === "뮤지컬"
-                                                            ? "/musical"
-                                                            : `/explore/${category.toLowerCase()}`
+                                                            ? "/cate/musical"
+                                                            : `/${category.toLowerCase()}`
 
                                 return (
                                     <button
                                         key={category}
                                         className={`px-4 py-2 mx-1 text-base font-medium rounded-full transition-colors ${
-                                            activeCategory === category
+                                            categoryObj[params.category] === category || (category==="전체"&& !params.category)
                                                 ? "bg-primary text-primary-foreground"
                                                 : "text-gray-700 hover:bg-gray-100"
                                         }`}
@@ -185,7 +195,8 @@ export default function HomePage() {
                                             handleCategoryChange(category)
 
                                             // URL 변경 (페이지 이동 없이)
-                                            window.history.pushState({}, "", categoryUrl)
+                                            //window.history.pushState({}, "", categoryUrl)
+                                            navigate(categoryUrl)
                                         }}
                                     >
                                         {category}
@@ -202,152 +213,7 @@ export default function HomePage() {
                     )}
                 </div>
             </div>
-
-            {/* Main content */}
-            <main className="flex-grow container mx-auto px-4 py-8">
-                {/* All category selected - show representative images from all categories */}
-                {activeCategory === "전체" && (
-                    <div>
-                        <h1 className="text-2xl font-bold mb-6">전체 콘텐츠</h1>
-
-                        {/* Display representative images for each category */}
-                        {categories
-                            .filter((cat) => cat !== "전체")
-                            .map((category) => (
-                                <section key={category} className="mb-12">
-                                    <div className="flex items-center justify-between mb-4">
-                                        <h2 className="text-xl font-semibold">{category}</h2>
-                                        <button
-                                            className="flex items-center text-sm text-primary hover:underline"
-                                            onClick={() => handleCategoryChange(category)}
-                                        >
-                                            더보기 <ChevronRight className="w-4 h-4 ml-1" />
-                                        </button>
-                                    </div>
-
-                                    {/* Category representative image grid */}
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                                        {categoryImages[category].slice(0, 4).map((image) => (
-                                            <div key={image.id} className="group">
-                                        <Link to={`/detail/${image.id}`} className="block cursor-pointer">
-                                            <div className="aspect-video overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm transition-all hover:shadow-md">
-                                                <img
-                                                    src={image.src || "/placeholder.svg"}
-                                                    alt={image.alt}
-                                                    width={400}
-                                                    height={300}
-                                                    className="w-full h-full object-cover group-hover:scale-105 transition-transform"
-                                                />
-                                            </div>
-                                        </Link>
-                                        <div className="mt-2 flex justify-between items-start">
-                                            <h3 className="text-base font-medium">
-                                                <Link to={`/detail/${image.id}`} className="hover:text-primary transition-colors">
-                                                    {image.title}
-                                                </Link>
-                                            </h3>
-                                            {image.bookable && (
-                                                <Link
-                                                    to={`/booking/${encodeURIComponent(image.id)}`}
-                                                    className="text-xs px-2 py-1 bg-primary text-white rounded-full hover:bg-primary/90 inline-block"
-                                                >
-                                                    예매하기
-                                                </Link>
-                                            )}
-                                        </div>
-                                        <p className="text-sm text-gray-600 line-clamp-2">{image.description}</p>
-                                    </div>
-                                    ))}
-                                </div>
-                            </section>
-                            ))}
-                    </div>
-                )}
-
-                {/* Individual category selected - show all images for that category */}
-                {activeCategory !== "전체" && categories.includes(activeCategory) && (
-                    <div>
-                        <h1 className="text-2xl font-bold mb-6">{activeCategory}</h1>
-
-                        {/* Recommended content (2 large images) */}
-                        <section className="mb-10">
-                            <h2 className="text-xl font-semibold mb-4">추천 {activeCategory} 콘텐츠</h2>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                {categoryImages[activeCategory].slice(0, 2).map((image) => (
-                                    <div key={image.id} className="group">
-                                <Link to={`/detail/${image.id}`} className="block cursor-pointer">
-                                    <div className="aspect-video overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm transition-all hover:shadow-md">
-                                        <img
-                                            src={image.src || "/placeholder.svg"}
-                                            alt={image.alt}
-                                            width={600}
-                                            height={400}
-                                            className="w-full h-full object-cover group-hover:scale-105 transition-transform"
-                                        />
-                                    </div>
-                                </Link>
-                                <div className="mt-3 flex justify-between items-start">
-                                    <h3 className="text-lg font-medium">
-                                        <Link to={`/detail/${image.id}`} className="hover:text-primary transition-colors">
-                                            {image.title}
-                                        </Link>
-                                    </h3>
-                                    {image.bookable && (
-                                        <Link
-                                            to={`/booking/${encodeURIComponent(image.id)}`}
-                                            className="text-xs px-2 py-1 bg-primary text-white rounded-full hover:bg-primary/90 inline-block"
-                                        >
-                                            예매하기
-                                        </Link>
-                                    )}
-                                </div>
-                                <p className="text-sm text-gray-600">{image.description}</p>
-                            </div>
-                            ))}
-                    </div>
-                    </section>
-
-                {/* Latest content (remaining images grid) */}
-                <section>
-                    <h2 className="text-xl font-semibold mb-4">최신 {activeCategory} 콘텐츠</h2>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                        {categoryImages[activeCategory].slice(2).map((image) => (
-                            <div key={image.id} className="group">
-                        <Link to={`/detail/${image.id}`} className="block cursor-pointer">
-                            <div className="aspect-video overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm transition-all hover:shadow-md">
-                                <img
-                                    src={image.src || "/placeholder.svg"}
-                                    alt={image.alt}
-                                    width={400}
-                                    height={300}
-                                    className="w-full h-full object-cover group-hover:scale-105 transition-transform"
-                                />
-                            </div>
-                        </Link>
-                        <div className="mt-2 flex justify-between items-start">
-                            <h3 className="text-base font-medium">
-                                <Link to={`/detail/${image.id}`} className="hover:text-primary transition-colors">
-                                    {image.title}
-                                </Link>
-                            </h3>
-                            {image.bookable && (
-                                <Link
-                                    to={`/booking/${encodeURIComponent(image.id)}`}
-                                    className="text-xs px-2 py-1 bg-primary text-white rounded-full hover:bg-primary/90 inline-block"
-                                >
-                                    예매하기
-                                </Link>
-                            )}
-                        </div>
-                        <p className="text-sm text-gray-600 line-clamp-2">{image.description}</p>
-                    </div>
-                    ))}
-        </div>
-</section>
-</div>
-)}
-</main>
-
+    <Outlet/>
 {/* Footer */}
     <footer className="bg-gray-800 text-white py-8">
         <div className="container mx-auto px-4">
@@ -364,15 +230,15 @@ export default function HomePage() {
                             .map((category) => {
                                 const categoryUrl =
                                     category === "음악"
-                                        ? "/music"
+                                        ? "/cate/music"
                                         : category === "미술"
-                                            ? "/art"
+                                            ? "/cate/art"
                                             : category === "춤"
-                                                ? "/dance"
+                                                ? "/cate/dance"
                                                 : category === "연기"
-                                                    ? "/acting"
+                                                    ? "/cate/acting"
                                                     : category === "뮤지컬"
-                                                        ? "/musical"
+                                                        ? "/cate/musical"
                                                         : `/${category.toLowerCase()}`
 
                                 return (
@@ -380,7 +246,7 @@ export default function HomePage() {
                                         <button
                                             onClick={() => {
                                                 handleCategoryChange(category)
-                                                window.history.pushState({}, "", categoryUrl)
+                                                navigate(categoryUrl)
                                             }}
                                             className="text-gray-400 hover:text-white"
                                         >

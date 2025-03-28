@@ -1,123 +1,105 @@
-import {Link} from "react-router"
+import {Link, useNavigate} from "react-router"
+import {useState} from "react";
+import { ChevronRight } from "lucide-react"
 
-export default function Home() {
+export default function All() {
+    const [categories] = useState(["전체", "음악", "미술", "춤", "연기", "뮤지컬"])
+    const navigate = useNavigate();
+    const [activeCategory] = useState("전체")
+    const categoryObj={
+            "미술":"art",
+            "춤": "dance",
+            "연기":"acting",
+            "뮤지컬":"musical",
+            "음악":"music"
+
+    }
+
+    const generateCategoryImages = (category, count) => {
+        return Array.from({ length: count }, (_, i) => ({
+            id: `${category}-${i + 1}`,
+            src: `/placeholder.svg?height=300&width=400&text=${category}${i + 1}`,
+            alt: `${category} 이미지 ${i + 1}`,
+            title: `${category} 콘텐츠 ${i + 1}`,
+            description: `${category} 관련 콘텐츠에 대한 간략한 설명입니다. 여기에는 ${category}에 관한 정보가 표시됩니다.`,
+            bookable: i % 3 === 0, // Every third item will be bookable
+        }))
+    }
+
+    const categoryImages = {
+        음악: generateCategoryImages("음악", 12),
+        미술: generateCategoryImages("미술", 12),
+        춤: generateCategoryImages("춤", 12),
+        연기: generateCategoryImages("연기", 12),
+        뮤지컬: generateCategoryImages("뮤지컬", 12),
+    }
+    const handleCategoryChange = (category) => {
+        //setActiveCategory(category)
+        navigate("/cate/"+categoryObj[category])
+    }
+
     return (
-        <div>
-            {/* 히어로 섹션 */}
-            <section className="bg-gradient-to-r from-primary/20 to-primary/5 py-20">
-                <div className="container mx-auto px-4">
-                    <div className="flex flex-col md:flex-row items-center">
-                        <div className="md:w-1/2 mb-10 md:mb-0">
-                            <h1 className="text-4xl md:text-5xl font-bold mb-4">
-                                예술의 모든 것, <span className="text-primary">아트유</span>
-                            </h1>
-                            <p className="text-lg mb-6">음악, 미술, 춤, 연기, 뮤지컬까지 - 당신의 예술적 여정을 함께합니다.</p>
-                            <div className="flex space-x-4">
-                                <Link
-                                    to="/category"
-                                    className="bg-primary text-white px-6 py-3 rounded-md font-medium hover:bg-primary/90 transition"
-                                >
-                                    탐색하기
-                                </Link>
-                                <Link
-                                    to="/mypage"
-                                    className="bg-white text-primary px-6 py-3 rounded-md font-medium border border-primary hover:bg-gray-50 transition"
-                                >
-                                    마이페이지
-                                </Link>
-                            </div>
-                        </div>
-                        <div className="md:w-1/2">
-                            <div className="relative h-64 md:h-96 w-full">
-                                <img
-                                    src="/placeholder.svg?height=400&width=600&text=Art+Community"
-                                    alt="예술 커뮤니티"
-                                    fill
-                                    className="object-cover rounded-lg shadow-lg"
-                                />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
+        <main className="flex-grow container mx-auto px-4 py-8">
+            {/* All category selected - show representative images from all categories */}
+            {activeCategory === "전체" && (
+                <div>
+                    <h1 className="text-2xl font-bold mb-6">전체 콘텐츠</h1>
 
-            {/* 카테고리 섹션 */}
-            <section className="py-16">
-                <div className="container mx-auto px-4">
-                    <h2 className="text-3xl font-bold mb-10 text-center">예술 카테고리</h2>
-                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
-                        {[
-                            { name: "음악", path: "/music", image: "/placeholder.svg?height=200&width=200&text=Music" },
-                            { name: "미술", path: "/art", image: "/placeholder.svg?height=200&width=200&text=Art" },
-                            { name: "춤", path: "/dance", image: "/placeholder.svg?height=200&width=200&text=Dance" },
-                            { name: "연기", path: "/acting", image: "/placeholder.svg?height=200&width=200&text=Acting" },
-                            { name: "뮤지컬", path: "/musical", image: "/placeholder.svg?height=200&width=200&text=Musical" },
-                            { name: "전체보기", path: "/", image: "/placeholder.svg?height=200&width=200&text=All" },
-                        ].map((category) => (
-                            <Link key={category.path} to={category.path} className="group">
-                                <div className="bg-white rounded-lg shadow-md overflow-hidden transition transform group-hover:scale-105">
-                                    <div className="relative h-40 w-full">
-                                        <img
-                                            src={category.image || "/placeholder.svg"}
-                                            alt={category.name}
-                                            fill
-                                            className="object-cover"
-                                        />
-                                    </div>
-                                    <div className="p-4 text-center">
-                                        <h3 className="font-medium">{category.name}</h3>
-                                    </div>
-                                </div>
-                            </Link>
-                        ))}
-                    </div>
-                </div>
-            </section>
-
-            {/* 추천 이벤트 섹션 */}
-            <section className="py-16 bg-gray-50">
-                <div className="container mx-auto px-4">
-                    <h2 className="text-3xl font-bold mb-10 text-center">추천 이벤트</h2>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {[
-                            {
-                                title: "클래식 콘서트: 모차르트 스페셜",
-                                date: "2024-05-15",
-                                venue: "예술의전당",
-                                image: "/placeholder.svg?height=300&width=500&text=Mozart+Concert",
-                            },
-                            {
-                                title: "현대 미술 전시회",
-                                date: "2024-04-20",
-                                venue: "국립현대미술관",
-                                image: "/placeholder.svg?height=300&width=500&text=Modern+Art",
-                            },
-                            {
-                                title: "뮤지컬 '레미제라블'",
-                                date: "2024-06-10",
-                                venue: "블루스퀘어",
-                                image: "/placeholder.svg?height=300&width=500&text=Les+Miserables",
-                            },
-                        ].map((event, index) => (
-                            <div key={index} className="bg-white rounded-lg shadow-md overflow-hidden">
-                                <div className="relative h-48 w-full">
-                                    <img src={event.image || "/placeholder.svg"} alt={event.title} fill className="object-cover" />
-                                </div>
-                                <div className="p-6">
-                                    <h3 className="text-xl font-bold mb-2">{event.title}</h3>
-                                    <p className="text-gray-600 mb-4">
-                                        {event.date} | {event.venue}
-                                    </p>
-                                    <button className="bg-primary text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-primary/90 transition">
-                                        자세히 보기
+                    {/* Display representative images for each category */}
+                    {categories
+                        .filter((cat) => cat !== "전체")
+                        .map((category) => (
+                            <section key={category} className="mb-12">
+                                <div className="flex items-center justify-between mb-4">
+                                    <h2 className="text-xl font-semibold">{category}</h2>
+                                    <button
+                                        className="flex items-center text-sm text-primary hover:underline"
+                                        onClick={() => handleCategoryChange(category)}
+                                    >
+                                        더보기 <ChevronRight className="w-4 h-4 ml-1" />
                                     </button>
                                 </div>
-                            </div>
+
+                                {/* Category representative image grid */}
+                                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                                    {categoryImages[category].slice(0, 4).map((image) => (
+                                        <div key={image.id} className="group">
+                                            <Link to={`/detail/${image.id}`} className="block cursor-pointer">
+                                                <div className="aspect-video overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm transition-all hover:shadow-md">
+                                                    <img
+                                                        src={image.src || "/placeholder.svg"}
+                                                        alt={image.alt}
+                                                        width={400}
+                                                        height={300}
+                                                        className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                                                    />
+                                                </div>
+                                            </Link>
+                                            <div className="mt-2 flex justify-between items-start">
+                                                <h3 className="text-base font-medium">
+                                                    <Link to={`/detail/${image.id}`} className="hover:text-primary transition-colors">
+                                                        {image.title}
+                                                    </Link>
+                                                </h3>
+                                                {image.bookable && (
+                                                    <Link
+                                                        to={`/booking/${encodeURIComponent(image.id)}`}
+                                                        className="text-xs px-2 py-1 bg-primary text-white rounded-full hover:bg-primary/90 inline-block"
+                                                    >
+                                                        예매하기
+                                                    </Link>
+                                                )}
+                                            </div>
+                                            <p className="text-sm text-gray-600 line-clamp-2">{image.description}</p>
+                                        </div>
+                                    ))}
+                                </div>
+                            </section>
                         ))}
-                    </div>
                 </div>
-            </section>
-        </div>
+            )}
+        </main>
+
     )
 }
 

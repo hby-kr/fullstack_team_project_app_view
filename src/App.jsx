@@ -29,6 +29,8 @@ import FaqPage from "./pages/app/faq/page.jsx";
 import PrivacyPage from "./pages/app/privacy/page.jsx";
 import TermsPage from "./pages/app/terms/page.jsx";
 import SettingsPage from "./pages/app/settings/page.jsx";
+import All from "./pages/app/(main)/page.jsx";
+import CategoryPage from "./pages/app/(main)/category/page.jsx";
 
 
 
@@ -40,7 +42,11 @@ function App() {
             <BrowserRouter>
                 <Header />
                 <Routes>
-                    <Route path="/" element={<HomePage></HomePage>}/>
+                    <Route path="/" element={<HomePage></HomePage>}>
+
+                        <Route path={""} element={<All/>}/>
+                        <Route path="cate/:category" element={<CategoryPage/>}/>
+                    </Route>
                     <Route path="/login" element={<LoginPage></LoginPage>}/>
                     <Route path="/admin" element={<AdminPage></AdminPage>}/>
                     <Route path="/booking/:id" element={<BookingPage></BookingPage>}/>

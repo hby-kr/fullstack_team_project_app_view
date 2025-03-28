@@ -83,9 +83,10 @@ const Mypage = () => {
                 <div id="nav-container">
                     <section>
                         <h2>{userName}님의 페이지</h2>
-                        <article>
+                        <article className="flex items-center">
+
                             <Link to="/settings" className="mr-2 text-lg text-blue-500 hover:underline">설정</Link>
-                            <Settings className="inline-block mr-2 h-24 w-5" />
+                            <Settings className="inline-block mr-2 w-5" />
                         </article>
                     </section>
                 </div>
