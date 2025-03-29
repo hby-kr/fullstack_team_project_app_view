@@ -1,4 +1,4 @@
-import {Link} from "react-router"
+import {Link} from "react-router-dom"
 import { ArrowLeft } from "lucide-react"
 import Header from "/src/components/header"
 

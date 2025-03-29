@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 //import { useRouter } from "next/navigation";
-import {Link,useNavigate} from "react-router"
+import {Link,useNavigate} from "react-router-dom"
 //import Image from "next/image";
 import { ArrowLeft, Upload, Tag } from "lucide-react";
 import Header from "/src/components/header";

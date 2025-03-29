@@ -3,7 +3,7 @@
 import React from "react"
 
 import { useState, useEffect } from "react"
-import {Link, Outlet, useNavigate, useParams} from "react-router"
+import {Link, Outlet, useNavigate, useParams} from "react-router-dom"
 import { Save, X, GripVertical, ChevronRight } from "lucide-react"
 import Header from "/src/components/header"
 

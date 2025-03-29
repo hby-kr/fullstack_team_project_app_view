@@ -5,7 +5,7 @@ import { ChevronRight } from "lucide-react"
 export default function All() {
     const [categories] = useState(["전체", "음악", "미술", "춤", "연기", "뮤지컬"])
     const navigate = useNavigate();
-    const [activeCategory] = useState("전체")
+    const [activeCategory, setActiveCategory] = useState("전체")
     const categoryObj={
             "미술":"art",
             "춤": "dance",
@@ -15,6 +15,7 @@ export default function All() {
 
     }
 
+    // 더미 데이터 생성 함수
     const generateCategoryImages = (category, count) => {
         return Array.from({ length: count }, (_, i) => ({
             id: `${category}-${i + 1}`,
@@ -26,6 +27,7 @@ export default function All() {
         }))
     }
 
+    // 위 더미데이터 생성함수를 실행시키고 있음.
     const categoryImages = {
         음악: generateCategoryImages("음악", 12),
         미술: generateCategoryImages("미술", 12),
@@ -33,8 +35,9 @@ export default function All() {
         연기: generateCategoryImages("연기", 12),
         뮤지컬: generateCategoryImages("뮤지컬", 12),
     }
+
     const handleCategoryChange = (category) => {
-        //setActiveCategory(category)
+        setActiveCategory(category)
         navigate("/cate/"+categoryObj[category])
     }
 
