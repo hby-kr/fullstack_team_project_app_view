@@ -1,4 +1,7 @@
 import React, {useState, useEffect} from "react";
+import { Settings } from "lucide-react"
+import {Link} from "react-router"
+
 import './mypageStyle.css';
 import './mypageRefined.css';
 import './widgetStyle.css';
@@ -93,8 +96,10 @@ const Mypage = () => {
                 <div id="nav-container">
                     <section>
                         <h2>{userName}님의 페이지</h2>
-                        <article>
-                            <a href="">설정</a>
+                        <article className="flex items-center">
+
+                            <Link to="/settings" className="mr-2 text-lg text-blue-500 hover:underline">설정</Link>
+                            <Settings className="inline-block mr-2 w-5" />
                         </article>
                     </section>
                 </div>
@@ -112,7 +117,7 @@ const Mypage = () => {
                             </li>
                             <li>
                                 <p>
-                                    <a href="">프로필 편집하기</a>
+                                    <a href="/profile/edit">프로필 편집하기</a>
                                 </p>
                             </li>
                         </ul>
