@@ -23,7 +23,7 @@
 
 }
 
-.widget > * {
+.widget > *:not(.countdown-container) {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -72,14 +72,14 @@
 }
 
 /* 위젯 별 스타일 */
-.calander, .memo, .info, .bookmark {
+.calander, .memo, .info, .bookmark, .display, .image, .countdown{
     position: relative;
     width: 100%;
     height: 100%;
     background-color: #fff;
 }
 
-.calander-container, .memo-container, .info-container, .bookmark-container {
+.calander-container, .memo-container, .info-container, .bookmark-container, .display-container, .image-container{
     display: flex;
     flex-direction: row;
     padding: 10px;
@@ -87,7 +87,7 @@
     height: 100%;
 }
 
-.calander-main, .bookmark-main {
+.calander-main, .bookmark-main, .countdown-main {
     margin: 10px;
 }
 
@@ -280,6 +280,7 @@
     display: grid;
     grid-template-columns: repeat(1, 1fr);
     flex-direction: row;
+    gap: 15px;
     width: 100%;
     height: 100%;
 }
@@ -297,7 +298,7 @@
     aspect-ratio: 1 / 1;
     width: calc(100% - 10px);
     height: calc(100% - 10px);
-    background-color: #9a9a9a;
+    background-color: #e0e0e0;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -313,4 +314,86 @@
     align-items: center;
 }
 
+.display-container {
+    padding: 5px;
+    overflow: hidden;
+}
 
+.display-main {
+    display: grid;
+    width: 100%;
+    height: 100%;
+    gap: 5px;
+    justify-content: center;
+    align-content: center;
+}
+
+.one-one .display-main {
+    grid-template-columns: repeat(1, 1fr);
+}
+
+.two-one .display-main {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.three-one .display-main {
+    grid-template-columns: repeat(4, 1fr);
+}
+
+.display-item {
+    width: 100%;
+    position: relative;
+    padding-top: 100%;
+    background-color: #f0f0f0;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.display-item img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transform: translate(-50%, -50%);
+}
+
+.image img{
+    width: calc(100% - 10px);
+    object-fit: cover;
+}
+
+.countdown-container {
+    position: absolute; /* 다시 absolute로 복귀시킴 */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.countdown-main {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+.countdown-main li:first-of-type span {
+    font-size: 5em;
+    font-weight: bold;
+}
+
+.two-one .countdown-main li:last-child {
+    text-align: end;
+}
+
+.three-one .countdown-main li:last-child {
+    position: absolute;
+    top: 0;
+    left: 0;
+}

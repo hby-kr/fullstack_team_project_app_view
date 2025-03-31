@@ -255,7 +255,6 @@ const Mypage = () => {
                                         </ul>
                                         {widget.size === "1x1" && (
                                             <div className="bookmark-sub">
-                                                <span className="bookmark-sub-item">콘서트 설명</span>
                                             </div>
                                         )}
                                     </div>
@@ -279,7 +278,7 @@ const Mypage = () => {
                                 {widget.type === "countdown" && (
                                     <div className="countdown-container">
                                         <ul className="countdown-main">
-                                            <li>D<span>-</span><span>12</span></li>
+                                            <li><span>D</span><span>-</span><span>12</span></li>
                                             <li><a href=""><span>콘서트</span></a></li>
                                         </ul>
                                     </div>
