@@ -7,6 +7,7 @@ import '/src/styles/globals.css'
 
 import "react-grid-layout/css/styles.css";
 import "react-resizable/css/styles.css";
+import "/src/pages/app/tailwind.min.css"
 
 import App from './App.jsx'
 

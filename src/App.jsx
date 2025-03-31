@@ -1,5 +1,6 @@
 import './App.css'
 import {BrowserRouter, Route, Routes} from "react-router-dom";
+import { SettingsProvider } from './lib/settings-context.jsx';
 import HomePage from './pages/app/page.jsx'
 import LoginPage from "./pages/app/login/page.jsx";
 import BookingPage from "./pages/app/booking/[id]/page.jsx";
@@ -35,6 +36,7 @@ function App() {
 
     return (
         <>
+            <SettingsProvider>
             <BrowserRouter>
                 <Header />
                 <Routes>
@@ -82,6 +84,7 @@ function App() {
 
                 </Routes>
             </BrowserRouter>
+            </SettingsProvider>
         </>
     )
 }

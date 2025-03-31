@@ -1,9 +1,10 @@
 import React from "react"
+import "./globals.css"
 import { Metadata } from "next"
 import { Inter } from "next/font/google"
-import "./globals.css"
-import { ThemeProvider } from "src/components/theme-provider"
-import { AuthProvider } from "src/lib/auth-context"
+import { ThemeProvider } from "/src/components/theme-provider"
+import { AuthProvider } from "/src/lib/auth-context"
+import { SettingsProvider } from "/src/lib/settings-context"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -16,11 +17,10 @@ export default function RootLayout({ children }) {
     return (
         <html lang="ko">
         <body className={inter.className}>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-            <AuthProvider>{children}</AuthProvider>
-        </ThemeProvider>
+        <AuthProvider>
+            <SettingsProvider>{children}</SettingsProvider>
+        </AuthProvider>
         </body>
         </html>
     );
 }
-
