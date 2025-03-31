@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mypage</title>
+    <link rel="stylesheet" href="mypageStyle.css">
+    <link rel="stylesheet" href="mypageRefined.css">
+    <link rel="stylesheet" href="widgetStyle.css">
+    <link rel="stylesheet" href="reactive.css">
+    <link rel="stylesheet" href="fontstyle.css">
+    <link href="https://cdn.jsdelivr.net/gh/sun-typeface/SUIT@2/fonts/static/woff2/SUIT.css" rel="stylesheet">
+</head>
+<body>
+<header>
+    <ul>
+        <li><h1>art U</h1></li>
+        <li><img src="../../../public/placeholder.svg" alt="profile_image"></li>
+        <li><span>user_name</span></li>
+    </ul>
+</header>
+<aside>
+    <div id="nav-container">
+        <section>
+            <h2>user_name님의 페이지</h2>
+            <article><a href="">설정</a></article>
+        </section>
+    </div>
+</aside>
+<div id="main-container">
+    <section>
+        <div id="profile-container">
+
+            <img src="../../../public/placeholder.svg" alt="profile_image">
+
+            <ul>
+                <li><h3>user_name</h3></li>
+                <li><p>user_email</p></li>
+                <li><p><a href="">프로필 편집하기</a></p></li>
+            </ul>
+
+            <div id="profile-number-container">
+                <ul>
+                    <li>
+                        <div class="profile-number">
+                            <span>0</span>
+                            <a href="">게시물</a>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="profile-number">
+                            <span>0</span>
+                            <a href="">팔로워</a>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="profile-number">
+                            <span>0</span>
+                            <a href="">팔로잉</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <article>
+            <p>자기소개가 없습니다. 프로필을 수정하여 자기소개를 작성해보세요.</p>
+        </article>
+    </section>
+</div>
+
+<nav>
+    <ul>
+        <li><a href="">위젯</a></li>
+        <li><a href="">포스트</a></li>
+    </ul>
+</nav>
+
+<div id="widget-container">
+    <section>
+        <h2 class="screen-out">위젯</h2>
+        <!-- 캘린더 -->
+        <article id="widget1" class="widget size-1x1 calander">
+            <div class="calander-container">
+                <ul class="calander-main">
+                    <li><span>FRI</span></li>
+                    <li><h5>21</h5></li>
+                    <li><span>캘린더</span></li>
+                </ul>
+            </div>
+        </article>
+        <article id="widget2" class="widget size-2x1 calander">
+            <div class="calander-container">
+                <ul class="calander-main">
+                    <li><span>FRI</span></li>
+                    <li><h5>21</h5></li>
+                    <li><span>캘린더</span></li>
+                </ul>
+                <ul class="calander-sub">
+                    <li class="calander-sub-item">
+                        <span>금요일 3월 21일</span>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <span><a href="">이벤트</a></span>
+                    </li>
+                    <li class="calander-sub-item">
+                        <span>금요일 3월 21일</span>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <span><a href="">이벤트</a></span>
+                    </li>
+                    <li class="calander-sub-item">
+                        <span>금요일 3월 21일</span>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <span><a href="">이벤트</a></span>
+                    </li>
+                    <li class="calander-sub-item">
+                        <span>금요일 3월 21일</span>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <span><a href="">이벤트</a></span>
+                    </li>
+                </ul>
+            </div>
+        </article>
+        <article id="widget3" class="widget size-3x1 calander">
+            <div class="calander-container">
+                <ul class="calander-main">
+                    <li><span>FRI</span></li>
+                    <li><h5>21</h5></li>
+                    <li><span>캘린더</span></li>
+                </ul>
+                <ul class="calander-sub">
+                    <li class="calander-sub-item">
+                        <span>금요일 3월 21일</span>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <span><a href="">이벤트</a></span>
+                    </li>
+                    <li class="calander-sub-item">
+                        <span>금요일 3월 21일</span>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <span><a href="">이벤트</a></span>
+                    </li>
+                    <li class="calander-sub-item">
+                        <span>금요일 3월 21일</span>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <span><a href="">이벤트</a></span>
+                    </li>
+                    <li class="calander-sub-item">
+                        <span>금요일 3월 21일</span>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <span><a href="">이벤트</a></span>
+                    </li>
+                </ul>
+            </div>
+        </article>
+        <!-- 날씨 -->
+        <article id="widget4" class="widget size-1x1 weather">
+            <div class="weather-container">
+                <div class="weather-sun"></div>
+                <ul class="weather-main">
+                    <li><span>15</span>&deg;<span>C</span></li>
+                </ul>
+                <ul class="weather-sub">
+                    <li>H:<span>20</span>&deg;<span>C</span></li>
+                    <li>L:<span>15</span>&deg;<span>C</span></li>
+                </ul>
+            </div>
+        </article>
+        <article id="widget5" class="widget size-2x1 weather">
+            <div class="weather-container">
+                <div class="weather-sun"></div>
+                <ul class="weather-main">
+                    <li><span>15</span>&deg;<span>C</span></li>
+                </ul>
+                <p><span>맑음</span></p>
+                <ul class="weather-sub">
+                    <li>H:<span>20</span>&deg;<span>C</span></li>
+                    <li>L:<span>15</span>&deg;<span>C</span></li>
+                </ul>
+                <ul class="weather-loc">
+                    <li><span>서울특별시</span></li>
+                    <li>
+                        <div class="loc-circle"></div>
+                    </li>
+                </ul>
+            </div>
+        </article>
+        <article id="widget6" class="widget size-3x1 weather">
+            <div class="weather-container">
+                <div class="weather-sun"></div>
+                <ul class="weather-loc">
+                    <li><span>서울특별시</span></li>
+                    <li>
+                        <div class="loc-circle"></div>
+                    </li>
+                </ul>
+                <p><span>맑음</span></p>
+                <ul class="weather-sub">
+                    <li>H:<span>20</span>&deg;<span>C</span></li>
+                    <li>L:<span>15</span>&deg;<span>C</span></li>
+                </ul>
+                <ul class="weather-main">
+                    <li><span>15</span>&deg;<span>C</span></li>
+                </ul>
+            </div>
+        </article>
+        <!-- 메모 -->
+        <article id="widget7" class="widget size-1x1 memo">
+            <div class="memo-container">
+                <h5>메모</h5>
+                <p>내용</p>
+            </div>
+        </article>
+        <article id="widget8" class="widget size-2x1 memo">
+            <div class="memo-container">
+                <ul>
+                    <li><h5>메모</h5></li>
+                    <li><p>내용</p></li>
+                </ul>
+            </div>
+        </article>
+        <article id="widget9" class="widget size-3x1 memo">
+            <div class="memo-container">
+                <ul>
+                    <li><h5>메모</h5></li>
+                    <li><p>내용</p></li>
+                </ul>
+            </div>
+        </article>
+        <!-- 소개 -->
+        <article id="widget10" class="widget size-1x1 info">
+            <div class="info-container">
+                <ul>
+                    <li><h5>메모</h5></li>
+                    <li><p>내용</p></li>
+                </ul>
+            </div>
+        </article>
+        <!-- 북마크 -->
+        <article id="widget11" class="widget size-1x1 bookmark">
+            <div class="bookmark-container">
+                <ul class="bookmark-main">
+                    <li class="bookmark-item"><span>콘서트</span><span>콘서트 설명</span></li>
+                </ul>
+                <div class="bookmark-sub">
+                    <span class="bookmark-sub-item">콘서트 설명</span>
+                </div>
+            </div>
+        </article>
+        <article id="widget12" class="widget size-2x1 bookmark">
+            <div class="bookmark-container">
+                <ul class="bookmark-main">
+                    <li class="bookmark-item"><span>콘서트</span><span>콘서트 설명</span></li>
+                    <li class="bookmark-item"><span>콘서트</span><span>콘서트 설명</span></li>
+                </ul>
+            </div>
+        </article>
+        <article id="widget13" class="widget size-3x1 bookmark">
+            <div class="bookmark-container">
+                <ul class="bookmark-main">
+                    <li class="bookmark-item"><span>콘서트</span><span>콘서트 설명</span></li>
+                    <li class="bookmark-item"><span>콘서트</span><span>콘서트 설명</span></li>
+                    <li class="bookmark-item"><span>콘서트</span><span>콘서트 설명</span></li>
+                </ul>
+            </div>
+        </article>
+        <!-- 전시대 -->
+        <article id="widget14" class="widget size-1x1 display">
+            <div class="display-container">
+                <ul class="display-main">
+                    <li class="display-item"><img src="../../../public/placeholder.svg" alt=""></li>
+                </ul>
+            </div>
+        </article>
+        <article id="widget15" class="widget size-2x1 display">
+            <div class="display-container">
+                <ul class="display-main">
+                    <li class="display-item"><img src="../../../public/placeholder.svg" alt=""></li>
+                    <li class="display-item"><img src="../../../public/placeholder.svg" alt=""></li>
+                    <li class="display-item"><img src="../../../public/placeholder.svg" alt=""></li>
+                    <li class="display-item"><img src="../../../public/placeholder.svg" alt=""></li>
+                    <li class="display-item"><img src="../../../public/placeholder.svg" alt=""></li>
+                    <li class="display-item"><img src="../../../public/placeholder.svg" alt=""></li>
+                </ul>
+            </div>
+        </article>
+        <article id="widget16" class="widget size-3x1 display">
+            <div class="display-container">
+                <ul class="display-main">
+                    <li class="display-item"><img src="../../../public/placeholder.svg" alt=""></li>
+                    <li class="display-item"><img src="../../../public/placeholder.svg" alt=""></li>
+                    <li class="display-item"><img src="../../../public/placeholder.svg" alt=""></li>
+                    <li class="display-item"><img src="../../../public/placeholder.svg" alt=""></li>
+                    <li class="display-item"><img src="../../../public/placeholder.svg" alt=""></li>
+                    <li class="display-item"><img src="../../../public/placeholder.svg" alt=""></li>
+                    <li class="display-item"><img src="../../../public/placeholder.svg" alt=""></li>
+                    <li class="display-item"><img src="../../../public/placeholder.svg" alt=""></li>
+                    <li class="display-item"><img src="../../../public/placeholder.svg" alt=""></li>
+                    <li class="display-item"><img src="../../../public/placeholder.svg" alt=""></li>
+                    <li class="display-item"><img src="../../../public/placeholder.svg" alt=""></li>
+                    <li class="display-item"><img src="../../../public/placeholder.svg" alt=""></li>
+                    <li class="display-item"><img src="../../../public/placeholder.svg" alt=""></li>
+                    <li class="display-item"><img src="../../../public/placeholder.svg" alt=""></li>
+                    <li class="display-item"><img src="../../../public/placeholder.svg" alt=""></li>
+                </ul>
+            </div>
+        </article>
+        <!-- 이미지 -->
+        <article id="widget17" class="widget size-1x1 image">
+            <div class="image-container">
+                <img src="../../../public/placeholder.svg" alt="">
+            </div>
+        </article>
+        <article id="widget18" class="widget size-2x1 image">
+            <div class="image-container">
+                <img src="../../../public/placeholder.svg" alt="">
+            </div>
+        </article>
+        <article id="widget19" class="widget size-3x1 image">
+            <div class="image-container">
+                <img src="../../../public/placeholder.svg" alt="">
+            </div>
+        </article>
+        <!-- 카운트다운 -->
+        <article id="widget20" class="widget size-1x1 countdown">
+            <div class="countdown-container">
+                <ul class="countdown-main">
+                    <li>D<span>-</span><span>12</span></li>
+                    <li><a href=""><span>콘서트</span></a></li>
+                </ul>
+            </div>
+        </article>
+        <article id="widget21" class="widget size-2x1 countdown">
+            <div class="countdown-container">
+                <ul class="countdown-main">
+                    <li>D<span>-</span><span>12</span></li>
+                    <li><a href=""><span>콘서트</span></a></li>
+                </ul>
+            </div>
+        </article>
+        <article id="widget22" class="widget size-3x1 countdown">
+            <div class="countdown-container">
+                <ul class="countdown-main">
+                    <li>D<span>-</span><span>12</span></li>
+                    <li><a href=""><span>콘서트</span></a></li>
+                </ul>
+            </div>
+        </article>
+        <!-- 그래프 -->
+        <article id="widget23" class="widget size-1x1 graph">
+            <div class="graph-container">
+                <canvas></canvas>
+            </div>
+        </article>
+        <article id="widget24" class="widget size-2x1 graph">
+            <div class="graph-container">
+                <canvas></canvas>
+            </div>
+        </article>
+        <article id="widget25" class="widget size-3x1 graph">
+            <div class="graph-container">
+                <canvas></canvas>
+            </div>
+        </article>
+    </section>
+</div>
+
+<footer>
+    <p>&copy; 2025 Art U</p>
+    <address>
+        <ul>
+            <li><img src="../../../public/placeholder.svg" alt="address_email_image"></li>
+            <li><img src="../../../public/placeholder.svg" alt="address_youtube_image"></li>
+            <li><img src="../../../public/placeholder.svg" alt="address_instagram_image"></li>
+        </ul>
+    </address>
+</footer>
+</body>
+</html>
