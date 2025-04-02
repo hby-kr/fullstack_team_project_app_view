@@ -61,7 +61,6 @@
     right: 0;
     cursor: se-resize;
 }
-
 /* 리사이즈 핸들을 더 크고 눈에 띄게 만듦 */
 .react-grid-item > .react-resizable-handle::after {
     content: "";
@@ -73,7 +72,6 @@
     border-right: 2px solid rgba(0, 0, 0, 0.4);
     border-bottom: 2px solid rgba(0, 0, 0, 0.4);
 }
-
 /* 드래그 핸들 스타일 */
 .drag-handle {
     cursor: move;
