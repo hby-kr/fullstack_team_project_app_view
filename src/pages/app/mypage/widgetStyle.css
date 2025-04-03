@@ -72,14 +72,14 @@
 }
 
 /* 위젯 별 스타일 */
-.calander, .memo, .info, .bookmark {
+.calander, .memo, .info, .bookmark, .countdown {
     position: relative;
     width: 100%;
     height: 100%;
     background-color: #fff;
 }
 
-.calander-container, .memo-container, .info-container, .bookmark-container {
+.calander-container, .memo-container, .info-container, .bookmark-container, .coundown-container {
     display: flex;
     flex-direction: row;
     padding: 10px;
@@ -313,4 +313,32 @@
     align-items: center;
 }
 
+.countdown-main {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+.countdown-main li:first-child {
+    font-size: 5em;
+}
+
+.two-one .countdown-main {
+    text-align: right;
+}
+
+.three-one .countdown-main {
+    flex-direction: column-reverse;
+    text-align: left;
+}
+
+.three-one .countdown-main li:first-child {
+    font-size: 8em;
+}
+
+.three-one .countdown-main li:last-child {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+}
 

@@ -29,7 +29,7 @@ import PrivacyPage from "./pages/app/privacy/page.jsx";
 import TermsPage from "./pages/app/terms/page.jsx";
 import All from "./pages/app/(main)/page.jsx";
 import CategoryPage from "./pages/app/(main)/category/page.jsx";
-
+import WidgetPage from "./pages/app/mypage/widget/page.jsx";
 
 function App() {
 
@@ -54,6 +54,7 @@ function App() {
                     <Route path="/posts/history" element={<PostsHistoryPage></PostsHistoryPage>}/>
                     <Route path="/profile/edit" element={<ProfilePage></ProfilePage>}/>
                     <Route path="/mypage" element={<MyPage></MyPage>}/>
+                    <Route path="/mypage/widget" element={<WidgetPage></WidgetPage>}/>
                     <Route path="/settings" element={<SettingsPage></SettingsPage>}/>
 
                     {/* 메세지, 알림 */}
