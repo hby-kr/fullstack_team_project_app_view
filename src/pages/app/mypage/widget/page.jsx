@@ -22,7 +22,7 @@ const WidgetPage = () => {
             <main id="widget-page-main">
                 <section>
                     <div className="widget-container">
-                        <div className="weather-container three-one">
+                        <div className="weather-container weather-color three-one">
                             <div className="weather-sun"></div>
                             <div className="weather-main-container">
                                 <ul className="weather-main">
@@ -50,44 +50,10 @@ const WidgetPage = () => {
                     </ul>
                     <div className="widget-container">
                         <div className="weather-container one-one">
-                            <div className="weather-sun"></div>
-                            <div className="weather-main-container">
-                                <ul className="weather-main">
-                                    <li><span>15</span><span>&deg;C</span></li>
-                                </ul>
-                                <ul className="weather-sub">
-                                    <li>H:<span>20</span>&deg;<span>C</span></li>
-                                    <li>L:<span>15</span>&deg;<span>C</span></li>
-                                </ul>
-                            </div>
                         </div>
                         <div className="weather-container two-one">
-                            <div className="weather-sun"></div>
-                            <div className="weather-main-container">
-                                <ul className="weather-main">
-                                    <li><span>15</span><span>&deg;C</span></li>
-                                    <li><span>맑음</span></li>
-                                </ul>
-                                <ul className="weather-sub">
-                                    <li>H:<span>20</span>&deg;<span>C</span></li>
-                                    <li>L:<span>15</span>&deg;<span>C</span></li>
-                                </ul>
-                                <div className="weather-ex"><span>서울특별시</span></div>
-                            </div>
                         </div>
                         <div className="weather-container three-one">
-                            <div className="weather-sun"></div>
-                            <div className="weather-main-container">
-                                <ul className="weather-main">
-                                    <li><span>15</span><span>&deg;C</span></li>
-                                    <li><span>맑음</span></li>
-                                </ul>
-                                <ul className="weather-sub">
-                                    <li>H:<span>20</span>&deg;<span>C</span></li>
-                                    <li>L:<span>15</span>&deg;<span>C</span></li>
-                                </ul>
-                                <div className="weather-ex"><span>서울특별시</span></div>
-                            </div>
                         </div>
                     </div>
                 </section>
