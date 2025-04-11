@@ -19,6 +19,22 @@ const Mypage = () => {
     const userIntroduction = "자기소개를 작성해보세요.";
     const stats = {posts: 1234, followers: 5678, following: 910};
 
+    const [widgets1, setWidgets1] = useState([]);
+
+    useEffect(() => {
+        fetch("/api/widgets/all", {
+            credentials: "include"
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                console.log("서버로부터 받아온 위젯 데이터:", data);
+                setWidgets1(data);
+            })
+            .catch((err) => {
+                console.error("위젯 데이터를 가져오는 데 실패했습니다:", err);
+            });
+    }, []);
+
     useEffect(() => {
         document.title = `${userName}의 페이지`;
     }, [userName]);
