@@ -30,9 +30,6 @@ import TermsPage from "./pages/app/terms/page.jsx";
 import All from "./pages/app/(main)/page.jsx";
 import CategoryPage from "./pages/app/(main)/category/page.jsx";
 import WidgetEdit from "./pages/app/widget/edit/page.jsx";
-import {useEffect, useState} from "react";
-
-
 function App() {
     return (
         <>
