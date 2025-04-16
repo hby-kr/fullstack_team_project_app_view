@@ -7,11 +7,10 @@ import './mypageRefined.css';
 import './widgetStyle.css';
 import './reactive.css';
 
-import { widgetData } from "../widget/widgetData.js";
 import { renderWidgetContent } from "../widget/widgetRenderer";
 
 const Mypage = () => {
-    const [widgets, setWidgets] = useState(widgetData);
+    const [widgets, setWidgets] = useState([]);
     const [draggingWidget, setDraggingWidget] = useState(null);
 
     const userName = "사용자님";
@@ -19,16 +18,23 @@ const Mypage = () => {
     const userIntroduction = "자기소개를 작성해보세요.";
     const stats = {posts: 1234, followers: 5678, following: 910};
 
-    const [widgets1, setWidgets1] = useState([]);
-
     useEffect(() => {
-        fetch("/api/widgets/all", {
+        const userId = "user1001"; // 가정된 유저 ID
+        fetch(`/api/widgets/used?userId=${userId}`, {
             credentials: "include"
         })
             .then((res) => res.json())
             .then((data) => {
                 console.log("서버로부터 받아온 위젯 데이터:", data);
-                setWidgets1(data);
+
+                const processedData = data.map(widget => ({
+                    id: `widget${widget.widget_id}`,
+                    type: widget.widget_json?.type || "unknown",
+                    label: widget.widget_json?.label || "",
+                    size: `${widget.widget_size}x1`
+                }));
+
+                setWidgets(processedData);
             })
             .catch((err) => {
                 console.error("위젯 데이터를 가져오는 데 실패했습니다:", err);
@@ -64,9 +70,29 @@ const Mypage = () => {
         updatedWidgets.splice(targetIndex, 0, draggedWidget);
         setWidgets(updatedWidgets);
 
+        saveWidgetOrder(updatedWidgets); // 순서 저장
         e.currentTarget.classList.remove("drag-over");
         setDraggingWidget(null);
     };
+
+    const saveWidgetOrder = (updatedWidgets) => {
+        const userId = "user1001";
+        const orderData = updatedWidgets.map((widget, index) => ({
+            widget_id: parseInt(widget.id.replace("widget", "")),
+            user_id: userId,
+            order: index
+        }));
+
+        fetch("/api/widgets/order", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            credentials: "include",
+            body: JSON.stringify(orderData)
+        }).then(res => {
+            if (!res.ok) alert("순서 저장 실패");
+        });
+    };
+
 
     const [contextMenu, setContextMenu] = useState({visible: false, x: 0, y: 0, widgetId: null});
 
@@ -77,6 +103,28 @@ const Mypage = () => {
 
     const handleCloseContextMenu = () => {
         setContextMenu({...contextMenu, visible: false});
+    };
+
+    const handleDeleteWidget = () => {
+        const widgetIdNum = parseInt(contextMenu.widgetId.replace("widget", ""));
+        const userId = "user1001"; // 고정 유저 ID (혹은 로그인 유저로 추후 변경)
+
+        fetch(`/api/widgets/delete/${widgetIdNum}?userId=${userId}`, {
+            method: "DELETE",
+            credentials: "include"
+        })
+            .then(res => {
+                if (res.ok) {
+                    setWidgets(prev => prev.filter(w => w.id !== contextMenu.widgetId));
+                    setContextMenu({...contextMenu, visible: false});
+                } else {
+                    alert("삭제 실패");
+                }
+            })
+            .catch(err => {
+                console.error("삭제 중 오류:", err);
+                alert("삭제 중 오류 발생");
+            });
     };
 
     useEffect(() => {
@@ -158,13 +206,16 @@ const Mypage = () => {
                     }}
                 >
                     <li style={{ padding: "5px 10px", cursor: "pointer" }} onClick={() => navigate("/widget/edit" , { state: { widgetId: contextMenu.widgetId } })}>편집</li>
-                    <li style={{ padding: "5px 10px", cursor: "pointer" }} onClick={() => alert(`삭제: ${contextMenu.widgetId}`)}>삭제</li>
+                    <li style={{ padding: "5px 10px", cursor: "pointer" }} onClick={handleDeleteWidget}>삭제</li>
                 </ul>
             )}
 
 
             {/* Widgets */}
             <div id="widget-container">
+                <button className="add-widget-button" onClick={() => navigate("/widget/add")} style={{ margin: "1rem", padding: "0.5rem 1rem" }}>
+                    + 위젯 추가하기
+                </button>
                 <section onDragOver={onDragOver} onDrop={onDrop} onDragEnd={onDragEnd}>
                     {widgets.map((widget, index) => (
                         <article

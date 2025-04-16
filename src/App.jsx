@@ -30,6 +30,8 @@ import TermsPage from "./pages/app/terms/page.jsx";
 import All from "./pages/app/(main)/page.jsx";
 import CategoryPage from "./pages/app/(main)/category/page.jsx";
 import WidgetEdit from "./pages/app/widget/edit/page.jsx";
+import WidgetAdd from "./pages/app/widget/add/page.jsx";
+
 function App() {
     return (
         <>
@@ -53,6 +55,7 @@ function App() {
                     <Route path="/profile/edit" element={<ProfilePage></ProfilePage>}/>
                     <Route path="/mypage" element={<MyPage></MyPage>}/>
                     <Route path="/widget/edit" element={<WidgetEdit/>}/>
+                    <Route path="/widget/add" element={<WidgetAdd />} />
 
                     <Route path="/settings" element={<SettingsPage></SettingsPage>}/>
 

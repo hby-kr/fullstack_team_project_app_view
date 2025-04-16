@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from "react";
 import {useLocation, useNavigate} from "react-router-dom";
-import {widgetData} from "../widgetData.js";
 import {renderWidgetContent} from "../widgetRenderer";
 import {widgetTextEditData} from "./widgetTextEditData.js";
 
@@ -8,24 +7,43 @@ import "./WidgetEdit.css";
 
 const WidgetEdit = () => {
     const text = widgetTextEditData;
-
-    const [activeSection, setActiveSection] = useState("theme"); // 기본은 theme
+    const [activeSection, setActiveSection] = useState("theme");
 
     const location = useLocation();
     const widgetIdFromRoute = location.state?.widgetId;
 
+    const [widgets, setWidgets] = useState([]);
     const [selectedWidget, setSelectedWidget] = useState(null);
     const navigate = useNavigate();
 
     useEffect(() => {
-        const initialWidget = widgetData.find(w => w.id === widgetIdFromRoute);
-        setSelectedWidget(initialWidget);
+        const userId = "user1001"; // 가정된 유저 ID
+        fetch(`/api/widgets/used?userId=${userId}`, {
+            credentials: "include"
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                const processedData = data.map(widget => ({
+                    id: `widget${widget.widget_id}`,
+                    widget_id: widget.widget_id,
+                    type: widget.widget_json?.type || "unknown",
+                    label: widget.widget_json?.label || "",
+                    size: `${widget.widget_size}x1`,
+                }));
+
+                setWidgets(processedData);
+
+                const found = processedData.find(w => w.id === widgetIdFromRoute);
+                setSelectedWidget(found);
+            })
+            .catch((err) => {
+                console.error("위젯 데이터를 가져오는 데 실패했습니다:", err);
+            });
     }, [widgetIdFromRoute]);
 
     if (!selectedWidget) return <p>위젯을 찾을 수 없습니다.</p>;
 
-    const sameTypeWidgets = widgetData.filter(w => w.type === selectedWidget.type);
-
+    const sameTypeWidgets = widgets.filter(w => w.type === selectedWidget.type);
     return (
         <div className="widget-edit-page">
             {/* 상단: 위젯 설정 헤더 */}
