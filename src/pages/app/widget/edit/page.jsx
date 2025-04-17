@@ -1,12 +1,10 @@
 import React, {useEffect, useState} from "react";
 import {useLocation, useNavigate} from "react-router-dom";
 import {renderWidgetContent} from "../widgetRenderer";
-import {widgetTextEditData} from "./widgetTextEditData.js";
 
 import "./WidgetEdit.css";
 
 const WidgetEdit = () => {
-    const text = widgetTextEditData;
     const [activeSection, setActiveSection] = useState("theme");
 
     const location = useLocation();
@@ -30,18 +28,16 @@ const WidgetEdit = () => {
                     label: widget.widget_json?.label || "",
                     size: `${widget.widget_size}x1`,
                 }));
-
                 setWidgets(processedData);
 
                 const found = processedData.find(w => w.id === widgetIdFromRoute);
                 setSelectedWidget(found);
-            })
-            .catch((err) => {
-                console.error("위젯 데이터를 가져오는 데 실패했습니다:", err);
             });
     }, [widgetIdFromRoute]);
 
-    if (!selectedWidget) return <p>위젯을 찾을 수 없습니다.</p>;
+    if (!selectedWidget || selectedWidget.type === "unknown") {
+        return <p>유효한 위젯을 찾을 수 없습니다.</p>;
+    }
 
     const sameTypeWidgets = widgets.filter(w => w.type === selectedWidget.type);
     return (
@@ -69,11 +65,14 @@ const WidgetEdit = () => {
                     <h4>테마 선택</h4>
                     <section className="theme-widget-list">
                         {sameTypeWidgets.map(w => (
-                                <article className={`widget size-${w.size} ${w.type}`}
-                                         style={{ cursor: "pointer" }}
-                                         onClick={() => setSelectedWidget(w)}>key={w.id}\
-                                    {renderWidgetContent(w)}
-                                </article>
+                            <article
+                                key={w.id}
+                                className={`widget size-${w.size} ${w.type}`}
+                                style={{ cursor: "pointer" }}
+                                onClick={() => setSelectedWidget(w)}
+                            >
+                                {renderWidgetContent(w)}
+                            </article>
                         ))}
                     </section>
                 </div>
