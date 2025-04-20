@@ -399,7 +399,7 @@ export default function MessagesPage() {
             {/* New message button */}
             <div className="mt-4 flex justify-end">
               <Link
-                  to="/messages/new"
+                  to="/base/messages/new"
                   className="px-4 py-2 bg-primary text-white rounded-full hover:bg-primary/90 shadow-md"
               >
                 + 새 메세지

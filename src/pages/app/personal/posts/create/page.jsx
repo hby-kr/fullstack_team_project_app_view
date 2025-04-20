@@ -107,7 +107,7 @@ export default function CreatePostPage() {
 
       <main className="flex-grow container mx-auto px-4 py-8">
         <div className="max-w-3xl mx-auto">
-          <Link to="/" className="inline-flex items-center text-gray-600 hover:text-primary mb-6">
+          <Link to="/public" className="inline-flex items-center text-gray-600 hover:text-primary mb-6">
             <ArrowLeft className="w-4 h-4 mr-2" />
             <span>뒤로 가기</span>
           </Link>
@@ -253,7 +253,7 @@ export default function CreatePostPage() {
                 )}
 
                 <div className="flex justify-end space-x-4 pt-4">
-                  <Link to="/" className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50">
+                  <Link to="/public" className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50">
                     취소
                   </Link>
                   <button

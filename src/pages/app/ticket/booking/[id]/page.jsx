@@ -334,7 +334,7 @@ export default function BookingPage() {
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="text-center">
           <p className="text-xl font-semibold mb-4">공연 정보를 찾을 수 없습니다</p>
-          <Link to="/" className="text-primary hover:underline">
+          <Link to="/public" className="text-primary hover:underline">
             홈으로 돌아가기
           </Link>
         </div>
@@ -350,7 +350,7 @@ export default function BookingPage() {
       <main className="flex-grow container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto">
           {/* Back button */}
-          <Link to="/" className="inline-flex items-center text-gray-600 hover:text-primary mb-6">
+          <Link to="/public" className="inline-flex items-center text-gray-600 hover:text-primary mb-6">
             <ArrowLeft className="w-4 h-4 mr-2" />
             <span>뒤로 가기</span>
           </Link>
@@ -916,7 +916,7 @@ export default function BookingPage() {
               <div className="mb-6">
                 {user ? (
                   <Link
-                    to={`/booking/${encodeURIComponent(eventInfo.id)}/review`}
+                    to={`/src/pages/app/ticket/booking/${encodeURIComponent(eventInfo.id)}/review`}
                     className="inline-flex items-center px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90"
                   >
                     <Star className="w-4 h-4 mr-2" />
@@ -962,7 +962,7 @@ export default function BookingPage() {
                         {user && review.userId === user.id && (
                           <div className="flex space-x-2 mt-2">
                             <Link
-                              to={`/booking/${params.id}/review?edit=true&reviewId=${review.id}`}
+                              to={`/src/pages/app/ticket/booking/${params.id}/review?edit=true&reviewId=${review.id}`}
                               className="text-xs text-blue-600 hover:underline"
                             >
                               수정

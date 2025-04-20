@@ -3,32 +3,32 @@ import {BrowserRouter, Route, Routes} from "react-router-dom";
 import {SettingsProvider} from './lib/settings-context.jsx';
 
 import MainPage from './pages/app/main/MainPage.jsx'
-import LoginPage from "./pages/app/login/page.jsx";
-import BookingPage from "./pages/app/booking/[id]/page.jsx";
-import ReviewPage from "./pages/app/booking/[id]/review/page.jsx";
-import CartPage from "./pages/app/cart/page.jsx";
-import CouponPage from "./pages/app/coupon/page.jsx";
-import CsPage from "./pages/app/cs/page.jsx";
+import LoginPage from "./pages/app/base/Login.jsx";
+import BookingPage from "./pages/app/ticket/booking/[id]/page.jsx";
+import ReviewPage from "./pages/app/ticket/booking/[id]/review/page.jsx";
+import CartPage from "./pages/app/ticket/Cart.jsx";
+import CouponPage from "./pages/app/ticket/Coupon.jsx";
+import CsPage from "./pages/app/personal/CsPage.jsx";
 import DetailPage from "./pages/app/Events/EventDetailPage.jsx";
-import MessagesPage from "./pages/app/messages/page.jsx";
-import MessagesNewPage from "./pages/app/messages/new/page.jsx";
-import MessagesIdPage from "./pages/app/messages/[id]/page.jsx";
-import NotificationsPage from "./pages/app/notifications/page.jsx";
-import PointPage from "./pages/app/point/page.jsx";
-import PostsCreatePage from "./pages/app/posts/create/page.jsx";
-import PostsCreateBookingPage from "./pages/app/posts/create-booking/page.jsx";
-import PostsEditPage from "./pages/app/posts/edit/[id]/page.jsx";
-import PostsHistoryPage from "./pages/app/posts/history/page.jsx";
-import ProfilePage from "./pages/app/profile/edit/page.jsx";
-import PurchasePage from "./pages/app/purchase/page.jsx";
-import SettingsPage from "./pages/app/settings/page.jsx";
-import SignupPage from "./pages/app/signup/page.jsx"; //회원가입 페이지
-import MyPage from "./pages/app/mypage/page.jsx";
+import MessagesPage from "./pages/app/base/messages/page.jsx";
+import MessagesNewPage from "./pages/app/base/messages/new/page.jsx";
+import MessagesIdPage from "./pages/app/base/messages/[id]/page.jsx";
+import NotificationsPage from "./pages/app/base/Notifications.jsx";
+import PointPage from "./pages/app/ticket/Point.jsx";
+import PostsCreatePage from "./pages/app/personal/posts/create/page.jsx";
+import PostsCreateBookingPage from "./pages/app/personal/posts/create-booking/page.jsx";
+import PostsEditPage from "./pages/app/personal/posts/edit/[id]/page.jsx";
+import PostsHistoryPage from "./pages/app/personal/posts/history/page.jsx";
+import ProfilePage from "./pages/app/personal/profile/edit/page.jsx";
+import PurchasePage from "./pages/app/ticket/Purchase.jsx";
+import SettingsPage from "./pages/app/personal/Settings.jsx";
+import SignupPage from "./pages/app/base/Signup.jsx"; //회원가입 페이지
+import MyPage from "./pages/app/personal/mypage/page.jsx";
 import Header from "./components/header.jsx";
-import ContactPage from "./pages/app/contact/page.jsx";
-import FaqPage from "./pages/app/faq/page.jsx";
-import PrivacyPage from "./pages/app/privacy/page.jsx";
-import TermsPage from "./pages/app/terms/page.jsx";
+import ContactPage from "./pages/app/ServiceInfo/Contact.jsx";
+import FaqPage from "./pages/app/ServiceInfo/FAQ.jsx";
+import PrivacyPage from "./pages/app/ServiceInfo/Privacy.jsx";
+import TermsPage from "./pages/app/ServiceInfo/Terms.jsx";
 import All from "./pages/app/main/AllEvents.jsx";
 import CategoryPage from "./pages/app/main/category/CategoryPage.jsx";
 
@@ -59,6 +59,7 @@ function App() {
                <Route path="/profile/edit" element={<ProfilePage></ProfilePage>}/>
                <Route path="/mypage" element={<MyPage></MyPage>}/>
                <Route path="/settings" element={<SettingsPage></SettingsPage>}/>
+               <Route path="/cs" element={<CsPage></CsPage>}/> {/* 이 페이지 연결 안되어 있음  */}
 
                {/* 메세지, 알림 */}
                <Route path="/messages" element={<MessagesPage></MessagesPage>}/>
@@ -78,7 +79,6 @@ function App() {
                <Route path="/purchase" element={<PurchasePage></PurchasePage>}/>
 
                {/* 고객센터 관련 */}
-               <Route path="/cs" element={<CsPage></CsPage>}/> {/* 이 페이지 연결 안되어 있음  */}
                <Route path="/faq" element={<FaqPage></FaqPage>}/>
                <Route path="/contact" element={<ContactPage></ContactPage>}/>
                <Route path="/terms" element={<TermsPage></TermsPage>}/>

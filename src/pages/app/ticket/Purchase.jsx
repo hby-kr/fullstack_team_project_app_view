@@ -51,7 +51,7 @@ export default function PaymentHistoryPage() {
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="text-center">
           <p className="text-xl font-semibold mb-4">결제 내역이 없습니다.</p>
-          <Link to="/" className="text-primary hover:underline">
+          <Link to="/public" className="text-primary hover:underline">
             홈으로 돌아가기
           </Link>
         </div>
@@ -86,7 +86,7 @@ export default function PaymentHistoryPage() {
                   {/* "리뷰 작성" 버튼 */}
                   {!payment.isCancelled && (
                     <Link
-                      to={`/booking/${payment.id}/review`}
+                      to={`/src/pages/app/ticket/booking/${payment.id}/review`}
                       className="px-4 py-2 text-sm bg-primary text-white rounded-md hover:bg-primary/90 text-center"
                     >
                       리뷰 작성

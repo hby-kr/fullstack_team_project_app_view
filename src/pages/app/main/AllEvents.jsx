@@ -86,7 +86,7 @@ export default function All() {
                                                 </h3>
                                                 {image.bookable && (
                                                     <Link
-                                                        to={`/booking/${encodeURIComponent(image.id)}`}
+                                                        to={`/src/pages/app/ticket/booking/${encodeURIComponent(image.id)}`}
                                                         className="text-xs px-2 py-1 bg-primary text-white rounded-full hover:bg-primary/90 inline-block"
                                                     >
                                                         예매하기

@@ -105,7 +105,7 @@ export default function CartPage() {
       <main className="flex-grow container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto">
           {/* Back button */}
-          <Link to="/" className="inline-flex items-center text-gray-600 hover:text-primary mb-6">
+          <Link to="/public" className="inline-flex items-center text-gray-600 hover:text-primary mb-6">
             <ArrowLeft className="w-4 h-4 mr-2" />
             <span>뒤로 가기</span>
           </Link>
@@ -120,7 +120,7 @@ export default function CartPage() {
               <div className="text-center py-12">
                 <ShoppingCart className="w-16 h-16 mx-auto text-gray-300 mb-4" />
                 <p className="text-gray-500 mb-4">장바구니가 비어있습니다.</p>
-                <Link to="/" className="text-primary hover:underline">
+                <Link to="/public" className="text-primary hover:underline">
                   공연 둘러보기
                 </Link>
               </div>
