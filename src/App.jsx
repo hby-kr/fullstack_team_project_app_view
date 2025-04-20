@@ -1,14 +1,15 @@
-import './App.css'
+import './styles/App.css'
 import {BrowserRouter, Route, Routes} from "react-router-dom";
-import { SettingsProvider } from './lib/settings-context.jsx';
-import HomePage from './pages/app/page.jsx'
+import {SettingsProvider} from './lib/settings-context.jsx';
+
+import MainPage from './pages/app/main/MainPage.jsx'
 import LoginPage from "./pages/app/login/page.jsx";
 import BookingPage from "./pages/app/booking/[id]/page.jsx";
 import ReviewPage from "./pages/app/booking/[id]/review/page.jsx";
 import CartPage from "./pages/app/cart/page.jsx";
 import CouponPage from "./pages/app/coupon/page.jsx";
 import CsPage from "./pages/app/cs/page.jsx";
-import DetailPage from "./pages/app/detail/[id]/page.jsx";
+import DetailPage from "./pages/app/Events/EventDetailPage.jsx";
 import MessagesPage from "./pages/app/messages/page.jsx";
 import MessagesNewPage from "./pages/app/messages/new/page.jsx";
 import MessagesIdPage from "./pages/app/messages/[id]/page.jsx";
@@ -28,65 +29,67 @@ import ContactPage from "./pages/app/contact/page.jsx";
 import FaqPage from "./pages/app/faq/page.jsx";
 import PrivacyPage from "./pages/app/privacy/page.jsx";
 import TermsPage from "./pages/app/terms/page.jsx";
-import All from "./pages/app/(main)/page.jsx";
-import CategoryPage from "./pages/app/(main)/category/page.jsx";
+import All from "./pages/app/main/AllEvents.jsx";
+import CategoryPage from "./pages/app/main/category/CategoryPage.jsx";
 
 
 function App() {
 
-    return (
-        <>
-            <SettingsProvider>
-            <BrowserRouter>
-                <Header />
-                <Routes>
+   return (
+      <SettingsProvider>
+         <BrowserRouter>
+            <Header/>
 
-                    {/* 기본 */}
-                    <Route path="/" element={<HomePage></HomePage>}>
-                        <Route path={""} element={<All/>}/>
-                        <Route path="cate/:category" element={<CategoryPage/>}/>
-                    </Route>
-                    <Route path="/login" element={<LoginPage></LoginPage>}/>
-                    <Route path="/signup" element={<SignupPage></SignupPage>}/>
+            <Routes>
 
-                    {/* 개인 패이지, 포스팅, 개인설정 */}
-                    <Route path="/posts/create" element={<PostsCreatePage></PostsCreatePage>}/>
-                    <Route path="/posts/create-booking" element={<PostsCreateBookingPage></PostsCreateBookingPage>}/>
-                    <Route path="/posts/edit/:id" element={<PostsEditPage></PostsEditPage>}/>
-                    <Route path="/posts/history" element={<PostsHistoryPage></PostsHistoryPage>}/>
-                    <Route path="/profile/edit" element={<ProfilePage></ProfilePage>}/>
-                    <Route path="/mypage" element={<MyPage></MyPage>}/>
-                    <Route path="/settings" element={<SettingsPage></SettingsPage>}/>
+               {/* 기본 */}
+               <Route path="/" element={<MainPage></MainPage>}> {/* 중첩 라우팅(Nested Routing)  */}
+                  <Route path={""} element={<All/>}/> {/*  path 그 안에 아무 서브 경로가 없으면 <All />이 보여지고 */}
+                  <Route path="cate/:category" element={<CategoryPage/>}/> {/* /cate/abc 이런 식으로 들어오면 <CategoryPage />가 보여짐.  */}
+               </Route>
 
-                    {/* 메세지, 알림 */}
-                    <Route path="/messages" element={<MessagesPage></MessagesPage>}/>
-                    <Route path="/messages/new" element={<MessagesNewPage></MessagesNewPage>}/>
-                    <Route path="/messages/:id" element={<MessagesIdPage></MessagesIdPage>}/>
-                    <Route path="/notifications" element={<NotificationsPage></NotificationsPage>}/>
+               <Route path="/login" element={<LoginPage></LoginPage>}/>
+               <Route path="/signup" element={<SignupPage></SignupPage>}/>
 
-                    {/* 공연 관련 */}
-                    <Route path="/detail/:id" element={<DetailPage></DetailPage>}/>
-                    <Route path="/booking/:id" element={<BookingPage></BookingPage>}/>
-                    <Route path="/booking/:id/review" element={<ReviewPage></ReviewPage>}/>
+               {/* 개인 패이지, 포스팅, 개인설정 */}
+               <Route path="/posts/create" element={<PostsCreatePage></PostsCreatePage>}/>
+               <Route path="/posts/create-booking" element={<PostsCreateBookingPage></PostsCreateBookingPage>}/>
+               <Route path="/posts/edit/:id" element={<PostsEditPage></PostsEditPage>}/>
+               <Route path="/posts/history" element={<PostsHistoryPage></PostsHistoryPage>}/>
+               <Route path="/profile/edit" element={<ProfilePage></ProfilePage>}/>
+               <Route path="/mypage" element={<MyPage></MyPage>}/>
+               <Route path="/settings" element={<SettingsPage></SettingsPage>}/>
 
-                    {/* 결제 관련 */}
-                    <Route path="/cart" element={<CartPage></CartPage>}/>
-                    <Route path="/coupon" element={<CouponPage></CouponPage>}/>
-                    <Route path="/point" element={<PointPage></PointPage>}/>
-                    <Route path="/purchase" element={<PurchasePage></PurchasePage>}/>
+               {/* 메세지, 알림 */}
+               <Route path="/messages" element={<MessagesPage></MessagesPage>}/>
+               <Route path="/messages/new" element={<MessagesNewPage></MessagesNewPage>}/>
+               <Route path="/messages/:id" element={<MessagesIdPage></MessagesIdPage>}/>
+               <Route path="/notifications" element={<NotificationsPage></NotificationsPage>}/>
 
-                    {/* 고객센터 관련 */}
-                    <Route path="/cs" element={<CsPage></CsPage>}/> {/* 이 페이지 연결 안되어 있음  */}
-                    <Route path="/faq" element={<FaqPage></FaqPage>}/>
-                    <Route path="/contact" element={<ContactPage></ContactPage>}/>
-                    <Route path="/terms" element={<TermsPage></TermsPage>}/>
-                    <Route path="/privacy" element={<PrivacyPage></PrivacyPage>}/>
+               {/* 공연 관련 */}
+               <Route path="/detail/:id" element={<DetailPage></DetailPage>}/>
+               <Route path="/booking/:id" element={<BookingPage></BookingPage>}/>
+               <Route path="/booking/:id/review" element={<ReviewPage></ReviewPage>}/>
 
-                </Routes>
-            </BrowserRouter>
-            </SettingsProvider>
-        </>
-    )
+               {/* 결제 관련 */}
+               <Route path="/cart" element={<CartPage></CartPage>}/>
+               <Route path="/coupon" element={<CouponPage></CouponPage>}/>
+               <Route path="/point" element={<PointPage></PointPage>}/>
+               <Route path="/purchase" element={<PurchasePage></PurchasePage>}/>
+
+               {/* 고객센터 관련 */}
+               <Route path="/cs" element={<CsPage></CsPage>}/> {/* 이 페이지 연결 안되어 있음  */}
+               <Route path="/faq" element={<FaqPage></FaqPage>}/>
+               <Route path="/contact" element={<ContactPage></ContactPage>}/>
+               <Route path="/terms" element={<TermsPage></TermsPage>}/>
+               <Route path="/privacy" element={<PrivacyPage></PrivacyPage>}/>
+
+            </Routes>
+
+
+         </BrowserRouter>
+      </SettingsProvider>
+   )
 }
 
 export default App

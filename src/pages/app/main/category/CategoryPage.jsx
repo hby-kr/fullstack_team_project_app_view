@@ -2,7 +2,9 @@ import {Link, useParams} from "react-router"
 import {useState} from "react";
 
 export default function CategoryPage() {
-    const{category}=useParams();
+
+    const{category}=useParams(); // URL 파라미터 (동적 라우팅에서) 값을 가져올 때 사용
+
     const categoryObj={
         "art": "미술",
         "dance": "춤",
@@ -21,7 +23,7 @@ export default function CategoryPage() {
             src: `/placeholder.svg?height=300&width=400&text=${category}${i + 1}`,
             alt: `${category} 이미지 ${i + 1}`,
             title: `${category} 콘텐츠 ${i + 1}`,
-            description: `${category} 관련 콘텐츠에 대한 간략한 설명입니다. 여기에는 ${category}에 관한 정보가 표시됩니다.`,
+            description: `${category} 관련 콘텐츠에 대한 간략한 설명입니다.dfsdfdsf 여기에는 ${category}에 관한 정보가 표시됩니다.`,
             bookable: i % 3 === 0, // Every third item will be bookable
         }))
     }

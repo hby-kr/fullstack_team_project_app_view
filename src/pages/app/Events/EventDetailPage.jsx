@@ -1,16 +1,15 @@
-"use client"
-
 import { useEffect, useState } from "react"
 import {Link, useParams, useNavigate} from "react-router"
 import { ArrowLeft, Heart, Share2, MessageSquare } from "lucide-react"
-import Header from "/src/components/header"
 import { useAuth } from "/src/lib/auth-context"
 
 
 export default function DetailPage() {
-  const params = useParams()
+
+  const params = useParams() // useParams → “URL에서 전달된 값”을 꺼내는 도구
   const navigate = useNavigate()
   const { user } = useAuth()
+
   const [content, setContent] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
   const [isLiked, setIsLiked] = useState(false)
@@ -23,6 +22,7 @@ export default function DetailPage() {
     const parts = id.split("-")
     const category = decodeURIComponent(parts[0])
     const itemNumber = parts[1] || "1"
+
 
     // Create current content data
     const currentContent = {
@@ -40,6 +40,7 @@ export default function DetailPage() {
       bookable:
           category === "음악" || category === "춤" || category === "연기" || category === "뮤지컬" || Math.random() > 0.5, // Make performance-related categories bookable
     }
+
 
     // Create related content (other items in the same category)
     const related = Array.from({ length: 4 }, (_, i) => {
@@ -59,6 +60,7 @@ export default function DetailPage() {
     setRelatedItems(related)
     setIsLoading(false)
   }, [params.id])
+
 
   const handleLike = () => {
     if (!user) {
@@ -81,6 +83,7 @@ export default function DetailPage() {
     }
   };
 
+
   if (isLoading) {
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-50">
@@ -97,7 +100,7 @@ export default function DetailPage() {
         <div className="min-h-screen flex items-center justify-center bg-gray-50">
           <div className="text-center">
             <p className="text-xl font-semibold mb-4">콘텐츠를 찾을 수 없습니다</p>
-            <Link to="/" className="text-primary hover:underline">
+            <Link to="/public" className="text-primary hover:underline">
               홈으로 돌아가기
             </Link>
           </div>
@@ -105,15 +108,17 @@ export default function DetailPage() {
     )
   }
 
+
   return (
       <div className="min-h-screen flex flex-col bg-gray-50">
 
 
         {/* Main content */}
         <main className="flex-grow container mx-auto px-4 py-8">
+
           <div className="max-w-4xl mx-auto">
             {/* Back button */}
-            <Link to="/" className="inline-flex items-center text-gray-600 hover:text-primary mb-6">
+            <Link to="/public" className="inline-flex items-center text-gray-600 hover:text-primary mb-6">
               <ArrowLeft className="w-4 h-4 mr-2" />
               <span>뒤로 가기</span>
             </Link>
