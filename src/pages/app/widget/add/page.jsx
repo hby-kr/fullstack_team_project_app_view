@@ -18,8 +18,8 @@ const WidgetAdd = () => {
                     id: `widget${widget.widget_id}`,
                     widget_id: widget.widget_id,
                     size: `${widget.widget_size}x1`,
-                    type: widget.json || "unknown",
-                    label: widget.label || ""
+                    type: widget.widget_json?.type || "unknown",
+                    label: widget.widget_json?.label || ""
                 }));
                 setAllWidgets(processed);
             })
