@@ -31,7 +31,8 @@ import PrivacyPage from "./pages/app/ServiceInfo/Privacy.jsx";
 import TermsPage from "./pages/app/ServiceInfo/Terms.jsx";
 import All from "./pages/app/main/AllEvents.jsx";
 import CategoryPage from "./pages/app/Events/CategoryPage.jsx";
-
+import WidgetEdit from "./pages/app/widget/edit/page.jsx";
+import WidgetAdd from "./pages/app/widget/add/page.jsx";
 
 function App() {
 
@@ -58,6 +59,8 @@ function App() {
                <Route path="/posts/history" element={<PostsHistoryPage></PostsHistoryPage>}/>
                <Route path="/profile/edit" element={<ProfilePage></ProfilePage>}/>
                <Route path="/mypage" element={<MyPage></MyPage>}/>
+               <Route path="/widget/edit" element={<WidgetEdit/>}/>
+               <Route path="/widget/add" element={<WidgetAdd />} />
                <Route path="/settings" element={<SettingsPage></SettingsPage>}/>
                <Route path="/cs" element={<CsPage></CsPage>}/> {/* 이 페이지 연결 안되어 있음  */}
 

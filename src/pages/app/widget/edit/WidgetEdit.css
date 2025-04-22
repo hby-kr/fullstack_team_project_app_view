@@ -1,0 +1,82 @@
+.widget-edit-page {
+    padding: 1rem;
+    font-family: sans-serif;
+    align-items: center;
+}
+
+.selected-widget-preview{
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    height: 300px;
+    padding: 10px;
+    background: #eaeaea;
+}
+
+.edit-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.widget-action-buttons {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.icon-button {
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+    border: 1px solid #ccc;
+    background: #fff;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.theme-selection {
+    margin-top: 2rem;
+}
+
+.widget-edit-page section{
+    margin: 30px 30px;
+    padding: 20px 10px;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr); /* 한 줄에 3개의 열 */
+    gap: 20px; /* 위젯 간의 간격 */
+    grid-auto-rows: 1fr;
+}
+
+/* 1x1 크기 (한 칸) */
+.widget.size-1x1 {
+    grid-column: span 1;
+    aspect-ratio: 1 / 1;
+}
+.selected-widget-preview article.widget.size-1x1 {
+    max-width: 224px;
+}
+/* 2x1 크기 (두 칸) */
+.widget.size-2x1 {
+    grid-column: span 2;
+    padding-top: 50%;
+    aspect-ratio: 2 / 1;
+}
+.selected-widget-preview article.widget.size-2x1 {
+    max-width: 448px;
+}
+/* 3x1 크기 (세 칸) */
+.widget.size-3x1 {
+    grid-column: span 3;
+    padding-top: 33.33%;
+    aspect-ratio: 3 / 1;
+}
+.selected-widget-preview article.widget.size-3x1 {
+    max-width: 896px;
+}
+.selected-widget-preview article.widget {
+    padding-top: 0 !important;  /* 비율 무시 */
+    height: 100% !important;    /* 부모 높이 500px에 맞춰짐 */
+}

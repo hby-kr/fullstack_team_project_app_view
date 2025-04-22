@@ -23,7 +23,7 @@
 
 }
 
-.widget > *:not(.countdown-container) {
+.widget > * {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -72,14 +72,14 @@
 }
 
 /* 위젯 별 스타일 */
-.calander, .memo, .info, .bookmark, .display, .image, .countdown{
+.calander, .memo, .info, .bookmark {
     position: relative;
     width: 100%;
     height: 100%;
     background-color: #fff;
 }
 
-.calander-container, .memo-container, .info-container, .bookmark-container, .display-container, .image-container{
+.calander-container, .memo-container, .info-container, .bookmark-container {
     display: flex;
     flex-direction: row;
     padding: 10px;
@@ -87,7 +87,7 @@
     height: 100%;
 }
 
-.calander-main, .bookmark-main, .countdown-main {
+.calander-main, .bookmark-main {
     margin: 10px;
 }
 
@@ -185,16 +185,16 @@
     vertical-align: super;
 }
 
-.size-2x1 .weather-main {
+.two-one .weather-main {
     width: 100%;
     justify-content: space-between;
 }
 
-.size-2x1 .weather-main li:first-child {
+.two-one .weather-main li:first-child {
     margin-bottom: 30px;
 }
 
-.size-2x1 .weather-main li:last-child {
+.two-one .weather-main li:last-child {
     position: absolute;
     top: calc(50% - 0.5em);
     right: 30px;
@@ -225,15 +225,15 @@
     margin-left: 5px;
 }
 
-.size-2x1 .weather-sub {
+.two-one .weather-sub {
     bottom: 30px;
 }
 
-.size-2x1 .weather-ex {
+.two-one .weather-ex {
     bottom: 5px;
 }
 
-.size-3x1 .weather-ex {
+.three-one .weather-ex {
     top: 10px;
 }
 
@@ -280,16 +280,15 @@
     display: grid;
     grid-template-columns: repeat(1, 1fr);
     flex-direction: row;
-    gap: 15px;
     width: 100%;
     height: 100%;
 }
 
-.size-2x1 .bookmark-main {
+.two-one .bookmark-main {
     grid-template-columns: repeat(2, 1fr);
 }
 
-.size-3x1 .bookmark-main {
+.three-one .bookmark-main {
     grid-template-columns: repeat(3, 1fr);
 }
 
@@ -298,7 +297,7 @@
     aspect-ratio: 1 / 1;
     width: calc(100% - 10px);
     height: calc(100% - 10px);
-    background-color: #e0e0e0;
+    background-color: #9a9a9a;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -308,92 +307,10 @@
     overflow: hidden;
 }
 
-.size-1x1 .bookmark-container {
+.one-one .bookmark-container {
     flex-direction: column;
     text-align: center;
     align-items: center;
 }
 
-.display-container {
-    padding: 5px;
-    overflow: hidden;
-}
 
-.display-main {
-    display: grid;
-    width: 100%;
-    height: 100%;
-    gap: 5px;
-    justify-content: center;
-    align-content: center;
-}
-
-.size-1x1 .display-main {
-    grid-template-columns: repeat(1, 1fr);
-}
-
-.size-2x1 .display-main {
-    grid-template-columns: repeat(3, 1fr);
-}
-
-.size-3x1 .display-main {
-    grid-template-columns: repeat(4, 1fr);
-}
-
-.display-item {
-    width: 100%;
-    position: relative;
-    padding-top: 100%;
-    background-color: #f0f0f0;
-    border-radius: 4px;
-    overflow: hidden;
-}
-
-.display-item img {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    transform: translate(-50%, -50%);
-}
-
-.image img{
-    width: calc(100% - 10px);
-    object-fit: cover;
-}
-
-.countdown-container {
-    position: absolute; /* 다시 absolute로 복귀시킴 */
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    padding: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.countdown-main {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-}
-
-.countdown-main li:first-of-type span {
-    font-size: 5em;
-    font-weight: bold;
-}
-
-.size-2x1 .countdown-main li:last-child {
-    text-align: end;
-}
-
-.size-3x1 .countdown-main li:last-child {
-    position: absolute;
-    top: 0;
-    left: 0;
-}
