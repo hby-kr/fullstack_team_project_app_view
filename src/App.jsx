@@ -30,7 +30,7 @@ import FaqPage from "./pages/app/ServiceInfo/FAQ.jsx";
 import PrivacyPage from "./pages/app/ServiceInfo/Privacy.jsx";
 import TermsPage from "./pages/app/ServiceInfo/Terms.jsx";
 import All from "./pages/app/main/AllEvents.jsx";
-import CategoryPage from "./pages/app/main/category/CategoryPage.jsx";
+import CategoryPage from "./pages/app/Events/CategoryPage.jsx";
 
 
 function App() {
@@ -68,7 +68,7 @@ function App() {
                <Route path="/notifications" element={<NotificationsPage></NotificationsPage>}/>
 
                {/* 공연 관련 */}
-               <Route path="/detail/:id" element={<DetailPage></DetailPage>}/>
+               <Route path="/event/:id" element={<DetailPage></DetailPage>}/>
                <Route path="/booking/:id" element={<BookingPage></BookingPage>}/>
                <Route path="/booking/:id/review" element={<ReviewPage></ReviewPage>}/>
 

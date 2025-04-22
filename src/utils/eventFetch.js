@@ -6,7 +6,7 @@ const serverUrl = "http://localhost:4775";
 
 export async function loadeventForMain(categoryId, pageSize) {
 
-   const URL = `${serverUrl}/event/main/cate/${categoryId}/${pageSize}`; // 요청을 보낼 URL. (카테고리 번호와 페이지 크기를 포함)
+   const URL = `${serverUrl}/event/cate/${categoryId}/${pageSize}`; // 요청을 보낼 URL. (카테고리 번호와 페이지 크기를 포함)
 
    const response = await fetch(URL); // 해당 URL로 GET 요청을 보냄
    if (!response.ok) throw new Error(response.status + ""); // 응답 상태가 실패일 경우 에러를 발생시킴

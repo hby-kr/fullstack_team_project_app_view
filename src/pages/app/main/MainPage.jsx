@@ -16,7 +16,7 @@ const generateCategoryImages = (category, count) => {
    }))
 }
 
-const categoryObj = {
+const categoryObjKor = {
    "art": "미술",
    "dance": "춤",
    "acting": "연기",
@@ -34,7 +34,7 @@ export default function MainPage() {
    const [categories, setCategories] = useState(["전체", "음악", "미술", "춤", "연기", "뮤지컬"])
 
    // 현재 선택된 카테고리 (기본값: 전체)
-   const [activeCategory, setActiveCategory] = useState(categoryObj[params.category]);
+   const [activeCategory, setActiveCategory] = useState(categoryObjKor[params.category]);
 
    // 정렬을 재설정할까, 보여줄까 상태
    const [isReordering, setIsReordering] = useState(false)
@@ -181,7 +181,7 @@ export default function MainPage() {
                               <button
                                  key={category}
                                  className={`px-4 py-2 mx-1 text-base font-medium rounded-full transition-colors
-                                  ${categoryObj[params.category] === category || (category === "전체" && !params.category)
+                                  ${categoryObjKor[params.category] === category || (category === "전체" && !params.category)
                                        ? "bg-primary text-primary-foreground"
                                        : "text-gray-700 hover:bg-gray-100"
                                  }`}

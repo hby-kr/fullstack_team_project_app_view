@@ -18,7 +18,6 @@ export default function DetailPage() {
    // const [isLiked, setIsLiked] = useState(false)
    // const [relatedItems, setRelatedItems] = useState([])
 
-
    // 실제 API 호출 (useQuery 사용)
    const {
       data: currentContent, isLoading, isError, error,
@@ -60,10 +59,63 @@ export default function DetailPage() {
    return (
       <div className="min-h-screen flex flex-col bg-gray-50">
 
+
+         {/* Main content */}
+         <main className="flex-grow container mx-auto px-4 py-8">
+
+            <div className="max-w-4xl mx-auto">
+               {/* Back button */}
+               <Link to="/public" className="inline-flex items-center text-gray-600 hover:text-primary mb-6">
+                  <ArrowLeft className="w-4 h-4 mr-2"/>
+                  <span>뒤로 가기</span>
+               </Link>
+
+               {/* Content header */}
+               <div className="mb-8">
+                  <h1 className="text-3xl font-bold mb-2">{currentContent.title}</h1>
+                  <div className="flex items-center text-sm text-gray-500 mb-4">
+                     <span className="mr-4">{currentContent.userId}</span>
+                     {/*<span className="mr-4">{content.date}</span>*/}
+                     {/*<span>조회수 {content.views}</span>*/}
+                  </div>
+                  <div className="flex items-center space-x-4">
+                     {/*<span*/}
+                     {/*   className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm">{content.category}</span>*/}
+                  </div>
+               </div>
+
+               {/* Content image */}
+               <div className="mb-8 rounded-lg overflow-hidden border border-gray-200 bg-white">
+                  {currentContent.eventImages ? (
+                     <Link to={`/booking/${encodeURIComponent(currentContent.id)}`}>
+                        <img
+                           src={currentContent?.eventImages.find(img => img.imgOrder === 0)?.imgUrl || "/placeholder.svg"}
+                           width={800}
+                           height={600}
+                           className="w-full h-auto object-cover hover:opacity-90 transition-opacity"
+                        />
+                     </Link>
+                  ) : (
+                     <img
+                        src={currentContent?.eventImages.find(img => img.imgOrder === 0)?.imgUrl || "/placeholder.svg"}
+                        width={800}
+                        height={600}
+                        className="w-full h-auto object-cover"
+                     />
+                  )}
+               </div>
+            </div>
+         </main>
+
+
+         {/* ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ  */}
+
+
          <div className="event-detail">
             {/* 공연 제목 및 기본 정보 */}
             <h1>{currentContent.title}</h1>
-            <img src={currentContent?.eventImages.find(img => img.imgOrder === 0)?.imgUrl} alt={`${currentContent.title} 대표 이미지`}/>
+            <img src={currentContent?.eventImages.find(img => img.imgOrder === 0)?.imgUrl}
+                 alt={`${currentContent.title} 대표 이미지`}/>
 
             <p><strong>작성자:</strong> {currentContent.userId}</p>
             <p><strong>지역:</strong> {currentContent.location}</p>
@@ -128,6 +180,9 @@ export default function DetailPage() {
                   ))
                )}
          </div>
+
+
+
 
       </div>
    )

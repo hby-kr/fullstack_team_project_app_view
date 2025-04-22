@@ -131,67 +131,6 @@ export default function DetailPage() {
    return (
       <div className="min-h-screen flex flex-col bg-gray-50">
 
-         {/* ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ*/}
-         <div className="event-detail">
-            {/* 공연 제목 및 기본 정보 */}
-            <h1>{data.title}</h1>
-            <img src={mainImage} alt={`${data.title} 대표 이미지`} />
-
-            <p><strong>위치:</strong> {data.location}</p>
-            <p><strong>주소:</strong> {data.address}</p>
-            <p><strong>소속:</strong> {data.company}</p>
-            <p><strong>소요 시간:</strong> {data.howLong}분</p>
-            <p><strong>관람 가능 연령:</strong> {data.ageLimit}세 이상</p>
-
-            <hr />
-
-            {/* 상세 이미지 */}
-            <h2>상세 이미지</h2>
-            <div style={{ display: 'flex', gap: '1rem' }}>
-               {detailImages.map((img) => (
-                  <img key={img.id} src={img.imgUrl} alt="상세 이미지" style={{ height: '300px' }} />
-               ))}
-            </div>
-
-            <hr />
-
-            {/* 출연진 */}
-            <h2>출연진 & 제작진</h2>
-            <div className="cast-list" style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem' }}>
-               {casts.map(({ id, role, actor }) => (
-                  <div key={id} style={{ textAlign: 'center' }}>
-                     <img src={actor.actorsImages[0]?.imgUrl} alt={actor.name} style={{ borderRadius: '50%', width: '100px', height: '100px' }} />
-                     <p><strong>{actor.name}</strong> ({role})</p>
-                  </div>
-               ))}
-            </div>
-
-            <hr />
-
-            {/* 리뷰 */}
-            <h2>리뷰 ({reviews.length})</h2>
-            {reviews.length === 0 ? (
-               <p>아직 등록된 리뷰가 없습니다.</p>
-            ) : (
-               reviews.map((review) => (
-                  <div key={review.id} style={{ marginBottom: '1.5rem' }}>
-                     <p>⭐ {review.rate}점</p>
-                     <p>{review.contents}</p>
-                     {review.eventReviewImages.length > 0 && (
-                        <div style={{ display: 'flex', gap: '0.5rem' }}>
-                           {review.eventReviewImages.map((img) => (
-                              <img key={img.id} src={img.imgUrl} alt="리뷰 이미지" style={{ width: '100px' }} />
-                           ))}
-                        </div>
-                     )}
-                  </div>
-               ))
-            )}
-         </div>
-
-
-         {/* ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ*/}
-
 
          {/*/!* Main content *!/*/}
          {/*<main className="flex-grow container mx-auto px-4 py-8">*/}
