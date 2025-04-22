@@ -185,16 +185,16 @@
     vertical-align: super;
 }
 
-.two-one .weather-main {
+.size-2x1 .weather-main {
     width: 100%;
     justify-content: space-between;
 }
 
-.two-one .weather-main li:first-child {
+.size-2x1 .weather-main li:first-child {
     margin-bottom: 30px;
 }
 
-.two-one .weather-main li:last-child {
+.size-2x1 .weather-main li:last-child {
     position: absolute;
     top: calc(50% - 0.5em);
     right: 30px;
@@ -225,15 +225,15 @@
     margin-left: 5px;
 }
 
-.two-one .weather-sub {
+.size-2x1 .weather-sub {
     bottom: 30px;
 }
 
-.two-one .weather-ex {
+.size-2x1 .weather-ex {
     bottom: 5px;
 }
 
-.three-one .weather-ex {
+.size-3x1 .weather-ex {
     top: 10px;
 }
 
@@ -285,11 +285,11 @@
     height: 100%;
 }
 
-.two-one .bookmark-main {
+.size-2x1 .bookmark-main {
     grid-template-columns: repeat(2, 1fr);
 }
 
-.three-one .bookmark-main {
+.size-3x1 .bookmark-main {
     grid-template-columns: repeat(3, 1fr);
 }
 
@@ -308,7 +308,7 @@
     overflow: hidden;
 }
 
-.one-one .bookmark-container {
+.size-1x1 .bookmark-container {
     flex-direction: column;
     text-align: center;
     align-items: center;
@@ -328,15 +328,15 @@
     align-content: center;
 }
 
-.one-one .display-main {
+.size-1x1 .display-main {
     grid-template-columns: repeat(1, 1fr);
 }
 
-.two-one .display-main {
+.size-2x1 .display-main {
     grid-template-columns: repeat(3, 1fr);
 }
 
-.three-one .display-main {
+.size-3x1 .display-main {
     grid-template-columns: repeat(4, 1fr);
 }
 
@@ -388,11 +388,11 @@
     font-weight: bold;
 }
 
-.two-one .countdown-main li:last-child {
+.size-2x1 .countdown-main li:last-child {
     text-align: end;
 }
 
-.three-one .countdown-main li:last-child {
+.size-3x1 .countdown-main li:last-child {
     position: absolute;
     top: 0;
     left: 0;
