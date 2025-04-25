@@ -13,8 +13,8 @@ export default function SettingsPage() {
   const { user, signOut } = useAuth()
   const fileInputRef = useRef(null)
   const {
-    darkMode,
-    toggleDarkMode,
+    // darkMode,
+    // toggleDarkMode,
     language,
     setLanguage,
     notificationsEnabled,
@@ -29,6 +29,10 @@ export default function SettingsPage() {
     setFontSize,
     t,
   } = useSettings()
+  const [userName, setUserName] = useState("");
+  const [userEmail, setUserEmail] = useState("");
+  const [darkMode, setDarkMode] = useState("false");
+  // const [language, setLangguage] = useState("System");
 
 
   const [activeTab, setActiveTab] = useState("account")
@@ -54,18 +58,61 @@ export default function SettingsPage() {
 
   // 사용자 정보 로드
   useEffect(() => {
-    if (user) {
-      setProfileData({
-        name: user.name || "사용자",
-        email: user.email || "user@example.com",
-        bio: user.bio || t("defaultBio"),
-        phone: user.phone || "010-1234-5678",
-        profileImage: user.profileImage || "",
-      })
-    } else {
-      navigate("/login")
-    }
-  }, [user, navigate, t])
+    const userId = "user1001";
+    fetch(`/api/posting/${userId}/userpage.do`, {
+      credentials: "include",
+    })
+        .then((res) => res.json())
+        .then((data) => {
+          setUserName(data.user.userName);
+          setUserEmail(data.user.userEmail);
+          setDisplayColor(data.displayColor === "Dark");
+          setLanguage(data.language);
+        })
+        .catch((err) => {
+          console.error("사용자 정보 불러오기 실패", err)
+        });
+  }, []);
+  //   if (user) {
+  //     setProfileData({
+  //       bio: user.bio || t("defaultBio"),
+  //       phone: user.phone || "010-1234-5678",
+  //       profileImage: user.profileImage || "",
+  //     })
+  //   } else {
+  //     navigate("/login")
+  //   }
+  // }, [user, navigate, t])
+
+  const toggleDarkMode = () => {
+    const newDarkMode = !darkMode;
+    setDarkMode(newDarkMode);
+
+    fetch(`http://localhost:4775/api/posting/${userId}/userpage.do`, {
+      method: "PUT",
+      headers : {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        "settingId": 1,
+        "user": {
+          "userId": "user1001",
+          "userEmail": "user1001@artu.com",
+          "userName": "김민수"
+        },
+        "displayColor": newDarkMode ? "Dark" : "Light",
+        "language": "System",
+        "setAt": new Date().toISOString()
+      }),
+    })
+        .then((res) => {
+          if(!res.ok) throw new Error("변경 실패");
+        })
+        .catch((err) => {
+          console.error("다크모드 저장 실패", err);
+          setDarkMode(!newDarkMode);
+        });
+  };
 
   // 프로필 저장
   const saveProfile = () => {
@@ -137,7 +184,8 @@ export default function SettingsPage() {
   }
 
   return (
-      <div className={`container mx-auto py-8 px-4 ${darkMode ? "dark" : ""}`}>
+      <div className={`container mx-auto py-8 px-4 ${darkMode ? "Dark" : ""}`}>
+      {/*<div className={`container mx-auto py-8 px-4 ${displayColor ? "Dark" : ""}`}>*/}
         <div className="max-w-4xl mx-auto">
           {/* 헤더 */}
           <div className="flex items-center mb-6">
@@ -178,8 +226,8 @@ export default function SettingsPage() {
                     <Camera className="h-4 w-4" />
                   </button>
                 </div>
-                <p className="mt-2 font-medium">{profileData.name}</p>
-                <p className="text-sm text-gray-500">{profileData.email}</p>
+                <p className="mt-2 font-medium">{userName}</p>
+                <p className="text-sm text-gray-500">{userEmail}</p>
               </div>
 
               <nav>
@@ -260,12 +308,12 @@ export default function SettingsPage() {
                         {isEditing ? (
                             <input
                                 type="text"
-                                value={profileData.name}
+                                value={userName}
                                 onChange={(e) => setProfileData({ ...profileData, name: e.target.value })}
                                 className="w-full p-2 border rounded-md"
                             />
                         ) : (
-                            <p className="p-2 bg-gray-50 rounded-md">{profileData.name}</p>
+                            <p className="p-2 bg-gray-50 rounded-md">{userName}</p>
                         )}
                       </div>
 
@@ -276,12 +324,12 @@ export default function SettingsPage() {
                         {isEditing ? (
                             <input
                                 type="email"
-                                value={profileData.email}
+                                value={userEmail}
                                 onChange={(e) => setProfileData({ ...profileData, email: e.target.value })}
                                 className="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                             />
                         ) : (
-                            <p className="p-2 bg-gray-50 dark:bg-gray-700 rounded-md dark:text-white">{profileData.email}</p>
+                            <p className="p-2 bg-gray-50 dark:bg-gray-700 rounded-md dark:text-white">{userEmail}</p>
                         )}
                       </div>
 
@@ -301,21 +349,21 @@ export default function SettingsPage() {
                         )}
                       </div>
 
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                          {t("phone")}
-                        </label>
-                        {isEditing ? (
-                            <input
-                                type="tel"
-                                value={profileData.phone}
-                                onChange={(e) => setProfileData({ ...profileData, phone: e.target.value })}
-                                className="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                            />
-                        ) : (
-                            <p className="p-2 bg-gray-50 dark:bg-gray-700 rounded-md dark:text-white">{profileData.phone}</p>
-                        )}
-                      </div>
+                      {/*<div>*/}
+                      {/*  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">*/}
+                      {/*    {t("phone")}*/}
+                      {/*  </label>*/}
+                      {/*  {isEditing ? (*/}
+                      {/*      <input*/}
+                      {/*          type="tel"*/}
+                      {/*          value={profileData.phone}*/}
+                      {/*          onChange={(e) => setProfileData({ ...profileData, phone: e.target.value })}*/}
+                      {/*          className="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"*/}
+                      {/*      />*/}
+                      {/*  ) : (*/}
+                      {/*      <p className="p-2 bg-gray-50 dark:bg-gray-700 rounded-md dark:text-white">{profileData.phone}</p>*/}
+                      {/*  )}*/}
+                      {/*</div>*/}
 
                       {isEditing && (
                           <div className="flex justify-end mt-4">
