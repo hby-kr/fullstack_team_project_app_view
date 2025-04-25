@@ -4,7 +4,9 @@ import React from "react"
 
 import { useState } from "react"
 import {Link, useNavigate} from "react-router"
-  import DaumPostcode from "react-daum-postcode"
+import DaumPostcode from "react-daum-postcode"
+
+
 export default function SignupPage() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")

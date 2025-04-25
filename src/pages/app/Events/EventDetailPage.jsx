@@ -4,7 +4,9 @@ import {useAuth} from "/src/lib/auth-context"
 import {ArrowLeft, Heart, Share2, MessageSquare} from "lucide-react"
 import {loadEventOne} from "../../../utils/eventFetch.js";
 import {useQuery} from "@tanstack/react-query";
-import isError from "next/dist/lib/is-error.js"; // 깔끔한 아이콘 라이브러리임
+import isError from "next/dist/lib/is-error.js";
+import {MapMarker, useKakaoLoader} from "react-kakao-maps-sdk";
+import KakaoMap from "../../../components/KakaoMap.jsx"; // 깔끔한 아이콘 라이브러리임
 
 
 export default function DetailPage() {
@@ -12,12 +14,10 @@ export default function DetailPage() {
    const navigate = useNavigate()
    const {user} = useAuth()
    const params = useParams() // useParams → “URL에서 전달된 값”을 꺼내는 도구
-
    const [content, setContent] = useState(null)
    // const [isLoading, setIsLoading] = useState(true)
    // const [isLiked, setIsLiked] = useState(false)
    // const [relatedItems, setRelatedItems] = useState([])
-
    // 실제 API 호출 (useQuery 사용)
    const {
       data: currentContent, isLoading, isError, error,
@@ -27,9 +27,8 @@ export default function DetailPage() {
       staleTime: 1000 * 60 * 5, // 데이터 캐싱 시간 (5분)
       cacheTime: 1000 * 60 * 10,
       retry: 1
-   })
+   });
    // useQuery 자체가 상태 역할을 하니까 별도의 useState로 감싸지 않아도 됨.
-
    // 여기서 코딩이 걸려서 바로 로딩중을 return하게 만들어 버리는 것.
    if (isLoading) {
       return (
@@ -58,7 +57,6 @@ export default function DetailPage() {
    // 성공하면 아래를 반환.
    return (
       <div className="min-h-screen flex flex-col bg-gray-50">
-
 
          {/* Main content */}
          <main className="flex-grow container mx-auto px-4 py-8">
@@ -120,6 +118,8 @@ export default function DetailPage() {
             <p><strong>작성자:</strong> {currentContent.userId}</p>
             <p><strong>지역:</strong> {currentContent.location}</p>
             <p><strong>주소:</strong> {currentContent.address}</p>
+            <KakaoMap address={currentContent.address} />
+
             <p><strong>소속:</strong> {currentContent.company}</p>
             <p><strong>소요 시간:</strong> {currentContent.howLong}분</p>
             <p><strong>관람 가능 연령:</strong> {currentContent.ageLimit}세 이상</p>
