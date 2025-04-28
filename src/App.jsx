@@ -31,6 +31,7 @@ import All from "./pages/app/(main)/page.jsx";
 import CategoryPage from "./pages/app/(main)/category/page.jsx";
 import WidgetEdit from "./pages/app/widget/edit/page.jsx";
 import WidgetAdd from "./pages/app/widget/add/page.jsx";
+import PaymentPage from "./pages/app/booking/payments/page.jsx";
 
 function App() {
     return (
@@ -71,6 +72,7 @@ function App() {
                     <Route path="/booking/:id/review" element={<ReviewPage></ReviewPage>}/>
 
                     {/* 결제 관련 */}
+                    <Route path="/payment" element={<PaymentPage />} />
                     <Route path="/cart" element={<CartPage></CartPage>}/>
                     <Route path="/coupon" element={<CouponPage></CouponPage>}/>
                     <Route path="/point" element={<PointPage></PointPage>}/>

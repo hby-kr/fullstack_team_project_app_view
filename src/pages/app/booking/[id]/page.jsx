@@ -7,39 +7,6 @@ import {ArrowLeft, Calendar, MapPin, Clock, Users, CreditCard, Ticket, ShoppingC
 import Header from "/src/components/header"
 import {useAuth} from "/src/lib/auth-context"
 
-// 공연/전시 정보 타입
-// type EventInfo = {
-//   id: string
-//   title: string
-//   category: string
-//   image: string
-//   description: string
-//   location: string
-//   dates: string[]
-//   times: string[]
-//   price: {
-//     regular: number
-//     vip?: number
-//     student?: number
-//     disabled?: number
-//     veteran?: number
-//     senior?: number
-//   }
-//   groupDiscount?: {
-//     minPeople: number
-//     discountRate: number
-//   }
-//   availableSeats: number
-//   reviews?: Array<{
-//     id: string
-//     userId: string
-//     userName: string
-//     rating: number
-//     comment: string
-//     date: string
-//   }>
-// }
-
 export default function BookingPage() {
     const params = useParams()
     const {user} = useAuth()
@@ -141,41 +108,55 @@ export default function BookingPage() {
         fetchEventData();
     }, [params.id]);
 
+    useEffect(() => {
+        if (!eventInfo) return;
+
+        const matchedDate = eventInfo.dates.find((d) => d === selectedDate);
+        if (!matchedDate) return;
+
+        let basePrice = eventInfo.price.regular;
+
+        if (ticketType === "vip") basePrice = eventInfo.price.vip;
+        else if (ticketType === "student") basePrice = eventInfo.price.student;
+        else if (ticketType === "disabled") basePrice = eventInfo.price.disabled;
+        else if (ticketType === "veteran") basePrice = eventInfo.price.veteran;
+        else if (ticketType === "senior") basePrice = eventInfo.price.senior;
+
+        if (!basePrice) basePrice = eventInfo.price.regular;
+
+        let total = basePrice * ticketCount;
+
+        if (ticketCount >= (eventInfo.groupDiscount?.minPeople || 999)) {
+            total = total * (1 - (eventInfo.groupDiscount.discountRate / 100));
+        }
+
+        setTotalPrice(Math.floor(total));
+    }, [selectedDate, selectedTime, ticketType, ticketCount, eventInfo]);
+
+
     // 다음 단계로 이동
     const goToNextStep = () => {
         if (step === 1 && (!selectedDate || !selectedTime)) {
-            alert("날짜와 시간을 선택해주세요.")
-            return
+            alert("날짜와 시간을 선택해주세요.");
+            return;
         }
 
-        if (step === 3) {
-            // 개인정보 확인 및 동의 체크 확인
-            const confirmInfo = document.getElementById("confirm-info");
-            const agreeTerms = document.getElementById("agree-terms");
-            const agreeRefund = document.getElementById("agree-refund");
-
-            if (!confirmInfo?.checked || !agreeTerms?.checked || !agreeRefund?.checked) {
-                alert("모든 약관에 동의해주셔야 결제가 가능합니다.")
-                return
-            }
-
-            // 결제 처리 (실제로는 결제 게이트웨이로 연결)
-            alert(
-                `${
-                    paymentMethod === "card"
-                        ? "신용카드"
-                        : paymentMethod === "simple"
-                            ? "간편결제"
-                            : paymentMethod === "bank"
-                                ? "무통장입금"
-                                : "휴대폰결제"
-                }로 결제가 완료되었습니다!`,
-            )
-            return
+        if (step === 2) {
+            // Step2에서 다음 누르면 PaymentPage로 이동
+            const queryParams = new URLSearchParams({
+                id: params.id,
+                selectedDate,
+                selectedTime,
+                ticketType,
+                ticketCount,
+                totalPrice,
+            }).toString();
+            window.location.href = `/payment?${queryParams}`;
+            return;
         }
 
-        setStep(step + 1)
-    }
+        setStep(step + 1);
+    };
 
     // 이전 단계로 이동
     const goToPrevStep = () => {
@@ -185,28 +166,28 @@ export default function BookingPage() {
     }
 
     // 장바구니에 담기
-    const addToCart = () => {
-        if (!eventInfo || !selectedDate || !selectedTime) return
-
-        // 장바구니에 담을 정보
-        const cartItem = {
-            id: eventInfo.id,
-            title: eventInfo.title,
-            date: selectedDate,
-            time: selectedTime,
-            ticketType: ticketType,
-            ticketCount: ticketCount,
-            price: totalPrice,
-            image: eventInfo.image,
-        }
-
-        // 로컬 스토리지에 장바구니 정보 저장 (실제로는 서버에 저장할 수 있음)
-        const cartItems = JSON.parse(localStorage.getItem("cartItems") || "[]")
-        cartItems.push(cartItem)
-        localStorage.setItem("cartItems", JSON.stringify(cartItems))
-
-        alert("장바구니에 담았습니다.")
-    }
+    // const addToCart = () => {
+    //     if (!eventInfo || !selectedDate || !selectedTime) return
+    //
+    //     // 장바구니에 담을 정보
+    //     const cartItem = {
+    //         id: eventInfo.id,
+    //         title: eventInfo.title,
+    //         date: selectedDate,
+    //         time: selectedTime,
+    //         ticketType: ticketType,
+    //         ticketCount: ticketCount,
+    //         price: totalPrice,
+    //         image: eventInfo.image,
+    //     }
+    //
+    //     // 로컬 스토리지에 장바구니 정보 저장 (실제로는 서버에 저장할 수 있음)
+    //     const cartItems = JSON.parse(localStorage.getItem("cartItems") || "[]")
+    //     cartItems.push(cartItem)
+    //     localStorage.setItem("cartItems", JSON.stringify(cartItems))
+    //
+    //     alert("장바구니에 담았습니다.")
+    // }
 
     // 날짜를 YYYY-MM-DD 형식으로 포맷
     function formatDate(dateString) {
