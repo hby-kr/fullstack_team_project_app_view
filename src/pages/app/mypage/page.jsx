@@ -219,7 +219,7 @@ const Mypage = () => {
                 <section onDragOver={onDragOver} onDrop={onDrop} onDragEnd={onDragEnd}>
                     {widgets.map((widget, index) => (
                         <article
-                            key={widget.id}
+                            key={`${widget.id}-${index}`}
                             id={widget.id}
                             className={`widget size-${widget.size} ${widget.type} ${
                                 widget.size === "1x1" ? "one-one" :

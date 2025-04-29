@@ -14,6 +14,38 @@ const WidgetEdit = () => {
     const [selectedWidget, setSelectedWidget] = useState(null);
     const navigate = useNavigate();
 
+    const handleSaveWidget = () => {
+        const userId = "user1001"; // 현재 로그인 유저 ID (하드코딩된 값)
+
+        const body = {
+            user_id: userId,
+            widget_id: parseInt(selectedWidget.id.replace("widget", "")),
+            widget_content: "", // 필요시 메모 등 텍스트 넣기
+        };
+
+        fetch("/api/widget-details/add", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            credentials: "include",
+            body: JSON.stringify(body)
+        })
+            .then(async res => {
+                if (res.ok) {
+                    navigate("/mypage");
+                } else {
+                    const errorText = await res.text();
+                    console.error("서버 응답 에러:", errorText);
+                    alert("위젯 저장 실패: " + errorText);
+                }
+            })
+            .catch(err => {
+                console.error("위젯 저장 중 오류:", err);
+                alert("오류 발생");
+            });
+    };
+
     useEffect(() => {
         const userId = "user1001"; // 가정된 유저 ID
         fetch(`/api/widgets/used?userId=${userId}`, {
@@ -46,7 +78,7 @@ const WidgetEdit = () => {
             <div className="edit-header">
                 <button onClick={() => navigate(-1)}>취소</button>
                 <h3>위젯 설정</h3>
-                <button onClick={() => navigate("/mypage")}>완료</button>
+                <button onClick={handleSaveWidget}>완료</button>
             </div>
             {/* 선택된 위젯 미리보기 */}
             <div className="selected-widget-preview">
@@ -64,9 +96,9 @@ const WidgetEdit = () => {
                 <div className="theme-selection">
                     <h4>테마 선택</h4>
                     <section className="theme-widget-list">
-                        {sameTypeWidgets.map(w => (
+                        {sameTypeWidgets.map((w, index) => (
                             <article
-                                key={w.id}
+                                key={`${w.id}-${index}`}
                                 className={`widget size-${w.size} ${w.type}`}
                                 style={{ cursor: "pointer" }}
                                 onClick={() => setSelectedWidget(w)}
