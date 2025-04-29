@@ -1,48 +1,46 @@
 "use client"
 
 import { useState, useEffect, useRef } from "react"
-import {Link, useNavigate} from "react-router"
+import {data, Link, useNavigate} from "react-router"
 import { Bell, Moon, Sun, Globe, Lock, User, LogOut, ArrowLeft, Camera, Save, Eye, EyeOff  } from "lucide-react"
-
+import { useTranslation } from 'react-i18next';
 import { useAuth } from "/src/lib/auth-context"
 import { useSettings } from "/src/lib/settings-context"
 import { languageNames } from "/src/lib/translations"
+import {error} from "next/dist/build/output/log.js";
 
 export default function SettingsPage() {
   const navigate = useNavigate()
   const { user, signOut } = useAuth()
   const fileInputRef = useRef(null)
+  // const { i18n } = useTranslation();
   const {
-    // darkMode,
-    // toggleDarkMode,
-    language,
-    setLanguage,
-    notificationsEnabled,
-    toggleNotifications,
-    emailNotifications,
-    toggleEmailNotifications,
-    marketingNotifications,
-    toggleMarketingNotifications,
+  //   // darkMode,
+  //   // toggleDarkMode,
+  //   language,
+  //   setLanguage,
+  //   notificationsEnabled,
+  //   toggleNotifications,
+  //   emailNotifications,
+  //   toggleEmailNotifications,
+  //   marketingNotifications,
+  //   toggleMarketingNotifications,
     autoTranslate,
     toggleAutoTranslate,
     fontSize,
     setFontSize,
-    t,
   } = useSettings()
-  const [userName, setUserName] = useState("");
-  const [userEmail, setUserEmail] = useState("");
-  const [darkMode, setDarkMode] = useState("false");
-  // const [language, setLangguage] = useState("System");
-
+  const [userData, setUserData] = useState({settingId: null, userId: "", userEmail: "", userName: "", displayColor: "Light", language: "System", setAt: ""})
+  const { t, i18n } = useTranslation();
 
   const [activeTab, setActiveTab] = useState("account")
   const [isEditing, setIsEditing] = useState(false)
-  const [profileData, setProfileData] = useState({
-    name: "",
-    email: "",
-    bio: "",
-    phone: "",
-  })
+  // const [profileData, setProfileData] = useState({
+  //   name: "",
+  //   email: "",
+  //   bio: "",
+  //   phone: "",
+  // })
 
   // 비밀번호 변경 상태
   const [passwordData, setPasswordData] = useState({
@@ -59,15 +57,21 @@ export default function SettingsPage() {
   // 사용자 정보 로드
   useEffect(() => {
     const userId = "user1001";
-    fetch(`/api/posting/${userId}/userpage.do`, {
+    fetch(`/api/posting/${userId}/setting.do`, {
       credentials: "include",
     })
         .then((res) => res.json())
         .then((data) => {
-          setUserName(data.user.userName);
-          setUserEmail(data.user.userEmail);
-          setDisplayColor(data.displayColor === "Dark");
-          setLanguage(data.language);
+          setUserData({
+            settingId: data.settingId,
+            userId: data.userId,
+            userEmail: data.userEmail,
+            userName: data.userName,
+            // profileImageUrl: data.user.profileImageUrl,
+            displayColor: data.displayColor,
+            language: data.language || "System",
+            setAt: data.setAt,
+          })
         })
         .catch((err) => {
           console.error("사용자 정보 불러오기 실패", err)
@@ -84,53 +88,102 @@ export default function SettingsPage() {
   //   }
   // }, [user, navigate, t])
 
+  // 다크모드 on/off
   const toggleDarkMode = () => {
-    const newDarkMode = !darkMode;
-    setDarkMode(newDarkMode);
+    const newDisplayColor = userData.displayColor === "Dark" ? "Light" : "Dark";
+    document.documentElement.classList.toggle('dark', newDisplayColor === "Dark");
+    setUserData({...userData, displayColor: newDisplayColor});
 
-    fetch(`http://localhost:4775/api/posting/${userId}/userpage.do`, {
+    fetch(`/api/posting/${userData.userId}/setting.do`, {
       method: "PUT",
-      headers : {
-        "Content-Type": "application/json",
-      },
+      headers : {"Content-Type": "application/json"},
       body: JSON.stringify({
-        "settingId": 1,
-        "user": {
-          "userId": "user1001",
-          "userEmail": "user1001@artu.com",
-          "userName": "김민수"
+        settingId: userData.settingId,
+        user: {
+          userId: userData.userId,
+          userEmail: userData.userEmail,
+          userName: userData.userName,
+          // profileImageUrl: userData.profileImageUrl,
         },
-        "displayColor": newDarkMode ? "Dark" : "Light",
-        "language": "System",
-        "setAt": new Date().toISOString()
+        displayColor: newDisplayColor,
+        language: userData.language,
+        setAt: new Date().toISOString(),
       }),
     })
         .then((res) => {
           if(!res.ok) throw new Error("변경 실패");
+          setUserData({...userData, displayColor: newDisplayColor});
         })
-        .catch((err) => {
-          console.error("다크모드 저장 실패", err);
-          setDarkMode(!newDarkMode);
+        .catch((err) => {console.error("다크모드 저장 실패", err);
+          alert("변경 실패")
+          setUserData({...userData, displayColor: userData.displayColor});
         });
   };
 
+  const langMap = {
+    "ko": "Korean",
+    "en": "English",
+    "System": "System"
+  };
+
+  // 언어
+  const changeLanguage = (e) => {
+    const selectedLang = e.target.value;
+    i18n.changeLanguage(selectedLang);
+    // setUserData({...userData, language: newLanguage});
+    // i18n.changeLanguage(newLanguage.toLowerCase());
+    fetch(`/api/posting/${userData.userId}/setting.do`, {
+      method: "PUT",
+      headers : {"Content-Type": "application/json"},
+      body: JSON.stringify({
+        settingId: userData.settingId,
+        user: {
+          userId: userData.userId,
+          userEmail: userData.userEmail,
+          userName: userData.userName,
+          // profileImageUrl: userData.profileImageUrl,
+        }
+        ,
+        displayColor: userData.displayColor,
+        language: selectedLang,
+        setAt: new Date().toISOString(),
+      }),
+    })
+        .then((res) => {
+          if (!res.ok) throw new Error("변경 실패");
+          setUserData({...userData, language: selectedLang});
+        })
+        .catch((err) => {
+          console.error("언어 설정 실패", err);
+          alert("변경 실패")
+          setUserData({...userData, language: userData.language});
+        });
+  }
+
+
   // 프로필 저장
   const saveProfile = () => {
-    if (user) {
-      const updatedUser = {
-        ...user,
-        name: profileData.name,
-        email: profileData.email,
-        bio: profileData.bio,
-        phone: profileData.phone,
-        profileImage: profileData.profileImage,
-      }
-      localStorage.setItem("user", JSON.stringify(updatedUser))
-      setIsEditing(false)
-
-      // 실제 애플리케이션에서는 여기서 API 호출을 통해 서버에 저장
-      alert(t("profileSaved"))
-    }
+    fetch(`/api/posting/${userData.userId}/setting.do`,{
+      method: "PUT",
+      headers : {"Content-Type": "application/json"},
+      body: JSON.stringify({
+        settingId: userData.settingId,
+        user: {
+          userId: userData.userId,
+          userEmail: userData.userEmail,
+          userName: userData.userName,
+          // profileImageUrl: userData.profileImageUrl,
+        },
+          displayColor: userData.displayColor,
+          language: userData.language,
+          setAt: new Date().toISOString(),
+      }),
+    })
+        .then((res) => {
+          if (!res.ok) throw new Error("프로필 저장 실패");
+          alert(t("프로필 저장"));
+        })
+        .catch((err) => console.error(err));
   }
 
   // 비밀번호 변경
@@ -161,17 +214,21 @@ export default function SettingsPage() {
 
   // 프로필 이미지 업로드
   const handleImageUpload = (e) => {
-    const file = e.target.files?.[0]
-    if (file) {
-      const reader = new FileReader()
-      reader.onloadend = () => {
-        setProfileData({
-          ...profileData,
-          profileImage: reader.result,
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append("profileImage", profileImage);
+
+    fetch(`/api/posting/${userData.userId}/setting.do`, {
+      method: "POST",
+      body: formData,
+    })
+        .then((res) => res.json())
+        .then((data) => {
+          setUserData({...userData, profileImageUrl: data.profileImageUrl});
         })
-      }
-      reader.readAsDataURL(file)
-    }
+        .catch((err) => console.error("프로필 사진 업로드 실패", err));
   }
 
   // 프로필 이미지 클릭 핸들러
@@ -184,7 +241,7 @@ export default function SettingsPage() {
   }
 
   return (
-      <div className={`container mx-auto py-8 px-4 ${darkMode ? "Dark" : ""}`}>
+      <div className={`container mx-auto py-8 px-4 ${userData.displayColor === "Dark" ? "dark" : ""}`}>
       {/*<div className={`container mx-auto py-8 px-4 ${displayColor ? "Dark" : ""}`}>*/}
         <div className="max-w-4xl mx-auto">
           {/* 헤더 */}
@@ -205,7 +262,7 @@ export default function SettingsPage() {
                       onClick={handleImageClick}
                   >
                     <img
-                        src={profileData.profileImage || "/placeholder.svg?height=80&width=80&text=User"}
+                        src={userData.profileImageUrl || "/placeholder.svg?height=80&width=80&text=User"}
                         alt={t("name")}
                         width={80}
                         height={80}
@@ -226,8 +283,8 @@ export default function SettingsPage() {
                     <Camera className="h-4 w-4" />
                   </button>
                 </div>
-                <p className="mt-2 font-medium">{userName}</p>
-                <p className="text-sm text-gray-500">{userEmail}</p>
+                <p className="mt-2 font-medium">{userData.userName}</p>
+                <p className="text-sm text-gray-500">{userData.userEmail}</p>
               </div>
 
               <nav>
@@ -250,21 +307,21 @@ export default function SettingsPage() {
                       {t("securitySettings")}
                     </button>
                   </li>
-                  <li>
-                    <button
-                        onClick={() => setActiveTab("notifications")}
-                        className={`w-full text-left px-4 py-2 rounded-md flex items-center ${activeTab === "notifications" ? "bg-primary/10 text-primary dark:bg-primary/20 dark:text-primary-foreground font-medium" : "hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-300"}`}
-                    >
-                      <Bell className="h-5 w-5 mr-3" />
-                      {t("notificationSettings")}
-                    </button>
-                  </li>
+                  {/*<li>*/}
+                  {/*  <button*/}
+                  {/*      onClick={() => setActiveTab("notifications")}*/}
+                  {/*      className={`w-full text-left px-4 py-2 rounded-md flex items-center ${activeTab === "notifications" ? "bg-primary/10 text-primary dark:bg-primary/20 dark:text-primary-foreground font-medium" : "hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-300"}`}*/}
+                  {/*  >*/}
+                  {/*    <Bell className="h-5 w-5 mr-3" />*/}
+                  {/*    {t("notificationSettings")}*/}
+                  {/*  </button>*/}
+                  {/*</li>*/}
                   <li>
                     <button
                         onClick={() => setActiveTab("appearance")}
                         className={`w-full text-left px-4 py-2 rounded-md flex items-center ${activeTab === "appearance" ? "bg-primary/10 text-primary dark:bg-primary/20 dark:text-primary-foreground font-medium" : "hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-300"}`}
                     >
-                      {darkMode ? <Moon className="h-5 w-5 mr-3" /> : <Sun className="h-5 w-5 mr-3" />}
+                      {userData.displayColor === "Dark" ? <Moon className="h-5 w-5 mr-3" /> : <Sun className="h-5 w-5 mr-3" />}
                       {t("appearanceSettings")}
                     </button>
                   </li>
@@ -308,12 +365,12 @@ export default function SettingsPage() {
                         {isEditing ? (
                             <input
                                 type="text"
-                                value={userName}
-                                onChange={(e) => setProfileData({ ...profileData, name: e.target.value })}
+                                value={userData.userName}
+                                onChange={(e) => setUserData({ ...userData, userName: e.target.value })}
                                 className="w-full p-2 border rounded-md"
                             />
                         ) : (
-                            <p className="p-2 bg-gray-50 rounded-md">{userName}</p>
+                            <p className="p-2 bg-gray-50 rounded-md">{userData.userName}</p>
                         )}
                       </div>
 
@@ -324,30 +381,30 @@ export default function SettingsPage() {
                         {isEditing ? (
                             <input
                                 type="email"
-                                value={userEmail}
-                                onChange={(e) => setProfileData({ ...profileData, email: e.target.value })}
+                                value={userData.userEmail}
+                                onChange={(e) => setUserData({ ...userData, userEmail: e.target.value })}
                                 className="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                             />
                         ) : (
-                            <p className="p-2 bg-gray-50 dark:bg-gray-700 rounded-md dark:text-white">{userEmail}</p>
+                            <p className="p-2 bg-gray-50 dark:bg-gray-700 rounded-md dark:text-white">{userData.userEmail}</p>
                         )}
                       </div>
 
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                          {t("bio")}
-                        </label>
-                        {isEditing ? (
-                            <textarea
-                                value={profileData.bio}
-                                onChange={(e) => setProfileData({ ...profileData, bio: e.target.value })}
-                                className="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                                rows={3}
-                            />
-                        ) : (
-                            <p className="p-2 bg-gray-50 dark:bg-gray-700 rounded-md dark:text-white">{profileData.bio}</p>
-                        )}
-                      </div>
+                      {/*<div>*/}
+                      {/*  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">*/}
+                      {/*    {t("bio")}*/}
+                      {/*  </label>*/}
+                      {/*  {isEditing ? (*/}
+                      {/*      <textarea*/}
+                      {/*          value={userData.bio || ""}*/}
+                      {/*          onChange={(e) => setUserData({ ...userData, bio: e.target.value })}*/}
+                      {/*          className="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"*/}
+                      {/*          rows={3}*/}
+                      {/*      />*/}
+                      {/*  ) : (*/}
+                      {/*      <p className="p-2 bg-gray-50 dark:bg-gray-700 rounded-md dark:text-white">{userData.bio}</p>*/}
+                      {/*  )}*/}
+                      {/*</div>*/}
 
                       {/*<div>*/}
                       {/*  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">*/}
@@ -495,67 +552,67 @@ export default function SettingsPage() {
                   </div>
               )}
 
-              {activeTab === "notifications" && (
-                  <div>
-                    <h2 className="text-xl font-semibold mb-6 dark:text-white">{t("notificationSettings")}</h2>
+              {/*{activeTab === "notifications" && (*/}
+              {/*    <div>*/}
+              {/*      <h2 className="text-xl font-semibold mb-6 dark:text-white">{t("notificationSettings")}</h2>*/}
 
-                    <div className="space-y-4">
-                      <div className="border dark:border-gray-700 rounded-md p-4">
-                        <div className="flex justify-between items-center">
-                          <div>
-                            <h3 className="font-medium dark:text-white">{t("pushNotifications")}</h3>
-                            <p className="text-sm text-gray-500 dark:text-gray-400">{t("pushDescription")}</p>
-                          </div>
-                          <label className="relative inline-flex items-center cursor-pointer">
-                            <input
-                                type="checkbox"
-                                checked={notificationsEnabled}
-                                onChange={toggleNotifications}
-                                className="sr-only peer"
-                            />
-                            <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
-                          </label>
-                        </div>
-                      </div>
+              {/*      <div className="space-y-4">*/}
+              {/*        <div className="border dark:border-gray-700 rounded-md p-4">*/}
+              {/*          <div className="flex justify-between items-center">*/}
+              {/*            <div>*/}
+              {/*              <h3 className="font-medium dark:text-white">{t("pushNotifications")}</h3>*/}
+              {/*              <p className="text-sm text-gray-500 dark:text-gray-400">{t("pushDescription")}</p>*/}
+              {/*            </div>*/}
+              {/*            <label className="relative inline-flex items-center cursor-pointer">*/}
+              {/*              <input*/}
+              {/*                  type="checkbox"*/}
+              {/*                  checked={notificationsEnabled}*/}
+              {/*                  onChange={toggleNotifications}*/}
+              {/*                  className="sr-only peer"*/}
+              {/*              />*/}
+              {/*              <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>*/}
+              {/*            </label>*/}
+              {/*          </div>*/}
+              {/*        </div>*/}
 
-                      <div className="border dark:border-gray-700 rounded-md p-4">
-                        <div className="flex justify-between items-center">
-                          <div>
-                            <h3 className="font-medium dark:text-white">{t("emailNotifications")}</h3>
-                            <p className="text-sm text-gray-500 dark:text-gray-400">{t("emailDescription")}</p>
-                          </div>
-                          <label className="relative inline-flex items-center cursor-pointer">
-                            <input
-                                type="checkbox"
-                                checked={emailNotifications}
-                                onChange={toggleEmailNotifications}
-                                className="sr-only peer"
-                            />
-                            <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
-                          </label>
-                        </div>
-                      </div>
+              {/*        <div className="border dark:border-gray-700 rounded-md p-4">*/}
+              {/*          <div className="flex justify-between items-center">*/}
+              {/*            <div>*/}
+              {/*              <h3 className="font-medium dark:text-white">{t("emailNotifications")}</h3>*/}
+              {/*              <p className="text-sm text-gray-500 dark:text-gray-400">{t("emailDescription")}</p>*/}
+              {/*            </div>*/}
+              {/*            <label className="relative inline-flex items-center cursor-pointer">*/}
+              {/*              <input*/}
+              {/*                  type="checkbox"*/}
+              {/*                  checked={emailNotifications}*/}
+              {/*                  onChange={toggleEmailNotifications}*/}
+              {/*                  className="sr-only peer"*/}
+              {/*              />*/}
+              {/*              <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>*/}
+              {/*            </label>*/}
+              {/*          </div>*/}
+              {/*        </div>*/}
 
-                      <div className="border dark:border-gray-700 rounded-md p-4">
-                        <div className="flex justify-between items-center">
-                          <div>
-                            <h3 className="font-medium dark:text-white">{t("marketingNotifications")}</h3>
-                            <p className="text-sm text-gray-500 dark:text-gray-400">{t("marketingDescription")}</p>
-                          </div>
-                          <label className="relative inline-flex items-center cursor-pointer">
-                            <input
-                                type="checkbox"
-                                checked={marketingNotifications}
-                                onChange={toggleMarketingNotifications}
-                                className="sr-only peer"
-                            />
-                            <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
-                          </label>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-              )}
+              {/*        <div className="border dark:border-gray-700 rounded-md p-4">*/}
+              {/*          <div className="flex justify-between items-center">*/}
+              {/*            <div>*/}
+              {/*              <h3 className="font-medium dark:text-white">{t("marketingNotifications")}</h3>*/}
+              {/*              <p className="text-sm text-gray-500 dark:text-gray-400">{t("marketingDescription")}</p>*/}
+              {/*            </div>*/}
+              {/*            <label className="relative inline-flex items-center cursor-pointer">*/}
+              {/*              <input*/}
+              {/*                  type="checkbox"*/}
+              {/*                  checked={marketingNotifications}*/}
+              {/*                  onChange={toggleMarketingNotifications}*/}
+              {/*                  className="sr-only peer"*/}
+              {/*              />*/}
+              {/*              <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>*/}
+              {/*            </label>*/}
+              {/*          </div>*/}
+              {/*        </div>*/}
+              {/*      </div>*/}
+              {/*    </div>*/}
+              {/*)}*/}
 
               {activeTab === "appearance" && (
                   <div>
@@ -569,7 +626,7 @@ export default function SettingsPage() {
                             <p className="text-sm text-gray-500 dark:text-gray-400">{t("darkModeDescription")}</p>
                           </div>
                           <label className="relative inline-flex items-center cursor-pointer">
-                            <input type="checkbox" checked={darkMode} onChange={toggleDarkMode} className="sr-only peer" />
+                            <input type="checkbox" checked={userData.displayColor === "Dark"} onChange={toggleDarkMode} className="sr-only peer" />
                             <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
                           </label>
                         </div>
@@ -617,15 +674,14 @@ export default function SettingsPage() {
                           {t("languageSelect")}
                         </label>
                         <select
-                            value={language}
-                            onChange={(e) => setLanguage(e.target.value)}
+                            value={userData.language}
+                            onChange={changeLanguage}
                             className="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                         >
-                          {Object.entries(languageNames).map(([code, name]) => (
-                              <option key={code} value={code}>
-                                {name}
-                              </option>
-                          ))}
+                          <option value="ko">한국어</option>
+                          <option value="en">English</option>
+                          <option value="ja">日本語</option>
+                          <option value="zh">中文</option>
                         </select>
                       </div>
 

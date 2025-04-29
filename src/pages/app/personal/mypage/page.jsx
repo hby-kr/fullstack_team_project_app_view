@@ -238,12 +238,10 @@ const Mypage = () => {
                                         href="">게시물</a></div>
                                 </li>
                                 <li>
-                                    <div className="profile-number"><span>{Number(followers).toLocaleString()}</span><a
-                                        href="">팔로워</a></div>
+                                    <div className="profile-number"><span>{Number(followers).toLocaleString()}</span><Link to="/follower">팔로워</Link></div>
                                 </li>
                                 <li>
-                                    <div className="profile-number"><span>{Number(following).toLocaleString()}</span><a
-                                        href="">팔로잉</a></div>
+                                    <div className="profile-number"><span>{Number(following).toLocaleString()}</span><Link to="/followee">팔로잉</Link></div>
                                 </li>
                             </ul>
                         </div>

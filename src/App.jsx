@@ -33,6 +33,8 @@ import All from "./pages/app/main/AllEvents.jsx";
 import CategoryPage from "./pages/app/Events/CategoryPage.jsx";
 import WidgetEdit from "./pages/app/widget/edit/page.jsx";
 import WidgetAdd from "./pages/app/widget/add/page.jsx";
+import FolloweePage from "./pages/app/personal/mypage/followee/page.jsx";
+import FollowerPage from "./pages/app/personal/mypage/follower/page.jsx";
 
 function App() {
 
@@ -63,6 +65,8 @@ function App() {
                <Route path="/widget/add" element={<WidgetAdd />} />
                <Route path="/settings" element={<SettingsPage></SettingsPage>}/>
                <Route path="/cs" element={<CsPage></CsPage>}/> {/* 이 페이지 연결 안되어 있음  */}
+               <Route path="/follower" element={<FollowerPage></FollowerPage>}/>
+               <Route path="/followee" element={<FolloweePage></FolloweePage>}/>
 
                {/* 메세지, 알림 */}
                <Route path="/messages" element={<MessagesPage></MessagesPage>}/>

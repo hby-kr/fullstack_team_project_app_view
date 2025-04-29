@@ -8,6 +8,7 @@ import '/src/styles/globals.css'
 import "/src/styles/tailwind.min.css"
 import "react-grid-layout/css/styles.css";
 import "react-resizable/css/styles.css";
+import './lib/i18n';
 
 import App from './App.jsx'
 
