@@ -6,7 +6,7 @@ import "./WidgetEdit.css";
 
 const WidgetEdit = () => {
     const [activeSection, setActiveSection] = useState("theme");
-
+    const [widgetContent, setWidgetContent] = useState("");
     const location = useLocation();
     const widgetIdFromRoute = location.state?.widgetId;
 
@@ -14,20 +14,24 @@ const WidgetEdit = () => {
     const [selectedWidget, setSelectedWidget] = useState(null);
     const navigate = useNavigate();
 
+    useEffect(() => {
+        if (selectedWidget) {
+            setWidgetContent(selectedWidget.widget_content || "");
+        }
+    }, [selectedWidget]);
+
     const handleSaveWidget = () => {
-        const userId = "user1001"; // 현재 로그인 유저 ID (하드코딩된 값)
+        const userId = "user1001";
 
         const body = {
             user_id: userId,
             widget_id: parseInt(selectedWidget.id.replace("widget", "")),
-            widget_content: "", // 필요시 메모 등 텍스트 넣기
+            widget_content: widgetContent, // 👈 수정된 텍스트
         };
 
         fetch("/api/widget-details/add", {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
+            headers: { "Content-Type": "application/json" },
             credentials: "include",
             body: JSON.stringify(body)
         })
@@ -59,6 +63,7 @@ const WidgetEdit = () => {
                     type: widget.widget_json?.type || "unknown",
                     label: widget.widget_json?.label || "",
                     size: `${widget.widget_size}x1`,
+                    widget_content: widget.widget_content || "" // 👈 여기 추가
                 }));
                 setWidgets(processedData);
 
@@ -96,9 +101,11 @@ const WidgetEdit = () => {
                 <div className="theme-selection">
                     <h4>테마 선택</h4>
                     <section className="theme-widget-list">
-                        {sameTypeWidgets.map((w, index) => (
+                        {Array.from(new Map(
+                            sameTypeWidgets.map(w => [`${w.size}-${w.type}`, w])
+                        ).values()).map((w, index) => (
                             <article
-                                key={`${w.id}-${index}`}
+                                key={`${w.size}-${w.type}-${index}`}
                                 className={`widget size-${w.size} ${w.type}`}
                                 style={{ cursor: "pointer" }}
                                 onClick={() => setSelectedWidget(w)}
@@ -106,6 +113,7 @@ const WidgetEdit = () => {
                                 {renderWidgetContent(w)}
                             </article>
                         ))}
+
                     </section>
                 </div>
             )}
@@ -115,14 +123,24 @@ const WidgetEdit = () => {
                     <p>{`${selectedWidget.label}`}</p>
                     {selectedWidget.type === "memo" && (
                         <label className="memo-label">
-                            <input type="text" placeholder="메모를 입력하세요" />
-                            <button>제출</button>
+                            <input
+                                type="text"
+                                placeholder="메모를 입력하세요"
+                                value={widgetContent}
+                                onChange={(e) => setWidgetContent(e.target.value)}
+                            />
+                            <button onClick={handleSaveWidget}>제출</button>
                         </label>
                     )}
                     {selectedWidget.type === "info" && (
                         <label className="memo-label">
-                            <input type="text" placeholder="소개 문구를 입력하세요" />
-                            <button>제출</button>
+                            <input
+                                type="text"
+                                placeholder="소개 문구를 입력하세요"
+                                value={widgetContent}
+                                onChange={(e) => setWidgetContent(e.target.value)}
+                            />
+                            <button onClick={handleSaveWidget}>제출</button>
                         </label>
                     )}
                     {selectedWidget.type === "display" && (

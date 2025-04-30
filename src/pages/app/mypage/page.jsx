@@ -29,9 +29,10 @@ const Mypage = () => {
 
                 const processedData = data.map(widget => ({
                     id: `widget${widget.widget_id}`,
-                    type: widget.widget_json.type || "unknown",
-                    label: widget.widget_json.label || "",
-                    size: `${widget.widget_size}x1`
+                    type: widget.widget_json?.type || "unknown",
+                    label: widget.widget_json?.label || "",
+                    size: `${widget.widget_size}x1`,
+                    widget_content: widget.widget_content || "" // 👈 추가
                 }));
 
                 setWidgets(processedData);
