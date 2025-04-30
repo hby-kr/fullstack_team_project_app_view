@@ -1,23 +1,17 @@
-"use client"
-
 import React from "react"
-
 import {useState} from "react"
 import {Link, useNavigate} from "react-router-dom"
 import {useAuth} from "/src/lib/auth-context"
-
 import {ShoppingCart, Search, X, MessageSquare, Bell} from "lucide-react"
 
 export default function Header() {
-   const {user, logout} = useAuth()
+
    const navigate = useNavigate()
+   const [loginUser, setloginUser] = useAuth()
+
    const [searchQuery, setSearchQuery] = useState("")
    const [showSearchResults, setShowSearchResults] = useState(false)
 
-   const handleLogout = () => {
-      logout()
-      navigate("/")
-   }
 
    const handleSearch = (e) => {
       e.preventDefault()
@@ -30,6 +24,14 @@ export default function Header() {
       setSearchQuery("")
       setShowSearchResults(false)
    }
+
+   function logoutHandler() {
+      localStorage.removeItem("jwt");
+      setloginUser(() => null)
+      alert("Logged out")
+      navigate("/"); // 캐싱된 데이터를 지우기 보다, 그냥 페이지를 다시 리로딩 시켰음.
+   }
+
 
    return (
       <header className="bg-white shadow-sm">
@@ -206,7 +208,7 @@ export default function Header() {
 
 
                      {/* 로그인 해야 보임, 즉 useAuth로 user가 true 이면 아래 보임 */}
-                     {user && (
+                     {loginUser && (
                         <>
 
                            {/* 메세지 버튼 */}
@@ -232,7 +234,7 @@ export default function Header() {
                      )}
 
                      {/* 로그인 해야 보임, 즉 useAuth로 user가 true 이면 아래 보임 */}
-                     {user ? (
+                     {loginUser ? (
                         <>
                            <div className="relative group">
 
@@ -261,7 +263,7 @@ export default function Header() {
 
 
                            <Link to="/mypage" className="text-gray-700 hover:text-primary"> 마이페이지 </Link>
-                           <button onClick={handleLogout} className="text-gray-700 hover:text-primary"> 로그아웃 </button>
+                           <button onClick={logoutHandler} className="text-gray-700 hover:text-primary"> 로그아웃 </button>
                            
                         </>)
 

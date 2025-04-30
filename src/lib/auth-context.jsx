@@ -1,56 +1,27 @@
-"use client"
-
 import React from "react"
 
-import { createContext, useContext, useState, useEffect } from "react"
+import {createContext, useContext, useState} from "react"
 
 const AuthContext = createContext(undefined);
+// 초기값을 undefined로 설정함. 이는 이후 useAuth 훅에서 AuthProvider 없이 사용할 경우 오류를 발생시키기 위함임.
 
-export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null)
-  const [loading, setLoading] = useState(true)
+//AuthProvider는 AuthContext.Provider를 감싸서 자식 컴포넌트에 인증 상태를 전달해주는 역할을 함.
+export function AuthProvider({children}) {
 
-  useEffect(() => {
-    // 로컬 스토리지에서 사용자 정보 가져오기
-    const storedUser = localStorage.getItem("user")
-    if (storedUser) {
-      setUser(JSON.parse(storedUser))
-    }
-    setLoading(false)
-  }, [])
+   const [loginUser, setLoginUser] = useState(null)
+   const user = [loginUser, setLoginUser]
 
-  const signIn = async (email, password) => {
-    // 실제로는 API 호출을 통해 인증을 처리해야 함
-    // 여기서는 간단한 예시로 구현
-    try {
-      // 임시 인증 로직 (실제로는 서버에서 검증해야 함)
-      if (password.length >= 6) {
-        const user = { email }
-        setUser(user)
-        localStorage.setItem("user", JSON.stringify(user))
-        return true
-      }
-      return false
-    } catch (error) {
-      console.error("로그인 오류:", error)
-      return false
-    }
-  }
-
-  const logout = () => {
-    setUser(null)
-    localStorage.removeItem("user")
-  }
-
-  return <AuthContext.Provider value={{ user, signIn, logout, loading }}>{children}</AuthContext.Provider>
+   // AuthContext.Provider를 사용해서 user, signIn, logout, loading 값을 자식 컴포넌트에 전달함.
+   return <AuthContext.Provider value={user}>{children}</AuthContext.Provider>
 }
 
-// eslint-disable-next-line react-refresh/only-export-components
+// 단순히 useContext(AuthContext)라는 인증 상태를 가져오는 커스텀 useAuth 훅
 export function useAuth() {
-  const context = useContext(AuthContext)
-  if (context === undefined) {
-    throw new Error("useAuth must be used within an AuthProvider")
-  }
-  return context
+   const context = useContext(AuthContext)
+   if (context === undefined) {
+      throw new Error("useAuth must be used within an AuthProvider")
+   }
+   return context // 즉 [loginUser, setLoginUser]
 }
+
 
