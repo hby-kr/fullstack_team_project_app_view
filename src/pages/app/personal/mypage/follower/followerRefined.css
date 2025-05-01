@@ -13,12 +13,14 @@
 }
 
 #followeepage-body a {
-    color: #8400ff;
+    /*color: #8400ff;*/
+    color: #f0f0f0;
     transition: color 0.3s;
 }
 
 #followeepage-body a:hover {
-    color: #5f00b3;
+    /*color: #5f00b3;*/
+    color: #666666;
 }
 
 /* 헤더 */
