@@ -1,0 +1,67 @@
+/* 새로운 스타일 - 필요 부분만 개선 */
+
+/* 공통 */
+#followeepage-body {
+    background-color: #f9f9f9;
+    color: #333;
+    line-height: 1.5;
+    font-family: 'SUIT', 'Arial', sans-serif;
+}
+
+#followeepage-body h1{
+    font-family: 'Arial', sans-serif;
+}
+
+#followeepage-body a {
+    /*color: #8400ff;*/
+    /*color: #f0f0f0;*/
+    transition: color 0.3s;
+}
+
+#followeepage-body a:hover {
+    /*color: #5f00b3;*/
+    /*color: #666666;*/
+}
+
+/* 헤더 */
+#followeepage-body header {
+    padding: 10px 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#followeepagee-body header ul li:last-child span {
+    font-size: 16px;
+    font-weight: 500;
+}
+
+/* 네비게이션 */
+#followeepage-body nav{
+    background-color: #fff;
+    border-bottom: 1px solid #ececec;
+}
+
+/* 메인 컨테이너 */
+#followeepage-container section {
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+
+/* 푸터 */
+#followeepage-body footer {
+    border-top: 1px solid #ececec;
+    background-color: #fff;
+}
+
+#followeepage-body footer p {
+    color: #666;
+    font-size: 14px;
+}
+
+#followeepage-body footer address ul {
+    gap: 15px;
+}
+
+#followeepage-body footer address img {
+    object-fit: cover;
+}
