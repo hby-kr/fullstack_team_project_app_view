@@ -11,10 +11,11 @@ import { useAuth } from "/src/lib/auth-context";
 export default function CreatePostPage() {
   //const router = useRouter();
   const { user, isLoading } = useAuth();
-  const [title, setTitle] = useState("");
+  // const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [category, setCategory] = useState("음악");
-  const [tags, setTags] = useState("");
+  // const [category, setCategory] = useState("음악");
+  const [personTags, setPersonTags] = useState("");
+  const [locationTags, setLocationTags] = useState("");
   const [images, setImages] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
@@ -52,8 +53,8 @@ export default function CreatePostPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!title.trim() || !content.trim()) {
-      alert("제목과 내용을 입력해주세요.");
+    if (!content.trim()) {
+      alert("내용을 입력해주세요.");
       return;
     }
 
@@ -64,10 +65,10 @@ export default function CreatePostPage() {
       // 여기서는 간단히 로컬 스토리지에 저장하는 예시를 보여줍니다
       const newPost = {
         id: `post-${Date.now()}`,
-        title,
+        // title,
         content,
-        category,
-        tags: tags
+        // category,
+        personTags: personTags
           .split(",")
           .map((tag) => tag.trim())
           .filter(Boolean),
@@ -107,49 +108,49 @@ export default function CreatePostPage() {
 
       <main className="flex-grow container mx-auto px-4 py-8">
         <div className="max-w-3xl mx-auto">
-          <Link to="/public" className="inline-flex items-center text-gray-600 hover:text-primary mb-6">
+          <Link to="/mypage" className="inline-flex items-center text-gray-600 hover:text-primary mb-6">
             <ArrowLeft className="w-4 h-4 mr-2" />
             <span>뒤로 가기</span>
           </Link>
 
           <div className="bg-white rounded-lg shadow-sm p-6">
-            <h1 className="text-2xl font-bold mb-6">일반 게시물 작성</h1>
+            <h1 className="text-2xl font-bold mb-6">게시물 작성</h1>
 
             <form onSubmit={handleSubmit}>
               <div className="space-y-6">
-                <div>
-                  <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">
-                    제목
-                  </label>
-                  <input
-                    id="title"
-                    type="text"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
-                    placeholder="게시물 제목을 입력하세요"
-                    required
-                  />
-                </div>
+                {/*<div>*/}
+                {/*  <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">*/}
+                {/*    제목*/}
+                {/*  </label>*/}
+                {/*  <input*/}
+                {/*    id="title"*/}
+                {/*    type="text"*/}
+                {/*    value={title}*/}
+                {/*    onChange={(e) => setTitle(e.target.value)}*/}
+                {/*    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"*/}
+                {/*    placeholder="게시물 제목을 입력하세요"*/}
+                {/*    required*/}
+                {/*  />*/}
+                {/*</div>*/}
 
-                <div>
-                  <label htmlFor="category" className="block text-sm font-medium text-gray-700 mb-1">
-                    카테고리
-                  </label>
-                  <select
-                    id="category"
-                    value={category}
-                    onChange={(e) => setCategory(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
-                  >
-                    <option value="음악">음악</option>
-                    <option value="미술">미술</option>
-                    <option value="춤">춤</option>
-                    <option value="연기">연기</option>
-                    <option value="뮤지컬">뮤지컬</option>
-                    <option value="기타">기타</option>
-                  </select>
-                </div>
+                {/*<div>*/}
+                {/*  <label htmlFor="category" className="block text-sm font-medium text-gray-700 mb-1">*/}
+                {/*    카테고리*/}
+                {/*  </label>*/}
+                {/*  <select*/}
+                {/*    id="category"*/}
+                {/*    value={category}*/}
+                {/*    onChange={(e) => setCategory(e.target.value)}*/}
+                {/*    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"*/}
+                {/*  >*/}
+                {/*    <option value="음악">음악</option>*/}
+                {/*    <option value="미술">미술</option>*/}
+                {/*    <option value="춤">춤</option>*/}
+                {/*    <option value="연기">연기</option>*/}
+                {/*    <option value="뮤지컬">뮤지컬</option>*/}
+                {/*    <option value="기타">기타</option>*/}
+                {/*  </select>*/}
+                {/*</div>*/}
 
                 <div>
                   <label htmlFor="content" className="block text-sm font-medium text-gray-700 mb-1">
@@ -169,15 +170,30 @@ export default function CreatePostPage() {
                 <div>
                   <label htmlFor="tags" className="block text-sm font-medium text-gray-700 mb-1">
                     <Tag className="w-4 h-4 inline mr-1" />
-                    태그 (쉼표로 구분)
+                    사람 태그 (쉼표로 구분)
                   </label>
                   <input
                     id="tags"
                     type="text"
-                    value={tags}
-                    onChange={(e) => setTags(e.target.value)}
+                    value={personTags}
+                    onChange={(e) => setPersonTags(e.target.value)}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
-                    placeholder="예: 클래식, 피아노, 공연"
+                    placeholder="예: 아이디, 이름, 이메일"
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="tags" className="block text-sm font-medium text-gray-700 mb-1">
+                    <Tag className="w-4 h-4 inline mr-1" />
+                    위치 태그
+                  </label>
+                  <input
+                      id="tags"
+                      type="text"
+                      value={locationTags}
+                      onChange={(e) => setLocationTags(e.target.value)}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                      placeholder="예: 마포구, 홍대, 신촌"
                   />
                 </div>
 

@@ -246,9 +246,9 @@ const Mypage = () => {
                             </ul>
                         </div>
                     </div>
-                    <article>
-                        <p>{userIntroduction?.trim() || "자기소개가 없습니다. 프로필을 수정하여 자기소개를 작성해보세요."}</p>
-                    </article>
+                    {/*<article>*/}
+                    {/*    <p>{userIntroduction?.trim() || "자기소개가 없습니다. 프로필을 수정하여 자기소개를 작성해보세요."}</p>*/}
+                    {/*</article>*/}
                 </section>
             </div>
 

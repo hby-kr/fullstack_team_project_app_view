@@ -30,7 +30,7 @@ export default function SettingsPage() {
     fontSize,
     setFontSize,
   } = useSettings()
-  const [userData, setUserData] = useState({settingId: null, userId: "", userEmail: "", userName: "", displayColor: "Light", language: "System", setAt: ""})
+  const [userData, setUserData] = useState({settingId: null, userId: "", userEmail: "", userName: "", displayColor: "Light", language: "", setAt: ""})
   const { t, i18n } = useTranslation();
 
   const [activeTab, setActiveTab] = useState("account")
@@ -69,7 +69,7 @@ export default function SettingsPage() {
             userName: data.userName,
             // profileImageUrl: data.user.profileImageUrl,
             displayColor: data.displayColor,
-            language: data.language || "System",
+            language: data.language,
             setAt: data.setAt,
           })
         })
@@ -118,12 +118,6 @@ export default function SettingsPage() {
           alert("변경 실패")
           setUserData({...userData, displayColor: userData.displayColor});
         });
-  };
-
-  const langMap = {
-    "ko": "Korean",
-    "en": "English",
-    "System": "System"
   };
 
   // 언어
@@ -685,23 +679,23 @@ export default function SettingsPage() {
                         </select>
                       </div>
 
-                      <div className="border dark:border-gray-700 rounded-md p-4">
-                        <div className="flex justify-between items-center">
-                          <div>
-                            <h3 className="font-medium dark:text-white">{t("autoTranslate")}</h3>
-                            <p className="text-sm text-gray-500 dark:text-gray-400">{t("autoTranslateDescription")}</p>
-                          </div>
-                          <label className="relative inline-flex items-center cursor-pointer">
-                            <input
-                                type="checkbox"
-                                checked={autoTranslate}
-                                onChange={toggleAutoTranslate}
-                                className="sr-only peer"
-                            />
-                            <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
-                          </label>
-                        </div>
-                      </div>
+                      {/*<div className="border dark:border-gray-700 rounded-md p-4">*/}
+                      {/*  <div className="flex justify-between items-center">*/}
+                      {/*    <div>*/}
+                      {/*      <h3 className="font-medium dark:text-white">{t("autoTranslate")}</h3>*/}
+                      {/*      <p className="text-sm text-gray-500 dark:text-gray-400">{t("autoTranslateDescription")}</p>*/}
+                      {/*    </div>*/}
+                      {/*    <label className="relative inline-flex items-center cursor-pointer">*/}
+                      {/*      <input*/}
+                      {/*          type="checkbox"*/}
+                      {/*          checked={autoTranslate}*/}
+                      {/*          onChange={toggleAutoTranslate}*/}
+                      {/*          className="sr-only peer"*/}
+                      {/*      />*/}
+                      {/*      <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>*/}
+                      {/*    </label>*/}
+                      {/*  </div>*/}
+                      {/*</div>*/}
                     </div>
                   </div>
               )}
