@@ -1,10 +1,8 @@
 import React, {useState, useEffect} from "react";
 import {Settings} from "lucide-react";
 import {useNavigate, Link} from "react-router-dom";
-import { Button } from "../../../../components/ui/button.jsx";
 
 import './mypageStyle.css';
-
 import './mypageRefined.css';
 import './widgetStyle.css';
 import './reactive.css';
@@ -14,45 +12,33 @@ import { renderWidgetContent } from "../../widget/widgetRenderer";
 const Mypage = () => {
     const [widgets, setWidgets] = useState([]);
     const [draggingWidget, setDraggingWidget] = useState(null);
-    const [userName, setUserName] = useState("");
-    const [userEmail, setUserEmail] = useState("");
-    const [followers, setFollowers] = useState("");
-    const [following, setFollowing] = useState("");
-    const [countPosts, setCountPosts] = useState("");
-    const [selectedTab, setSelectedTab] = useState("widgets");
-    const [posts, setPosts] = useState([]);
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [selectedPost, setSelectedPost] = useState(null);
-    const [currentImgIndex, setCurrentImgIndex] = useState(0);
-    const [newPostComment, setNewPostComment] = useState("");
-    const [likes, setLikes] = useState(false);
 
-    // const userName = "사용자님";
-    // const userEmail = "user@example.com";
+    const userName = "사용자님";
+    const userEmail = "user@example.com";
     const userIntroduction = "자기소개를 작성해보세요.";
-    // const stats = {posts: 1234, followers: 5678, following: 910};
+    const stats = {posts: 1234, followers: 5678, following: 910};
 
     useEffect(() => {
         const userId = "user1001"; // 가정된 유저 ID
         fetch(`/api/widgets/used?userId=${userId}`, {
             credentials: "include"
         })
-            .then((res) => res.json())
-            .then((data) => {
-                console.log("서버로부터 받아온 위젯 데이터:", data);
+           .then((res) => res.json())
+           .then((data) => {
+               console.log("서버로부터 받아온 위젯 데이터:", data);
 
-                const processedData = data.map(widget => ({
-                    id: `widget${widget.widget_id}`,
-                    type: widget.widget_json.type || "unknown",
-                    label: widget.widget_json.label || "",
-                    size: `${widget.widget_size}x1`
-                }));
+               const processedData = data.map(widget => ({
+                   id: `widget${widget.widget_id}`,
+                   type: widget.widget_json.type || "unknown",
+                   label: widget.widget_json.label || "",
+                   size: `${widget.widget_size}x1`
+               }));
 
-                setWidgets(processedData);
-            })
-            .catch((err) => {
-                console.error("위젯 데이터를 가져오는 데 실패했습니다:", err);
-            });
+               setWidgets(processedData);
+           })
+           .catch((err) => {
+               console.error("위젯 데이터를 가져오는 데 실패했습니다:", err);
+           });
     }, []);
 
     useEffect(() => {
@@ -127,18 +113,18 @@ const Mypage = () => {
             method: "DELETE",
             credentials: "include"
         })
-            .then(res => {
-                if (res.ok) {
-                    setWidgets(prev => prev.filter(w => w.id !== contextMenu.widgetId));
-                    setContextMenu({...contextMenu, visible: false});
-                } else {
-                    alert("삭제 실패");
-                }
-            })
-            .catch(err => {
-                console.error("삭제 중 오류:", err);
-                alert("삭제 중 오류 발생");
-            });
+           .then(res => {
+               if (res.ok) {
+                   setWidgets(prev => prev.filter(w => w.id !== contextMenu.widgetId));
+                   setContextMenu({...contextMenu, visible: false});
+               } else {
+                   alert("삭제 실패");
+               }
+           })
+           .catch(err => {
+               console.error("삭제 중 오류:", err);
+               alert("삭제 중 오류 발생");
+           });
     };
 
     useEffect(() => {
@@ -148,257 +134,122 @@ const Mypage = () => {
 
     const navigate = useNavigate();
 
-
-    // userData
-    useEffect(() => {
-        const userId = "user1001";
-        fetch(`/api/posting/${userId}/userpage.do`, {
-            credentials: "include"
-        })
-            .then((res) => res.json())
-            .then((data) => {
-                console.log("서버로부터 받아온 유저 데이터:", data);
-                setUserName(data.user.userName);
-                setUserEmail(data.user.userEmail);
-                setFollowers(data.countFollower);
-                setFollowing(data.countFollowee);
-                setCountPosts(data.countPosting);
-            })
-            .catch((err) => console.error("사용자 정보 불러오기 실패", err));
-    }, []);
-
-
-    // postData
-    useEffect(() =>{
-        const userId = "user1001";
-        if(selectedTab === "postings"){
-            fetch(`/api/posting/${userId}/postpage.do`)
-                .then((res) => res.json())
-                .then(async (data) => {setPosts(data);
-                    console.log("서버로부터 받아온 유저 데이터:", data);})
-                .catch((err) => console.error("게시물 불러오기 실패", err));
-        }
-    },[selectedTab]);
-
-
-    // postingComment Input
-    const handleSubmitPostingComment = async () => {
-        await fetch(`http://localhost:4775/api/posting/addcomments.do`, {
-            method: "POST",
-            headers: {"Content-Type": "application/json"},
-            credentials: "include",
-            body: JSON.stringify({
-                postId : selectedPost.postId,
-                userId : "user1001", //currentUserId(로그인한 사용자의 Id는 useEffect로 받아올 것!)
-                contents : newPostComment,
-            }),
-        });
-        setNewPostComment("");
-    };
-
-
     return (
-        <div id="mypage-body">
-            {/* Header */}
-            <header>
-                <ul>
-                    <li><h1>art U</h1></li>
-                    <li><img src="/placeholder.svg" alt="profile_image"/></li>
-                    <li><span>{userName}</span></li>
-                </ul>
-            </header>
+       <div id="mypage-body">
+           {/* Header */}
+           <header>
+               <ul>
+                   <li><h1>art U</h1></li>
+                   <li><img src="/placeholder.svg" alt="profile_image"/></li>
+                   <li><span>{userName}</span></li>
+               </ul>
+           </header>
 
-            {/* Aside */}
-            <aside>
-                <div id="nav-container">
-                    <section>
-                        <h2>{userName}님의 페이지</h2>
-                        <article className="flex items-center">
-                            <Link to="/settings" className="mr-2 text-lg text-blue-500 hover:underline">설정</Link>
-                            <Settings className="inline-block mr-2 w-5"/>
-                        </article>
-                    </section>
-                </div>
-            </aside>
+           {/* Aside */}
+           <aside>
+               <div id="nav-container">
+                   <section>
+                       <h2>{userName}님의 페이지</h2>
+                       <article className="flex items-center">
+                           <Link to="/settings" className="mr-2 text-lg text-blue-500 hover:underline">설정</Link>
+                           <Settings className="inline-block mr-2 w-5"/>
+                       </article>
+                   </section>
+               </div>
+           </aside>
 
-            {/* Main Content */}
-            <div id="main-container">
-                <section>
-                    <div id="profile-container">
-                        <img src="/placeholder.svg" alt="profile_image"/>
-                        <ul>
-                            <li><h3>{userName}</h3></li>
-                            <li><p>{userEmail}</p></li>
-                            <li><p><a href="/profile/edit">프로필 편집하기</a></p></li>
-                        </ul>
-                        <div id="profile-number-container">
-                            <ul>
-                                <li>
-                                    <div className="profile-number"><span>{Number(countPosts).toLocaleString()}</span><a
-                                        href="">게시물</a></div>
-                                </li>
-                                <li>
-                                    <div className="profile-number"><span>{Number(followers).toLocaleString()}</span><Link to="/follower">팔로워</Link></div>
-                                </li>
-                                <li>
-                                    <div className="profile-number"><span>{Number(following).toLocaleString()}</span><Link to="/followee">팔로잉</Link></div>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    {/*<article>*/}
-                    {/*    <p>{userIntroduction?.trim() || "자기소개가 없습니다. 프로필을 수정하여 자기소개를 작성해보세요."}</p>*/}
-                    {/*</article>*/}
-                </section>
-            </div>
+           {/* Main Content */}
+           <div id="main-container">
+               <section>
+                   <div id="profile-container">
+                       <img src="/placeholder.svg" alt="profile_image"/>
+                       <ul>
+                           <li><h3>{userName}</h3></li>
+                           <li><p>{userEmail}</p></li>
+                           <li><p><a href="/profile/edit">프로필 편집하기</a></p></li>
+                       </ul>
+                       <div id="profile-number-container">
+                           <ul>
+                               <li>
+                                   <div className="profile-number"><span>{stats.posts.toLocaleString()}</span><a
+                                      href="">게시물</a></div>
+                               </li>
+                               <li>
+                                   <div className="profile-number"><span>{stats.followers.toLocaleString()}</span><a
+                                      href="">팔로워</a></div>
+                               </li>
+                               <li>
+                                   <div className="profile-number"><span>{stats.following.toLocaleString()}</span><a
+                                      href="">팔로잉</a></div>
+                               </li>
+                           </ul>
+                       </div>
+                   </div>
+                   <article>
+                       <p>{userIntroduction?.trim() || "자기소개가 없습니다. 프로필을 수정하여 자기소개를 작성해보세요."}</p>
+                   </article>
+               </section>
+           </div>
 
-            {contextMenu.visible && (
-                <ul
-                    className="widget-context-menu"
-                    style={{
-                        position: "absolute",
-                        top: `${contextMenu.y}px`,
-                        left: `${contextMenu.x}px`,
-                        backgroundColor: "#fff",
-                        border: "1px solid #ccc",
-                        padding: "5px 0",
-                        zIndex: 9999,
-                        listStyle: "none",
-                    }}
-                >
-                    <li style={{ padding: "5px 10px", cursor: "pointer" }} onClick={() => navigate("/widget/edit" , { state: { widgetId: contextMenu.widgetId } })}>편집</li>
-                    <li style={{ padding: "5px 10px", cursor: "pointer" }} onClick={handleDeleteWidget}>삭제</li>
-                </ul>
-            )}
-
-
-            {/* Widgets & Postings Tab */}
-            <div className="flex justify-center space-x-4 mt-4 mb-4">
-                <Button
-                    variant={selectedTab === "widgets" ? "default" : "secondary"}
-                    onClick={() => setSelectedTab("widgets")}
-                >위젯
-                </Button>
-                <Button
-                    variant={selectedTab === "postings" ? "default" : "secondary"}
-                    onClick={() => setSelectedTab("postings")}
-                >게시물
-                </Button>
-            </div>
+           {contextMenu.visible && (
+              <ul
+                 className="widget-context-menu"
+                 style={{
+                     position: "absolute",
+                     top: `${contextMenu.y}px`,
+                     left: `${contextMenu.x}px`,
+                     backgroundColor: "#fff",
+                     border: "1px solid #ccc",
+                     padding: "5px 0",
+                     zIndex: 9999,
+                     listStyle: "none",
+                 }}
+              >
+                  <li style={{ padding: "5px 10px", cursor: "pointer" }} onClick={() => navigate("/widget/edit" , { state: { widgetId: contextMenu.widgetId } })}>편집</li>
+                  <li style={{ padding: "5px 10px", cursor: "pointer" }} onClick={handleDeleteWidget}>삭제</li>
+              </ul>
+           )}
 
 
-            {/* Widgets */}
-            {selectedTab === "widgets" && (
-                <div id="widget-container">
-                    <button className="add-widget-button" onClick={() => navigate("/widget/add")} style={{ margin: "1rem", padding: "0.5rem 1rem" }}>
-                        + 위젯 추가하기
-                    </button>
-                    <section onDragOver={onDragOver} onDrop={onDrop} onDragEnd={onDragEnd}>
-                        {widgets.map((widget, index) => (
-                            <article
-                                key={widget.id}
-                                id={widget.id}
-                                className={`widget size-${widget.size} ${widget.type} ${
-                                    widget.size === "1x1" ? "one-one" :
-                                        widget.size === "2x1" ? "two-one" :
-                                            widget.size === "3x1" ? "three-one" : ""
-                                }`}
-                                draggable={true}
-                                onDragStart={(e) => onDragStart(e, widget.id)}
-                                onContextMenu={(e) => handleContextMenu(e, widget.id)}
-                            >
-                                <div className={`${widget.type}-container`}>
-                                    {renderWidgetContent(widget)}
-                                </div>
-                            </article>
-                        ))}
-                    </section>
-                </div>
-            )}
+           {/* Widgets */}
+           <div id="widget-container">
+               <button className="add-widget-button" onClick={() => navigate("/widget/add")} style={{ margin: "1rem", padding: "0.5rem 1rem" }}>
+                   + 위젯 추가하기
+               </button>
+               <section onDragOver={onDragOver} onDrop={onDrop} onDragEnd={onDragEnd}>
+                   {widgets.map((widget, index) => (
+                      <article
+                         key={`${widget.id}-${index}`}
+                         id={widget.id}
+                         className={`widget size-${widget.size} ${widget.type} ${
+                            widget.size === "1x1" ? "one-one" :
+                               widget.size === "2x1" ? "two-one" :
+                                  widget.size === "3x1" ? "three-one" : ""
+                         }`}
+                         draggable={true}
+                         onDragStart={(e) => onDragStart(e, widget.id)}
+                         onContextMenu={(e) => handleContextMenu(e, widget.id)}
+                      >
+                          <div className={`${widget.type}-container`}>
+                              {renderWidgetContent(widget)}
+                          </div>
+                      </article>
+                   ))}
+               </section>
+           </div>
 
-
-            {/* Postings */}
-            {selectedTab === "postings" && (
-                <div id="post-container" className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 px-6 py-4">
-                    {posts.length > 0 ? (
-                        posts.map((post) => (
-                            <div key={post.postId} className="post-card bg-white shadow-md rounded-lg overflow-hidden p-2">
-                                <img src={post.postingImages[0].imgUrl}
-                                     alt="게시물 이미지"
-                                     className="w-full h-60 object-cover rounded"
-                                     onClick={() => {
-                                         setSelectedPost(post);
-                                         setCurrentImgIndex(0);
-                                         setIsModalOpen(true);
-                                     }}
-                                />
-                            </div>
-                        ))
-                    ) : (
-                        <p className="col-span-full text-center text-gray-500">등록된 게시물이 없습니다.</p>
-                    )}
-                </div>
-            )}
-
-
-            {/* Modal */}
-            {isModalOpen && setPosts && (
-                <div className="fixed inset-0 z-50 overflow-y-auto flex items-center justify-center" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-                    <div className="bg-white rounded-lg max-w-xl w-full relative p-4">
-                        <button onClick={() => setIsModalOpen(false)} className="absolute top-0 right-0 p-2">
-                            X
-                        </button>
-                        <div className="flex items-center justify-between mb-4">
-                            <button onClick={() => setCurrentImgIndex((prev) => Math.max(prev - 1, 0))} disabled={currentImgIndex === 0}>
-                                ◀
-                            </button>
-                            { selectedPost?.postingImages?.[currentImgIndex]?.imgUrl && (
-                                <img src={selectedPost.postingImages[currentImgIndex].imgUrl} alt="게시물 상세 이미지" className="w-full h-[500px] object-cover rounded" />
-                            )}
-                            <button onClick={() => setCurrentImgIndex((prev) => Math.min((prev + 1, selectedPost.postingImages.length-1)))} disabled={currentImgIndex === selectedPost.postingImages.length - 1}>
-                                ▶
-                            </button>
-                        </div>
-
-                        <p className="text-gray-800 mb-2">{selectedPost.contents}</p>
-
-                        {/*<div className="flex items-center justify-between">*/}
-                        {/*    <button className="text-red-500 text-xl" onClick={() => setLikes(!liked)}> {liked ? "❤️" : "🤍"}</button>*/}
-                        {/*</div>*/}
-
-                        <div className="mt-4 space-y-2">
-                            {selectedPost.postingComments?.map((comment, idx) => (
-                                <div key={idx} className="text-sm border-b pb-1">
-                                    {comment.user.userId} : {comment.contents}
-                                    {/*{comment.contents}*/}
-                                </div>
-                            ))}
-                            <input
-                                type="text"
-                                placeholder="댓글을 입력하세요"
-                                className="mt-2 w-full p-2 border rounded"
-                                value={newPostComment}
-                                onChange={(e) => setNewPostComment(e.target.value)}
-                            />
-                            <Button onClick={handleSubmitPostingComment}>댓글 등록</Button>
-                        </div>
-                    </div>
-                </div>
-            )}
-
-
-            {/* Footer */}
-            <footer>
-                <p>&copy; 2025 Art U</p>
-                <address>
-                    <ul>
-                        <li><a href="mailto:user@example.com"><img src="/placeholder.svg" alt="email"/></a></li>
-                        <li><a href="https://www.youtube.com"><img src="/placeholder.svg" alt="youtube"/></a></li>
-                        <li><a href="https://www.instagram.com"><img src="/placeholder.svg" alt="instagram"/></a></li>
-                    </ul>
-                </address>
-            </footer>
-        </div>
+           {/* Footer */}
+           <footer>
+               <p>&copy; 2025 Art U</p>
+               <address>
+                   <ul>
+                       <li><a href="mailto:user@example.com"><img src="/placeholder.svg" alt="email"/></a></li>
+                       <li><a href="https://www.youtube.com"><img src="/placeholder.svg" alt="youtube"/></a></li>
+                       <li><a href="https://www.instagram.com"><img src="/placeholder.svg" alt="instagram"/></a></li>
+                   </ul>
+               </address>
+           </footer>
+       </div>
     );
 };
 

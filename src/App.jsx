@@ -35,6 +35,7 @@ import WidgetEdit from "./pages/app/widget/edit/page.jsx";
 import WidgetAdd from "./pages/app/widget/add/page.jsx";
 import FolloweePage from "./pages/app/personal/mypage/followee/page.jsx";
 import FollowerPage from "./pages/app/personal/mypage/follower/page.jsx";
+import PaymentPage from "./pages/app/booking/payments/page.jsx";
 
 function App() {
 
@@ -48,7 +49,8 @@ function App() {
                {/* 기본 */}
                <Route path="/" element={<MainPage></MainPage>}> {/* 중첩 라우팅(Nested Routing)  */}
                   <Route path={""} element={<All/>}/> {/*  path 그 안에 아무 서브 경로가 없으면 <All />이 보여지고 */}
-                  <Route path="cate/:category" element={<CategoryPage/>}/> {/* /cate/abc 이런 식으로 들어오면 <CategoryPage />가 보여짐.  */}
+                  <Route path="cate/:category"
+                         element={<CategoryPage/>}/> {/* /cate/abc 이런 식으로 들어오면 <CategoryPage />가 보여짐.  */}
                </Route>
 
                <Route path="/login" element={<LoginPage></LoginPage>}/>
@@ -62,11 +64,13 @@ function App() {
                <Route path="/profile/edit" element={<ProfilePage></ProfilePage>}/>
                <Route path="/mypage" element={<MyPage></MyPage>}/>
                <Route path="/widget/edit" element={<WidgetEdit/>}/>
-               <Route path="/widget/add" element={<WidgetAdd />} />
+               <Route path="/widget/add" element={<WidgetAdd/>}/>
                <Route path="/settings" element={<SettingsPage></SettingsPage>}/>
                <Route path="/cs" element={<CsPage></CsPage>}/> {/* 이 페이지 연결 안되어 있음  */}
                <Route path="/follower" element={<FollowerPage></FollowerPage>}/>
                <Route path="/followee" element={<FolloweePage></FolloweePage>}/>
+
+               <Route path="/settings" element={<SettingsPage></SettingsPage>}/>
 
                {/* 메세지, 알림 */}
                <Route path="/messages" element={<MessagesPage></MessagesPage>}/>
@@ -84,6 +88,7 @@ function App() {
                <Route path="/coupon" element={<CouponPage></CouponPage>}/>
                <Route path="/point" element={<PointPage></PointPage>}/>
                <Route path="/purchase" element={<PurchasePage></PurchasePage>}/>
+               <Route path="/payment" element={<PaymentPage/>}/>
 
                {/* 고객센터 관련 */}
                <Route path="/faq" element={<FaqPage></FaqPage>}/>
