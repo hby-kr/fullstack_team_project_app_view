@@ -2,7 +2,6 @@
 
 import React from "react";
 
-
 export const renderWidgetContent = (widget) => {
     switch (widget.type) {
         case "calander":
@@ -51,7 +50,7 @@ export const renderWidgetContent = (widget) => {
                 <div className="memo-container">
                     <ul className="memo-main">
                         <li><h5>메모</h5></li>
-                        <li><p>{widget.widget_content || ""}</p></li>
+                        <li><p>내용</p></li>
                     </ul>
                 </div>
             );
@@ -60,7 +59,7 @@ export const renderWidgetContent = (widget) => {
                 <div className="info-container">
                     <ul className="info-main">
                         <li><h5>소개</h5></li>
-                        <li><p>{widget.widget_content || ""}</p></li>
+                        <li><p>내용</p></li>
                     </ul>
                 </div>
             );
