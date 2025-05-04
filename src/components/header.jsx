@@ -208,30 +208,31 @@ export default function Header() {
 
 
                      {/* 로그인 해야 보임, 즉 useAuth로 user가 true 이면 아래 보임 */}
-                     {loginUser && (
-                        <>
+                     {/* 발표를 위해 메세지, 알림기능 숨김 */}
 
-                           {/* 메세지 버튼 */}
-                           <Link to="/messages/:id" className="text-gray-700 hover:text-primary relative">
-                              <MessageSquare className="w-5 h-5"/>
-                              <span id="message-count" className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center" >
-                                 {typeof window !== "undefined" && localStorage.getItem("unreadMessages")
-                                    ? JSON.parse(localStorage.getItem("unreadMessages") || "[]").length
-                                    : 2}
-                               </span>
-                           </Link>
+                     {/*{loginUser && (*/}
+                     {/*   <>*/}
+                     {/*      /!* 메세지 버튼 *!/*/}
+                     {/*      <Link to="/messages/:id" className="text-gray-700 hover:text-primary relative">*/}
+                     {/*         <MessageSquare className="w-5 h-5"/>*/}
+                     {/*         <span id="message-count" className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center" >*/}
+                     {/*            {typeof window !== "undefined" && localStorage.getItem("unreadMessages")*/}
+                     {/*               ? JSON.parse(localStorage.getItem("unreadMessages") || "[]").length*/}
+                     {/*               : 2}*/}
+                     {/*          </span>*/}
+                     {/*      </Link>*/}
 
-                           {/* 알림버튼 */}
-                           <Link to="/notifications" className="text-gray-700 hover:text-primary relative">
-                              <Bell className="w-5 h-5"/>
-                              <span id="notification-count" className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center" >
-                                 {typeof window !== "undefined" && localStorage.getItem("unreadNotifications")
-                                    ? JSON.parse(localStorage.getItem("unreadNotifications") || "[]").length
-                                    : 3}
-                               </span>
-                           </Link>
-                        </>
-                     )}
+                     {/*      /!* 알림버튼 *!/*/}
+                     {/*      <Link to="/notifications" className="text-gray-700 hover:text-primary relative">*/}
+                     {/*         <Bell className="w-5 h-5"/>*/}
+                     {/*         <span id="notification-count" className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center" >*/}
+                     {/*            {typeof window !== "undefined" && localStorage.getItem("unreadNotifications")*/}
+                     {/*               ? JSON.parse(localStorage.getItem("unreadNotifications") || "[]").length*/}
+                     {/*               : 3}*/}
+                     {/*          </span>*/}
+                     {/*      </Link>*/}
+                     {/*   </>*/}
+                     {/*)}*/}
 
                      {/* 로그인 해야 보임, 즉 useAuth로 user가 true 이면 아래 보임 */}
                      {loginUser ? (
@@ -261,8 +262,7 @@ export default function Header() {
                               </div>
                            </div>
 
-
-                           <Link to="/mypage" className="text-gray-700 hover:text-primary"> 마이페이지 </Link>
+                           <Link to="/mypage" className="text-gray-900 hover:text-primary">마이페이지( {loginUser.userId} ) </Link>
                            <button onClick={logoutHandler} className="text-gray-700 hover:text-primary"> 로그아웃 </button>
                            
                         </>)

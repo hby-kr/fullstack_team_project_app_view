@@ -37,7 +37,32 @@ import FolloweePage from "./pages/app/personal/mypage/followee/page.jsx";
 import FollowerPage from "./pages/app/personal/mypage/follower/page.jsx";
 import PaymentPage from "./pages/app/booking/payments/page.jsx";
 
+import {useMutation} from "@tanstack/react-query";
+import {loadCheckLogin} from "./utils/UserFetch.js";
+import {useAuth} from "./lib/auth-context.jsx";
+import {useEffect} from "react";
+
+
 function App() {
+
+
+   // 페이지 전체 새로고침 이후에도 로그인이 유지되게 하는 것.
+   const [, setLoginUser] = useAuth()
+   const loginCheckMutate = useMutation({
+      mutationFn: loadCheckLogin,
+      onSuccess: (user) => { // 성공하면, user 객체 반환하는데,
+         setLoginUser(() => user); // state에 새로 넣기
+      }
+   })  //useMutation => userQuery 로 작업했다면, 얻을 수 있는 이점은 캐싱된 user를 가져온다는 것.
+
+   // useMutation 함수로 설정하고, mutate() 메서드로 실행함.
+   useEffect(() => {
+      loginCheckMutate.mutate();
+   }, []); //App.Mount되었을 때 한번 실행한다.
+
+
+
+
 
    return (
       <SettingsProvider>

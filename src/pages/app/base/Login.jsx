@@ -15,7 +15,8 @@ export default function LoginPage() {
     pw: ''
   });
 
-  const loginQuery = useQuery({      // useQuery로 로그인 사용자 데이터를 서버에서 가져오고, 그 데이터를 상태로 설정하고 페이지를 이동하는 등의 작업을 하는 중임.
+  const loginQuery = useQuery({
+    // useQuery로 로그인 사용자 데이터를 서버에서 가져오고, 그 데이터를 상태로 설정하고 페이지를 이동하는 등의 작업을 하는 중임.
     queryFn: async () => {
       try {
         const loginUser = await loadLogin(user);
