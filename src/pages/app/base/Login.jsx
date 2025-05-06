@@ -1,9 +1,11 @@
-import React from "react"
+import React, {useEffect} from "react"
 import { useState } from "react"
 import {Link, useNavigate} from "react-router"
 import { useAuth } from "/src/lib/auth-context"
 import {useQuery} from "@tanstack/react-query";
 import {loadLogin} from "../../../utils/UserFetch.js";
+import {GoogleLogin} from "@react-oauth/google";
+import {jwtDecode} from "jwt-decode";
 
 export default function LoginPage() {
 
@@ -14,6 +16,15 @@ export default function LoginPage() {
     id: '',
     pw: ''
   });
+
+  const [googleUser, setGoogleUser] = useState(null);
+  useEffect(() => {
+    if (googleUser) {
+      googleLoginQuery.refetch(); // googleLoginQuery를 재실행.
+    }
+  }, [googleUser]); //마운트+googleUser가 바뀔때 useEffect 실행
+
+
 
   const loginQuery = useQuery({
     // useQuery로 로그인 사용자 데이터를 서버에서 가져오고, 그 데이터를 상태로 설정하고 페이지를 이동하는 등의 작업을 하는 중임.
@@ -34,6 +45,43 @@ export default function LoginPage() {
     cacheTime: 1000 * 60 * 10,
     enabled: false, // 수동!!
   })
+
+
+  const googleLoginQuery = useQuery({
+    queryFn: async () => {
+      const resp = await loadGoogleLogin(googleUser);
+      //404 or 409 or 200 셋 중 하나의 결과(와 데이터)가 옴
+
+      if (resp.ok) { //200이면
+        alert("소셜 로그인 성공");
+        const {jwt, user} = await resp.json();
+        setLoginUser(() => user);
+        localStorage.setItem("jwt", jwt);
+        navigate("/");
+        return user;
+
+      } else if (resp.status === 404) { // 404 계정정보 없음
+
+        navigate("/oauth/signup", {
+          state: {
+            error: "회원가입 후 로그인 하세요.",
+            user: googleUser,
+          }
+        });
+        throw new Error("회원가입 후 로그인 하세요.")
+
+      } else if (resp.status === 409) { // 409 로그인 정보는 있는데, 접근이 다르다.
+        const {user} = await resp.json();
+        throw new Error(user.oauth + " 로 로그인 하세요.");
+      }
+    },
+    queryKey: ["loginUser", user.id],
+    retry: 1,
+    staleTime: 1000 * 60 * 5,
+    cacheTime: 1000 * 60 * 10,
+    enabled: false,
+  })
+
 
 
   // 인풋 태그 둘 제어
@@ -124,7 +172,12 @@ export default function LoginPage() {
                  로그인
                </button>
              </div>
-
+             <GoogleLogin onSuccess={(credentialResponse) => { // 구글 소셜로그인 성공하면,
+               const user = jwtDecode(credentialResponse.credential);
+               console.log(user);
+               setGoogleUser(() => user); // GoogleUser라는 상태를 변경 -> useEffect를 써서 함수를 실행하도록 시킴
+               //googleLoginQuery.refetch();
+             }}/>
            </form>
 
          </div>

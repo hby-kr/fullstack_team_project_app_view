@@ -244,21 +244,19 @@ export default function Header() {
                                  게시물 작성
 
                                  {/* 아래방향 화살표임. 지워도 무방. */}
-                                 <svg
-                                       xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" >
+                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" >
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7"/>
                                  </svg>
                               </button>
-
 
                               {/* 그 아래 일반, 예매 게시물 있음 */}
                               <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-[50] invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-all duration-300">
                                  <Link to="/posts/create" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                                     일반 게시물
                                  </Link>
-                                 <Link to="/posts/create-booking" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" >
-                                    예매 게시물
-                                 </Link>
+                              {/*   <Link to="/posts/create-booking" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" >*/}
+                              {/*      예매 게시물*/}
+                              {/*   </Link>*/}
                               </div>
                            </div>
 

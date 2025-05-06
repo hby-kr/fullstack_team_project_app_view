@@ -59,7 +59,6 @@ export default function DetailPage() {
    return (
       <div className="min-h-screen flex flex-col bg-gray-50">
 
-
          {/* Main content */}
          <main className="flex-grow container mx-auto px-4 py-8">
 
@@ -69,7 +68,6 @@ export default function DetailPage() {
                   <ArrowLeft className="w-4 h-4 mr-2"/>
                   <span>뒤로 가기</span>
                </Link>
-
                {/* Content header */}
                <div className="mb-8">
                   <h1 className="text-3xl font-bold mb-2">{currentContent.title}</h1>
@@ -78,110 +76,103 @@ export default function DetailPage() {
                      {/*<span className="mr-4">{content.date}</span>*/}
                      {/*<span>조회수 {content.views}</span>*/}
                   </div>
-                  <div className="flex items-center space-x-4">
-                     {/*<span*/}
-                     {/*   className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm">{content.category}</span>*/}
-                  </div>
                </div>
-
-               {/* Content image */}
-               <div className="mb-8 rounded-lg overflow-hidden border border-gray-200 bg-white">
-                  {currentContent.eventImages ? (
-                     <Link to={`/booking/${encodeURIComponent(currentContent.id)}`}>
-                        <img
-                           src={currentContent?.eventImages.find(img => img.imgOrder === 0)?.imgUrl || "/placeholder.svg"}
-                           width={800}
-                           height={600}
-                           className="w-full h-auto object-cover hover:opacity-90 transition-opacity"
-                        />
-                     </Link>
-                  ) : (
-                     <img
-                        src={currentContent?.eventImages.find(img => img.imgOrder === 0)?.imgUrl || "/placeholder.svg"}
-                        width={800}
-                        height={600}
-                        className="w-full h-auto object-cover"
-                     />
-                  )}
-               </div>
+               <img
+                  src={currentContent?.eventImages.find(img => img.imgOrder === 0)?.imgUrl}
+                  alt={`${currentContent.title} 대표 이미지`}
+                  className="w-full h-auto rounded-lg border border-gray-200 object-cover" />
             </div>
          </main>
 
 
-         {/* ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ  */}
-
-
-         <div className="event-detail">
+         <div className="event-detail max-w-4xl mx-auto px-4 py-8">
             {/* 공연 제목 및 기본 정보 */}
-            <h1>{currentContent.title}</h1>
-            <img src={currentContent?.eventImages.find(img => img.imgOrder === 0)?.imgUrl}
-                 alt={`${currentContent.title} 대표 이미지`}/>
 
-            <p><strong>작성자:</strong> {currentContent.userId}</p>
-            <p><strong>지역:</strong> {currentContent.location}</p>
-            <p><strong>주소:</strong> {currentContent.address}</p>
-            <p><strong>소속:</strong> {currentContent.company}</p>
-            <p><strong>소요 시간:</strong> {currentContent.howLong}분</p>
-            <p><strong>관람 가능 연령:</strong> {currentContent.ageLimit}세 이상</p>
-            <hr/>
+            <div className="space-y-2 text-gray-700 text-lg mb-8">
+               <p><strong>작성자:</strong> {currentContent.userId}</p>
+               <p><strong>지역:</strong> {currentContent.location}</p>
+               <p><strong>주소:</strong> {currentContent.address}</p>
+               <p><strong>소속:</strong> {currentContent.company}</p>
+               <p><strong>소요 시간:</strong> {currentContent.howLong}분</p>
+               <p><strong>관람 가능 연령:</strong> {currentContent.ageLimit}세 이상</p>
+            </div>
+
+            <hr className="my-8"/>
 
             {/* 공연 이미지 */}
-            <h2>공연 이미지</h2>
-            <div style={{display: 'flex', gap: '1rem'}}>
+            <h2 className="text-xl font-semibold mb-4">공연 이미지</h2>
+            <div className="flex gap-4 overflow-x-auto mb-8">
                {currentContent.eventImages.map((img) => (
-                  <img key={img.eventId + img.imgOrder} src={img.imgUrl} alt="상세 이미지" style={{height: '300px'}}/>
+                  <img
+                     key={img.eventId + img.imgOrder}
+                     src={img.imgUrl}
+                     alt="상세 이미지"
+                     className="h-72 rounded-lg border border-gray-200 object-cover"
+                  />
                ))}
             </div>
-            <hr/>
 
+            <hr className="my-8"/>
 
             {/* 공연 상세 정보 이미지 */}
-            <h2>상세 이미지</h2>
-            <div style={{display: 'flex', gap: '1rem'}}>
+            <h2 className="text-xl font-semibold mb-4">상세 이미지</h2>
+            <div className="flex gap-4 overflow-x-auto mb-8">
                {currentContent.eventDetailImages.map((img) => (
-                  <img key={img.eventId + img.imgOrder} src={img.imgUrl} alt="상세 이미지"
-                       style={{height: '300px'}}/>
+                  <img
+                     key={img.eventId + img.imgOrder}
+                     src={img.imgUrl}
+                     alt="상세 이미지"
+                     className="h-72 rounded-lg border border-gray-200 object-cover"
+                  />
                ))}
             </div>
-            <hr/>
 
+            <hr className="my-8"/>
 
             {/* 출연진 */}
-            <h2>출연진 & 제작진</h2>
-            <div className="cast-list" style={{display: 'flex', flexWrap: 'wrap', gap: '1rem'}}>
+            <h2 className="text-xl font-semibold mb-4">출연진 & 제작진</h2>
+            <div className="flex flex-wrap gap-6 mb-8">
                {currentContent.eventCast.map(({id, role, actor}) => (
-                  <div key={id} style={{textAlign: 'center'}}>
-                     <img src={actor.actorsImages[0]?.imgUrl} alt={actor.name}
-                          style={{borderRadius: '50%', width: '100px', height: '100px'}}/>
-                     <p><strong>{actor.name}</strong> ({role})</p>
+                  <div key={id} className="text-center w-28">
+                     <img
+                        src={actor.actorsImages[0]?.imgUrl}
+                        alt={actor.name}
+                        className="w-24 h-24 rounded-full object-cover mx-auto mb-2 border border-gray-300"
+                     />
+                     <p className="text-sm font-medium">{actor.name}</p>
+                     <p className="text-xs text-gray-500">({role})</p>
                   </div>
                ))}
             </div>
 
-            <hr/>
+            <hr className="my-8"/>
 
             {/* 리뷰 */}
-            <h2>리뷰 ({currentContent.eventReview.length})</h2>
-            {currentContent.eventReview.length === 0 ? (<p> 아직 등록된 리뷰가 없습니다. </p>)
-               : (currentContent.eventReview.map((review) => (
-                     <div key={review.id} style={{marginBottom: '1.5rem'}}>
-                        <div>
-                           <p>⭐ {review.rate}점</p>
-                           <p>{review.contents}</p>
-                        </div>
-                        {review.eventReviewImages.length > 0 && (
-                           <div style={{display: 'flex', gap: '0.5rem'}}>
-                              {review.eventReviewImages.map((img) => (
-                                 <img key={img.id} src={img.imgUrl} alt="리뷰 이미지" style={{width: '100px'}}/>
-                              ))}
-                           </div>
-                        )}
+            <h2 className="text-xl font-semibold mb-4">리뷰 ({currentContent.eventReview.length})</h2>
+            {currentContent.eventReview.length === 0 ? (
+               <p className="text-gray-500">아직 등록된 리뷰가 없습니다.</p>
+            ) : (
+               currentContent.eventReview.map((review) => (
+                  <div key={review.id} className="mb-6 border border-gray-200 rounded-md p-4 bg-white shadow-sm">
+                     <div className="mb-2">
+                        <p className="font-semibold text-yellow-600">⭐ {review.rate}점</p>
+                        <p className="text-gray-700">{review.contents}</p>
                      </div>
-                  ))
-               )}
+                     {review.eventReviewImages.length > 0 && (
+                        <div className="flex gap-2 mt-2">
+                           {review.eventReviewImages.map((img) => (
+                              <img
+                                 key={img.id}
+                                 src={img.imgUrl}
+                                 alt="리뷰 이미지"
+                                 className="w-24 h-24 object-cover rounded-md border border-gray-200"/>
+                           ))}
+                        </div>
+                     )}
+                  </div>
+               ))
+            )}
          </div>
-
-
 
 
       </div>

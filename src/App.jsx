@@ -29,7 +29,7 @@ import ContactPage from "./pages/app/ServiceInfo/Contact.jsx";
 import FaqPage from "./pages/app/ServiceInfo/FAQ.jsx";
 import PrivacyPage from "./pages/app/ServiceInfo/Privacy.jsx";
 import TermsPage from "./pages/app/ServiceInfo/Terms.jsx";
-import All from "./pages/app/main/AllEvents.jsx";
+import All from "./pages/app/Events/AllEvents.jsx";
 import CategoryPage from "./pages/app/Events/CategoryPage.jsx";
 import WidgetEdit from "./pages/app/widget/edit/page.jsx";
 import WidgetAdd from "./pages/app/widget/add/page.jsx";
@@ -70,7 +70,6 @@ function App() {
             <Header/>
 
             <Routes>
-
                {/* 기본 */}
                <Route path="/" element={<MainPage></MainPage>}> {/* 중첩 라우팅(Nested Routing)  */}
                   <Route path={""} element={<All/>}/> {/*  path 그 안에 아무 서브 경로가 없으면 <All />이 보여지고 */}

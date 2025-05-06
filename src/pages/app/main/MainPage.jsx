@@ -123,7 +123,7 @@ export default function MainPage() {
    return (
       <div className="min-h-screen flex flex-col bg-gray-50">
 
-
+         {/* 카테고리 네비네이션 포함 그 아래부분임. 즉 헤더는 따로 분리되어있음. */}
          {/* Main navigation ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ */}
          <div className="bg-white border-b border-gray-200 sticky top-0 z-10">
             <div className="container mx-auto px-4">

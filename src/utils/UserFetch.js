@@ -1,6 +1,7 @@
 const serverUrl        = "http://localhost:4775";
 const LOGIN_URL        = `${serverUrl}/user/jwt/login.do`;
 const CHECK_LOGIN_URL = `${serverUrl}/user/jwt/check.do`;
+const OAUTH_URL = `${serverUrl}/user/oauth/login.do`;
 
 // const LOGIN_URL        = `${serverUrl}/user/jwt/login.do`;
 // permitAll에서 로그인을 시도하는 것.
@@ -75,4 +76,19 @@ export async function loadCheckLogin() {
    const {jwt, user} = await response.json();
    localStorage.setItem("jwt", jwt); // jwt는 다시 로컬에 저장하고,
    return user; // 유저정보는 다시 반환함. 홍길동님 로그인중 띄우려고.
+}
+
+
+
+
+export async function loadGoogleLogin(googleUser) {
+   googleUser["oauth"] = "GOOGLE";
+
+   const response = await fetch(OAUTH_URL, { // /user/oauth/login.do
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify(googleUser)
+   })
+
+   return response;
 }
