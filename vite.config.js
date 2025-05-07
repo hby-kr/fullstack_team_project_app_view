@@ -6,7 +6,11 @@ export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
-      '/api': 'http://localhost:4775/'
+      '/api': {
+        target: 'http://localhost:4775', // 백엔드 포트
+        changeOrigin: true,
+        secure: false
+      }
     }
   }
 })
