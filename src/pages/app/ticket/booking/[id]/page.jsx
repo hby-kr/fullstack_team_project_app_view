@@ -68,7 +68,7 @@ export default function BookingPage() {
                     id,
                     title: event.title,
                     category: event.ctgrId || "공연",
-                    image: images[0]?.imgUrl || "/placeholder.svg",
+                    image: event.eventImages.find(img => img.imgOrder === 0)?.imgUrl || "/placeholder.svg",
                     description: event.memo || "공연 상세 설명이 없습니다.",
                     location: event.location,
                     dates: dates.map((d) => d.eventDate),
