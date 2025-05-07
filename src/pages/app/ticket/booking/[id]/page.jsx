@@ -7,7 +7,6 @@ import {ArrowLeft, Calendar, MapPin, Clock, Users, CreditCard, Ticket, ShoppingC
 import Header from "/src/components/header"
 import {useAuth} from "/src/lib/auth-context"
 
-
 export default function BookingPage() {
     const params = useParams()
     const {user} = useAuth()
@@ -31,36 +30,29 @@ export default function BookingPage() {
                 const id = decodeURIComponent(encodedId);
                 const base = "http://localhost:4775/api/events";
 
-                // step 설정
-                const urlParams = new URLSearchParams(window.location.search);
-                const stepParam = urlParams.get("step");
-                const stepNumber = parseInt(stepParam || "1", 10);
-                if (!isNaN(stepNumber) && stepNumber >= 1 && stepNumber <= 3) {
-                    setStep(stepNumber);
-                }
+                const resEvent = await fetch(`${base}/${id}`, {credentials: "include"});
+                const event = await resEvent.json(); // ✅ 여기가 핵심
 
-                const resEvent = await fetch(`${base}/${id}`, { credentials: "include" });
-                if (!resEvent.ok) throw new Error("공연 정보 없음");
-                const event = await resEvent.json();
+                const safeJson = async (res) => {
+                    if (!res.ok) return [];
+                    const text = await res.text();
+                    if (!text) return [];
+                    try {
+                        return JSON.parse(text);
+                    } catch (err) {
+                        console.error("❌ JSON 파싱 오류:", err);
+                        return [];
+                    }
+                };
 
-                const resDates = await fetch(`${base}/${id}/dates`, { credentials: "include" });
-                const dates = resDates.ok ? await resDates.json() : [];
+                const dates = await safeJson(await fetch(`${base}/${id}/dates`, {credentials: "include"}));
+                const options = dates.length > 0
+                    ? await safeJson(await fetch(`${base}/dates/${dates[0].dateId}/options`, {credentials: "include"}))
+                    : [];
 
-                let options = [];
-                if (dates.length > 0) {
-                    const defaultDateId = dates[0]?.dateId;
-                    const resOptions = await fetch(`${base}/dates/${defaultDateId}/options`, { credentials: "include" });
-                    options = resOptions.ok ? await resOptions.json() : [];
-                }
-
-                const resImages = await fetch(`${base}/${id}/images`, { credentials: "include" });
-                const images = resImages.ok ? await resImages.json() : [];
-
-                const resReviews = await fetch(`${base}/${id}/reviews`, { credentials: "include" });
-                const reviewData = resReviews.ok ? await resReviews.json() : [];
-
-                const resReviewImgs = await fetch(`${base}/${id}/review-images`, { credentials: "include" });
-                const reviewImgs = resReviewImgs.ok ? await resReviewImgs.json() : [];
+                const images = await safeJson(await fetch(`${base}/${id}/images`, {credentials: "include"}));
+                const reviewData = await safeJson(await fetch(`${base}/${id}/reviews`, {credentials: "include"}));
+                const reviewImgs = await safeJson(await fetch(`${base}/${id}/review-images`, {credentials: "include"}));
 
                 const reviewsWithImages = reviewData.map((review) => ({
                     id: review.reviewId,
@@ -109,41 +101,55 @@ export default function BookingPage() {
         fetchEventData();
     }, [params.id]);
 
+    useEffect(() => {
+        if (!eventInfo) return;
+
+        const matchedDate = eventInfo.dates.find((d) => d === selectedDate);
+        if (!matchedDate) return;
+
+        let basePrice = eventInfo.price.regular;
+
+        if (ticketType === "vip") basePrice = eventInfo.price.vip;
+        else if (ticketType === "student") basePrice = eventInfo.price.student;
+        else if (ticketType === "disabled") basePrice = eventInfo.price.disabled;
+        else if (ticketType === "veteran") basePrice = eventInfo.price.veteran;
+        else if (ticketType === "senior") basePrice = eventInfo.price.senior;
+
+        if (!basePrice) basePrice = eventInfo.price.regular;
+
+        let total = basePrice * ticketCount;
+
+        if (ticketCount >= (eventInfo.groupDiscount?.minPeople || 999)) {
+            total = total * (1 - (eventInfo.groupDiscount.discountRate / 100));
+        }
+
+        setTotalPrice(Math.floor(total));
+    }, [selectedDate, selectedTime, ticketType, ticketCount, eventInfo]);
+
+
     // 다음 단계로 이동
     const goToNextStep = () => {
         if (step === 1 && (!selectedDate || !selectedTime)) {
-            alert("날짜와 시간을 선택해주세요.")
-            return
+            alert("날짜와 시간을 선택해주세요.");
+            return;
         }
 
-        if (step === 3) {
-            // 개인정보 확인 및 동의 체크 확인
-            const confirmInfo = document.getElementById("confirm-info");
-            const agreeTerms = document.getElementById("agree-terms");
-            const agreeRefund = document.getElementById("agree-refund");
-
-            if (!confirmInfo?.checked || !agreeTerms?.checked || !agreeRefund?.checked) {
-                alert("모든 약관에 동의해주셔야 결제가 가능합니다.")
-                return
-            }
-
-            // 결제 처리 (실제로는 결제 게이트웨이로 연결)
-            alert(
-                `${
-                    paymentMethod === "card"
-                        ? "신용카드"
-                        : paymentMethod === "simple"
-                            ? "간편결제"
-                            : paymentMethod === "bank"
-                                ? "무통장입금"
-                                : "휴대폰결제"
-                }로 결제가 완료되었습니다!`,
-            )
-            return
+        if (step === 2) {
+            // Step2에서 다음 누르면 PaymentPage로 이동
+            const queryParams = new URLSearchParams({
+                id: params.id,
+                selectedDate,
+                selectedTime,
+                ticketType,
+                ticketCount,
+                totalPrice,
+            }).toString();
+            window.location.href = `/payment?${queryParams}`;
+            return;
         }
 
-        setStep(step + 1)
-    }
+        setStep(step + 1);
+    };
 
     // 이전 단계로 이동
     const goToPrevStep = () => {
@@ -153,28 +159,28 @@ export default function BookingPage() {
     }
 
     // 장바구니에 담기
-    const addToCart = () => {
-        if (!eventInfo || !selectedDate || !selectedTime) return
-
-        // 장바구니에 담을 정보
-        const cartItem = {
-            id: eventInfo.id,
-            title: eventInfo.title,
-            date: selectedDate,
-            time: selectedTime,
-            ticketType: ticketType,
-            ticketCount: ticketCount,
-            price: totalPrice,
-            image: eventInfo.image,
-        }
-
-        // 로컬 스토리지에 장바구니 정보 저장 (실제로는 서버에 저장할 수 있음)
-        const cartItems = JSON.parse(localStorage.getItem("cartItems") || "[]")
-        cartItems.push(cartItem)
-        localStorage.setItem("cartItems", JSON.stringify(cartItems))
-
-        alert("장바구니에 담았습니다.")
-    }
+    // const addToCart = () => {
+    //     if (!eventInfo || !selectedDate || !selectedTime) return
+    //
+    //     // 장바구니에 담을 정보
+    //     const cartItem = {
+    //         id: eventInfo.id,
+    //         title: eventInfo.title,
+    //         date: selectedDate,
+    //         time: selectedTime,
+    //         ticketType: ticketType,
+    //         ticketCount: ticketCount,
+    //         price: totalPrice,
+    //         image: eventInfo.image,
+    //     }
+    //
+    //     // 로컬 스토리지에 장바구니 정보 저장 (실제로는 서버에 저장할 수 있음)
+    //     const cartItems = JSON.parse(localStorage.getItem("cartItems") || "[]")
+    //     cartItems.push(cartItem)
+    //     localStorage.setItem("cartItems", JSON.stringify(cartItems))
+    //
+    //     alert("장바구니에 담았습니다.")
+    // }
 
     // 날짜를 YYYY-MM-DD 형식으로 포맷
     function formatDate(dateString) {
@@ -345,7 +351,7 @@ export default function BookingPage() {
                                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                                         {eventInfo.dates.map((date) => (
                                             <button
-                                                key={date}
+                                                key={date || index}
                                                 className={`p-3 border rounded-lg text-center ${
                                                     selectedDate === date
                                                         ? "border-primary bg-primary/5 text-primary"
@@ -827,7 +833,7 @@ export default function BookingPage() {
                             {reviews && reviews.length > 0 ? (
                                 <div className="space-y-4">
                                     {reviews.map((review) => (
-                                        <div key={review.id} className="border-b pb-4">
+                                        <div key={review.id || review.comment || Math.random()} className="border-b pb-4">
                                             <div className="flex justify-between items-start">
                                                 <div>
                                                     <div className="flex items-center mb-1">

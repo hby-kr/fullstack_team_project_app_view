@@ -35,7 +35,7 @@ import WidgetEdit from "./pages/app/widget/edit/page.jsx";
 import WidgetAdd from "./pages/app/widget/add/page.jsx";
 import FolloweePage from "./pages/app/personal/mypage/followee/page.jsx";
 import FollowerPage from "./pages/app/personal/mypage/follower/page.jsx";
-import PaymentPage from "./pages/app/booking/payments/page.jsx";
+import PaymentPage from "./pages/app/ticket/booking/[id]/payments/page.jsx";
 
 import {useMutation} from "@tanstack/react-query";
 import {loadCheckLogin} from "./utils/UserFetch.js";

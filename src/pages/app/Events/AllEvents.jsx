@@ -119,7 +119,7 @@ export default function All() {
                                        </h3>
                                        {!(event.id % 3) && (
                                           <Link
-                                             to={`/src/pages/app/ticket/booking/${encodeURIComponent(event.id)}`}
+                                             to={`/booking/${encodeURIComponent(event.id)}`}
                                              className="text-xs px-2 py-1 bg-primary text-white rounded-full hover:bg-primary/90 inline-block"                                          >
                                              예매하기
                                           </Link>
