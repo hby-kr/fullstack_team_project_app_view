@@ -34,8 +34,6 @@ export default function All() {
       retry: 1
    };
 
-   console.log(loadeventForMain(1, 2))
-
    const categoryQueries = useQueries({
       queries:
          categories.filter(c => c !== "전체")

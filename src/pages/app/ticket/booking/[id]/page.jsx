@@ -7,38 +7,6 @@ import {ArrowLeft, Calendar, MapPin, Clock, Users, CreditCard, Ticket, ShoppingC
 import Header from "/src/components/header"
 import {useAuth} from "/src/lib/auth-context"
 
-// 공연/전시 정보 타입
-// type EventInfo = {
-//   id: string
-//   title: string
-//   category: string
-//   image: string
-//   description: string
-//   location: string
-//   dates: string[]
-//   times: string[]
-//   price: {
-//     regular: number
-//     vip?: number
-//     student?: number
-//     disabled?: number
-//     veteran?: number
-//     senior?: number
-//   }
-//   groupDiscount?: {
-//     minPeople: number
-//     discountRate: number
-//   }
-//   availableSeats: number
-//   reviews?: Array<{
-//     id: string
-//     userId: string
-//     userName: string
-//     rating: number
-//     comment: string
-//     date: string
-//   }>
-// }
 
 export default function BookingPage() {
     const params = useParams()
